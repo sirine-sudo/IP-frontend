@@ -23,7 +23,7 @@ function Dashboard() {
         } catch (error) {
             console.error("Logout failed:", error);
         }
-    }, [navigate]); // ✅ Now `handleLogout` only depends on `navigate`
+    }, [navigate]); //   Now `handleLogout` only depends on `navigate`
 
     // 🔹 Refresh Access Token Function
     const refreshAccessToken = useCallback(async () => {
@@ -45,10 +45,10 @@ function Dashboard() {
             }
         } catch (error) {
             console.error("Session expired, please log in again.");
-            handleLogout(); // ✅ Now `handleLogout` is stable
+            handleLogout(); //   Now `handleLogout` is stable
             return null;
         }
-    }, [handleLogout]); // ✅ `handleLogout` is now stable
+    }, [handleLogout]); //   `handleLogout` is now stable
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -71,13 +71,13 @@ function Dashboard() {
                     }
                 } else {
                     console.error("Session expired, logging out.");
-                    handleLogout(); // ✅ Now `handleLogout` is stable
+                    handleLogout(); //   Now `handleLogout` is stable
                 }
             }
         };
 
         fetchUser();
-    }, [refreshAccessToken, handleLogout]); // ✅ No more warnings!
+    }, [refreshAccessToken, handleLogout]); //   No more warnings!
 
     return (
         <div>
