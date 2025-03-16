@@ -6,12 +6,24 @@ function Dashboard() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
-    // 🔹 Function to handle logout
-    const handleLogout = useCallback(() => {
-        localStorage.removeItem("token");  // Clear Access Token
-        localStorage.removeItem("refreshToken"); // Clear Refresh Token
-        navigate("/");  // Redirect to Login Page
-    }, [navigate]); // ✅ Added `navigate` as a dependency
+    // 🔹 Wrap `handleLogout` in `useCallback`
+    const handleLogout = useCallback(async () => {
+        try {
+            const refreshToken = localStorage.getItem("refreshToken");
+    
+            if (refreshToken) {
+                await axios.post("http://localhost:5000/api/users/logout", { token: refreshToken });
+            }
+    
+            // Clear tokens from localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("refreshToken");
+    
+            navigate("/"); // Redirect to login page
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
+    }, [navigate]); // ✅ Now `handleLogout` only depends on `navigate`
 
     // 🔹 Refresh Access Token Function
     const refreshAccessToken = useCallback(async () => {
@@ -33,10 +45,10 @@ function Dashboard() {
             }
         } catch (error) {
             console.error("Session expired, please log in again.");
-            handleLogout(); // ✅ Using `handleLogout`
+            handleLogout(); // ✅ Now `handleLogout` is stable
             return null;
         }
-    }, [handleLogout]); // ✅ Added `handleLogout` as a dependency
+    }, [handleLogout]); // ✅ `handleLogout` is now stable
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -59,13 +71,13 @@ function Dashboard() {
                     }
                 } else {
                     console.error("Session expired, logging out.");
-                    handleLogout(); // ✅ Using `handleLogout`
+                    handleLogout(); // ✅ Now `handleLogout` is stable
                 }
             }
         };
 
         fetchUser();
-    }, [refreshAccessToken, handleLogout]); // ✅ Added `handleLogout` as a dependency
+    }, [refreshAccessToken, handleLogout]); // ✅ No more warnings!
 
     return (
         <div>
