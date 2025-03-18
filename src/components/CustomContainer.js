@@ -8,7 +8,7 @@ const StyledContainer = styled(Box)(({ theme, maxWidth, height, padding, borderR
   height: height || "auto",
   padding: padding || theme.spacing(4),
   margin: centered ? "auto" : undefined, // Centers the component if needed
-  borderRadius: borderRadius || "12px",
+  borderRadius: borderRadius || "30px",
   boxShadow: boxShadow || "0px 4px 10px rgba(0, 0, 0, 0.1)", // Soft shadow
   backgroundColor: theme.palette.background.paper,
   overflow: "hidden",

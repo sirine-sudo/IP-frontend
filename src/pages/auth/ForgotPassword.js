@@ -15,7 +15,7 @@ export default function ForgotPassword({ open, handleClose }) {
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleForgotPassword = async (event) => {
-    event.preventDefault(); // ✅ Prevents login submission
+    event.preventDefault(); //  Prevents login submission
 
     setError("");
     setSuccessMessage("");
@@ -30,7 +30,7 @@ export default function ForgotPassword({ open, handleClose }) {
       setSuccessMessage("Lien de réinitialisation envoyé ! Vérifiez votre email.");
       setTimeout(() => {
         setSuccessMessage("");
-        handleClose(); // ✅ Closes modal after success
+        handleClose(); //  Closes modal after success
       }, 2000);
     } catch (error) {
       setError(error.response?.data?.message || "Échec de l'envoi du lien.");
@@ -39,7 +39,7 @@ export default function ForgotPassword({ open, handleClose }) {
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-      <form onSubmit={handleForgotPassword}> {/* ✅ Prevents form submitting login */}
+      <form onSubmit={handleForgotPassword} style={{ padding: "20px" }}> {/*  Prevents form submitting login */}
         <TitleSection
           title="Réinitialiser le mot de passe"
           text="Entrez votre email et nous vous enverrons un lien de réinitialisation."
@@ -50,8 +50,8 @@ export default function ForgotPassword({ open, handleClose }) {
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            padding: "40px",  // ✅ Proper padding
-            overflow: "hidden", // ✅ Prevents unnecessary scrolling
+            padding: "40px",  //  Proper padding
+            overflow: "hidden", //  Prevents unnecessary scrolling
           }}
         >
           <OutlinedInput
@@ -77,7 +77,7 @@ export default function ForgotPassword({ open, handleClose }) {
             </p>
           )}
         </DialogContent>
-        <DialogActions sx={{ justifyContent: "center", padding: "20px" }}> {/* ✅ Added padding */}
+        <DialogActions sx={{ justifyContent: "center", padding: "20px" }}> {/*  Added padding */}
           <Button onClick={handleClose} variant="outlined">
             Annuler
           </Button>
