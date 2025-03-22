@@ -59,7 +59,7 @@ function Dashboard() {
                 await window.ethereum.request({ method: "eth_requestAccounts" });
                 const accounts = await web3.eth.getAccounts();
                 console.log("Connected MetaMask Address:", accounts[0]);
-
+    
                 // Send wallet address to backend
                 const token = localStorage.getItem("token");
                 await axios.post(
@@ -67,8 +67,12 @@ function Dashboard() {
                     { ethereum_address: accounts[0] },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
-
+    
                 alert("Wallet Connected Successfully!");
+    
+                // 🔹 Fetch updated user data to reflect wallet address
+                fetchUser(); 
+    
             } catch (error) {
                 console.error("MetaMask connection error:", error);
             }
@@ -76,6 +80,7 @@ function Dashboard() {
             alert("MetaMask is not installed. Please install it to proceed.");
         }
     };
+    
 
     // 🔹 Fetch User Data
 const fetchUser = useCallback(async () => {
@@ -120,6 +125,9 @@ const fetchUser = useCallback(async () => {
                     <h1>Welcome, {user.name} ({user.role})</h1>
                     
                     <button onClick={connectMetaMask}>Connect MetaMask</button>
+
+                    <p>Ethereum Address: {user.ethereum_address ? user.ethereum_address : "Not connected"}</p>
+
 
                     <button onClick={handleLogout}>Logout</button> {/* 🔹 Logout Button */}
                 </>
