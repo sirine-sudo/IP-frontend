@@ -189,7 +189,10 @@ const fetchUser = useCallback(async () => {
                             </ul>
                         </div>
                     )}
-    
+        <div>
+      <h1>Tableau de Bord</h1>
+      <button onClick={() => navigate("/marketplace")}>Aller à la Marketplace</button>
+    </div>
                     <button onClick={handleLogout}>Logout</button> {/* 🔹 Logout Button */}
                 </>
             ) : (

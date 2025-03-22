@@ -38,15 +38,21 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-
+  
     try {
       const res = await loginUser(formData);
       if (res && res.accessToken && res.refreshToken) {
-        //   Store tokens in localStorage
+        // Stocker les tokens dans localStorage
         localStorage.setItem("token", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
+  
         alert("Login successful! Redirecting...");
-        navigate("/dashboard"); //   Redirect to dashboard
+  
+        // Utiliser setTimeout pour éviter tout problème de navigation immédiate
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 500); // Délai de 500ms pour éviter les interruptions
+  
       } else {
         alert("Unexpected response. Please try again.");
       }
@@ -54,7 +60,7 @@ export default function Login() {
       alert(error.response?.data?.message || "Login failed. Try again.");
     }
   };
-
+  
   return (
     <AppTheme>
       <AuthContainer>
