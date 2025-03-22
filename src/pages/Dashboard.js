@@ -5,8 +5,35 @@ import Web3 from "web3";
 
 function Dashboard() {
     const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+    const [ipList, setIpList] = useState([]);
+const [adminList, setAdminList] = useState([]);
 
+    const navigate = useNavigate();
+    const fetchIPs = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.get("http://localhost:5000/api/users/ips", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+    
+            setIpList(res.data); // Stocke la liste des IPs
+        } catch (error) {
+            console.error("Erreur lors de la récupération des IPs :", error);
+        }
+    };
+    const fetchAdmins = async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const res = await axios.get("http://localhost:5000/api/users/admins", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+    
+            setAdminList(res.data); // Stocke la liste des admins
+        } catch (error) {
+            console.error("Erreur lors de la récupération des admins :", error);
+        }
+    };
+    
     // 🔹 Wrap `handleLogout` in `useCallback`
     const handleLogout = useCallback(async () => {
         try {
@@ -93,6 +120,12 @@ const fetchUser = useCallback(async () => {
 
         console.log("User Data Fetched:", res.data); // 🔹 Log user data
         setUser(res.data);
+        if (res.data.role === "ip-owner") {
+            fetchIPs();
+        } else if (res.data.role === "admin") {
+            fetchAdmins();
+        }
+        
     } catch (error) {
         if (error.response?.status === 401) {
             console.warn("Access token expired. Refreshing...");
@@ -117,18 +150,46 @@ const fetchUser = useCallback(async () => {
     useEffect(() => {
         fetchUser();
     }, [refreshAccessToken, handleLogout ,fetchUser]); // No more warnings!
-
     return (
         <div>
             {user ? (
                 <>
                     <h1>Welcome, {user.name} ({user.role})</h1>
-                    
+    
                     <button onClick={connectMetaMask}>Connect MetaMask</button>
-
                     <p>Ethereum Address: {user.ethereum_address ? user.ethereum_address : "Not connected"}</p>
-
-
+    
+                    {/* Affichage selon le rôle */}
+                    {user.role === "simple-user" && (
+                        <p>Vous êtes un simple utilisateur, vous n'avez pas d'IPs associées.</p>
+                    )}
+    
+                    {user.role === "ip-owner" && (
+                        <div>
+                            <h2>Liste des IPs associées :</h2>
+                            <ul>
+                                {ipList.length > 0 ? (
+                                    ipList.map((ip) => <li key={ip.id}>{ip.name}</li>)
+                                ) : (
+                                    <p>Aucune IP trouvée.</p>
+                                )}
+                            </ul>
+                        </div>
+                    )}
+    
+                    {user.role === "admin" && (
+                        <div>
+                            <h2>Liste des administrateurs :</h2>
+                            <ul>
+                                {adminList.length > 0 ? (
+                                    adminList.map((admin) => <li key={admin.id}>{admin.name}</li>)
+                                ) : (
+                                    <p>Aucun administrateur trouvé.</p>
+                                )}
+                            </ul>
+                        </div>
+                    )}
+    
                     <button onClick={handleLogout}>Logout</button> {/* 🔹 Logout Button */}
                 </>
             ) : (
@@ -136,6 +197,7 @@ const fetchUser = useCallback(async () => {
             )}
         </div>
     );
+    
 }
 
 export default Dashboard;
