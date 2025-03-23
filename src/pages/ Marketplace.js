@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Button } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useNavigate } from "react-router-dom";
+import MintNFT from "../components/MintNFT";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -31,7 +32,6 @@ function Marketplace() {
 
     fetchIPs();
   }, []);
-
   const columns = [
     { field: "title", headerName: "Title", flex: 1.5 },
     { field: "description", headerName: "Description", flex: 3 },
@@ -43,17 +43,27 @@ function Marketplace() {
       headerName: "Actions",
       flex: 1,
       renderCell: (params) => (
-        <a href={params.row.file_url} target="_blank" rel="noopener noreferrer">
-          <Button variant="contained" color="primary" size="small">
-            View File
-          </Button>
-        </a>
+        <div style={{ display: "flex", gap: "10px" }}>
+          {/* Bouton Voir le fichier */}
+          <a href={params.row.file_url} target="_blank" rel="noopener noreferrer">
+            <button>Voir le fichier</button>
+          </a>
+  
+          {/* Bouton Mint NFT */}
+          <button 
+            onClick={() => MintNFT(params.row.file_url)} 
+            style={{ cursor: "pointer", backgroundColor: "#4CAF50", color: "white", border: "none", padding: "5px 10px", borderRadius: "5px" }}
+          >
+            Mint NFT
+          </button>
+        </div>
       ),
     },
   ];
-
-  const rows = ips.map((ip) => ({
-    id: ip.id,
+  
+  // Assurez-vous que chaque ligne a un `id` unique dans `rows`
+  const rows = ips.map((ip, index) => ({
+    id: ip.id || index, // Si `ip.id` n'existe pas, utilise `index` comme id unique
     title: ip.title,
     description: ip.description,
     type: ip.type || "N/A",
@@ -61,7 +71,7 @@ function Marketplace() {
     views: ip.views !== undefined ? ip.views : "N/A",
     file_url: ip.file_url,
   }));
-
+  
   if (loading) return <p>Chargement en cours...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
