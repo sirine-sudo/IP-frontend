@@ -6,6 +6,7 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import Marketplace from "./pages/ Marketplace";
+import UploadPage from "./pages/UploadPage";
 
 //  Define or import the theme
 const theme = createTheme({
@@ -29,7 +30,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
-         
+          <Route path="/upload" element={<UploadPage />} /> 
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/marketplace" element={<Marketplace />} />
         </Routes>

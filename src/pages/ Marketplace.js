@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import UploadForm from "../components/UploadForm";
+import { DataGrid } from "@mui/x-data-grid";
+import { Button } from "@mui/material";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { useNavigate } from "react-router-dom";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchIPs = async () => {
@@ -28,31 +32,62 @@ function Marketplace() {
     fetchIPs();
   }, []);
 
+  const columns = [
+    { field: "title", headerName: "Title", flex: 1.5 },
+    { field: "description", headerName: "Description", flex: 3 },
+    { field: "type", headerName: "Type", flex: 1 },
+    { field: "owner_address", headerName: "Owner", flex: 1.5 },
+    { field: "views", headerName: "Views", flex: 1, type: "number" },
+    {
+      field: "actions",
+      headerName: "Actions",
+      flex: 1,
+      renderCell: (params) => (
+        <a href={params.row.file_url} target="_blank" rel="noopener noreferrer">
+          <Button variant="contained" color="primary" size="small">
+            View File
+          </Button>
+        </a>
+      ),
+    },
+  ];
+
+  const rows = ips.map((ip) => ({
+    id: ip.id,
+    title: ip.title,
+    description: ip.description,
+    type: ip.type || "N/A",
+    owner_address: ip.owner_address || "Unknown",
+    views: ip.views !== undefined ? ip.views : "N/A",
+    file_url: ip.file_url,
+  }));
+
   if (loading) return <p>Chargement en cours...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div style={{ padding: "20px" }}>
-      <h2>Marketplace</h2>
-      <UploadForm />
-      {ips.length === 0 ? (
-        <p>Aucune propriété intellectuelle trouvée.</p>
-      ) : (
-        ips.map((ip) => (
-          <div key={ip.id} style={{ border: "1px solid #ddd", padding: "10px", marginBottom: "10px", borderRadius: "5px" }}>
-            <h3>{ip.title}</h3>
-            <p><strong>Type :</strong> {ip.type || "Non spécifié"}</p>
-            <p><strong>Auteur :</strong> {ip.owner_address || "Inconnu"}</p>
-            <p><strong>Vues :</strong> {ip.views !== undefined ? ip.views : "Non disponible"}</p>
-            <p>
-              <strong>Lien IPFS :</strong>{" "}
-              <a href={ip.file_url} target="_blank" rel="noopener noreferrer">
-                Voir le fichier
-              </a>
-            </p>
-          </div>
-        ))
-      )}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h2>Marketplace</h2>
+        <Button
+          variant="contained"
+          startIcon={<AddRoundedIcon />}
+          onClick={() => navigate("/upload")}
+        >
+          Upload IP
+        </Button>
+      </div>
+
+      <hr style={{ marginBottom: "20px" }} />
+
+      <div style={{ height: 400, width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={6}
+          rowsPerPageOptions={[6]}
+        />
+      </div>
     </div>
   );
 }
