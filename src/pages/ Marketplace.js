@@ -3,14 +3,14 @@ import axios from "axios";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
-  const [loading, setLoading] = useState(true); // État de chargement
-  const [error, setError] = useState(null); // État d'erreur
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchIPs = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/ips");
-        console.log("Données reçues :", res.data); // Debugging
+        console.log("Données reçues :", res.data);
         if (Array.isArray(res.data)) {
           setIps(res.data);
         } else {
@@ -23,7 +23,6 @@ function Marketplace() {
         setLoading(false);
       }
     };
-    
 
     fetchIPs();
   }, []);
@@ -40,11 +39,17 @@ function Marketplace() {
         ips.map((ip) => (
           <div key={ip.id} style={{ border: "1px solid #ddd", padding: "10px", marginBottom: "10px", borderRadius: "5px" }}>
             <h3>{ip.title}</h3>
-            <p><strong>title :</strong> {ip.title || "Non spécifié"}</p>
-            <p><strong>description :</strong> {ip.description !== undefined ? ip.description : "Non disponible"}</p>
+            <p><strong>Type :</strong> {ip.type || "Non spécifié"}</p>
+            <p><strong>Auteur :</strong> {ip.owner_address || "Inconnu"}</p>
+            <p><strong>Vues :</strong> {ip.views !== undefined ? ip.views : "Non disponible"}</p>
+            <p>
+              <strong>Lien IPFS :</strong>{" "}
+              <a href={ip.file_url} target="_blank" rel="noopener noreferrer">
+                Voir le fichier
+              </a>
+            </p>
           </div>
         ))
-        
       )}
     </div>
   );
