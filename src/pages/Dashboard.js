@@ -54,29 +54,29 @@ const [adminList, setAdminList] = useState([]);
     }, [navigate]); // Now `handleLogout` only depends on `navigate`
 
     // 🔹 Refresh Access Token Function
-    const refreshAccessToken = useCallback(async () => {
+    const refreshAccessToken = async () => {
+        const refreshToken = localStorage.getItem("refreshToken"); // 🔥 Récupérer le refresh token
+        
+        if (!refreshToken) return null; // Pas de refresh token, retourne null
+      
         try {
-            const refreshToken = localStorage.getItem("refreshToken");
-            if (!refreshToken) {
-                console.error("No refresh token available.");
-                throw new Error("No refresh token available");
-            }
-
-            const res = await axios.post("http://localhost:5000/api/users/refresh-token", { token: refreshToken });
-
-            if (res.data && res.data.accessToken) {
-                console.log("New Access Token Received:", res.data.accessToken);
-                localStorage.setItem("token", res.data.accessToken);
-                return res.data.accessToken;
-            } else {
-                throw new Error("Invalid refresh token response");
-            }
+          const response = await fetch("http://localhost:5000/api/refresh-token", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken }),
+          });
+      
+          if (!response.ok) throw new Error("Échec du rafraîchissement du token");
+      
+          const data = await response.json();
+          localStorage.setItem("token", data.accessToken); // Stocke le nouveau token
+          return data.accessToken;
         } catch (error) {
-            console.error("Session expired, please log in again.");
-            handleLogout(); // Now `handleLogout` is stable
-            return null;
+          console.error("Erreur lors du refresh token :", error);
+          return null;
         }
-    }, [handleLogout]); // `handleLogout` is now stable
+      };
+      
 
     // 🔹 Connect MetaMask
     const connectMetaMask = async () => {

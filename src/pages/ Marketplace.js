@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import UploadForm from "../components/UploadForm";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -33,6 +34,7 @@ function Marketplace() {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Marketplace</h2>
+      <UploadForm />
       {ips.length === 0 ? (
         <p>Aucune propriété intellectuelle trouvée.</p>
       ) : (
