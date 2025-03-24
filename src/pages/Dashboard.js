@@ -7,9 +7,8 @@ import AdminList from "../components/AdminList";
 
 function Dashboard() {
     const [user, setUser] = useState(null);
-    const [UserIpList, setUserIpList] = useState([]);
+    const [ipList, setIpList] = useState([]);
     const [adminList, setAdminList] = useState([]);
-
     const navigate = useNavigate();
 
     const handleLogout = useCallback(async () => {
@@ -19,6 +18,7 @@ function Dashboard() {
 
     const fetchUser = useCallback(async () => {
         const userData = await fetchUserProfile();
+        console.log("User Data Fetched:", userData);
         if (!userData) {
             handleLogout();
             return;
@@ -26,7 +26,7 @@ function Dashboard() {
 
         setUser(userData);
         if (userData.role === "ip-owner") {
-            setUserIpList(userData.ips || []);
+            setIpList(userData.ips || []);
         } else if (userData.role === "admin") {
             setAdminList(userData.admins || []);
         }
@@ -34,17 +34,17 @@ function Dashboard() {
 
     useEffect(() => {
         fetchUser();
-    }, [fetchUser]);
+    }, [fetchUser, ipList]);
 
     return (
         <div>
             {user ? (
                 <>
                     <UserInfo user={user} onConnectWallet={() => connectWallet(fetchUser)} />
-                    
-                    {user.role === "ip-owner" && <UserIpList UserIpList={UserIpList} />}
+
+                    {user.role === "ip-owner" && <UserIpList ipList={ipList} />}
                     {user.role === "admin" && <AdminList adminList={adminList} />}
-                    
+
                     <button onClick={() => navigate("/marketplace")}>Aller à la Marketplace</button>
                     <button onClick={handleLogout}>Logout</button>
                 </>
