@@ -1,206 +1,58 @@
 import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Web3 from "web3";
+import { fetchUserProfile, logoutUser, connectWallet } from "../api/userApi";
+import UserInfo from "../components/UserInfo";
+import UserIpList from "../components/UserIpList";
+import AdminList from "../components/AdminList";
 
 function Dashboard() {
     const [user, setUser] = useState(null);
-    const [ipList, setIpList] = useState([]);
-const [adminList, setAdminList] = useState([]);
+    const [UserIpList, setUserIpList] = useState([]);
+    const [adminList, setAdminList] = useState([]);
 
     const navigate = useNavigate();
-    const fetchIPs = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const res = await axios.get("http://localhost:5000/api/users/ips", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-    
-            setIpList(res.data); // Stocke la liste des IPs
-        } catch (error) {
-            console.error("Erreur lors de la récupération des IPs :", error);
-        }
-    };
-    const fetchAdmins = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const res = await axios.get("http://localhost:5000/api/users/admins", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-    
-            setAdminList(res.data); // Stocke la liste des admins
-        } catch (error) {
-            console.error("Erreur lors de la récupération des admins :", error);
-        }
-    };
-    
-    // 🔹 Wrap `handleLogout` in `useCallback`
+
     const handleLogout = useCallback(async () => {
-        try {
-            const refreshToken = localStorage.getItem("refreshToken");
+        await logoutUser();
+        navigate("/");
+    }, [navigate]);
 
-            if (refreshToken) {
-                await axios.post("http://localhost:5000/api/users/logout", { token: refreshToken });
-            }
-
-            // Clear tokens from localStorage
-            localStorage.removeItem("token");
-            localStorage.removeItem("refreshToken");
-
-            navigate("/"); // Redirect to login page
-        } catch (error) {
-            console.error("Logout failed:", error);
-        }
-    }, [navigate]); // Now `handleLogout` only depends on `navigate`
-
-    // 🔹 Refresh Access Token Function
-    const refreshAccessToken = async () => {
-        const refreshToken = localStorage.getItem("refreshToken"); // 🔥 Récupérer le refresh token
-        
-        if (!refreshToken) return null; // Pas de refresh token, retourne null
-      
-        try {
-          const response = await fetch("http://localhost:5000/api/refresh-token", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ refreshToken }),
-          });
-      
-          if (!response.ok) throw new Error("Échec du rafraîchissement du token");
-      
-          const data = await response.json();
-          localStorage.setItem("token", data.accessToken); // Stocke le nouveau token
-          return data.accessToken;
-        } catch (error) {
-          console.error("Erreur lors du refresh token :", error);
-          return null;
-        }
-      };
-      
-
-    // 🔹 Connect MetaMask
-    const connectMetaMask = async () => {
-        if (window.ethereum) {
-            try {
-                const web3 = new Web3(window.ethereum);
-                await window.ethereum.request({ method: "eth_requestAccounts" });
-                const accounts = await web3.eth.getAccounts();
-                console.log("Connected MetaMask Address:", accounts[0]);
-    
-                // Send wallet address to backend
-                const token = localStorage.getItem("token");
-                await axios.post(
-                    "http://localhost:5000/api/users/connect-wallet",
-                    { ethereum_address: accounts[0] },
-                    { headers: { Authorization: `Bearer ${token}` } }
-                );
-    
-                alert("Wallet Connected Successfully!");
-    
-                // 🔹 Fetch updated user data to reflect wallet address
-                fetchUser(); 
-    
-            } catch (error) {
-                console.error("MetaMask connection error:", error);
-            }
-        } else {
-            alert("MetaMask is not installed. Please install it to proceed.");
-        }
-    };
-    
-
-    // 🔹 Fetch User Data
-const fetchUser = useCallback(async () => {
-    let token = localStorage.getItem("token");
-
-    try {
-        const res = await axios.get("http://localhost:5000/api/users/profile", {
-            headers: { Authorization: `Bearer ${token}` },
-        });
-
-        console.log("User Data Fetched:", res.data); // 🔹 Log user data
-        setUser(res.data);
-        if (res.data.role === "ip-owner") {
-            fetchIPs();
-        } else if (res.data.role === "admin") {
-            fetchAdmins();
-        }
-        
-    } catch (error) {
-        if (error.response?.status === 401) {
-            console.warn("Access token expired. Refreshing...");
-            token = await refreshAccessToken();
-            if (token) {
-                const res = await axios.get("http://localhost:5000/api/users/profile", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-
-                console.log("User Data Fetched After Refresh:", res.data); // 🔹 Log after refresh
-                setUser(res.data);
-            }
-        } else {
-            console.error("Session expired, logging out.");
+    const fetchUser = useCallback(async () => {
+        const userData = await fetchUserProfile();
+        if (!userData) {
             handleLogout();
+            return;
         }
-    }
-}, [refreshAccessToken, handleLogout]); // 🔹 Add missing dependencies
 
-
+        setUser(userData);
+        if (userData.role === "ip-owner") {
+            setUserIpList(userData.ips || []);
+        } else if (userData.role === "admin") {
+            setAdminList(userData.admins || []);
+        }
+    }, [handleLogout]);
 
     useEffect(() => {
         fetchUser();
-    }, [refreshAccessToken, handleLogout ,fetchUser]); // No more warnings!
+    }, [fetchUser]);
+
     return (
         <div>
             {user ? (
                 <>
-                    <h1>Welcome, {user.name} ({user.role})</h1>
-    
-                    <button onClick={connectMetaMask}>Connect MetaMask</button>
-                    <p>Ethereum Address: {user.ethereum_address ? user.ethereum_address : "Not connected"}</p>
-    
-                    {/* Affichage selon le rôle */}
-                    {user.role === "simple-user" && (
-                        <p>Vous êtes un simple utilisateur, vous n'avez pas d'IPs associées.</p>
-                    )}
-    
-                    {user.role === "ip-owner" && (
-                        <div>
-                            <h2>Liste des IPs associées :</h2>
-                            <ul>
-                                {ipList.length > 0 ? (
-                                    ipList.map((ip) => <li key={ip.id}>{ip.name}</li>)
-                                ) : (
-                                    <p>Aucune IP trouvée.</p>
-                                )}
-                            </ul>
-                        </div>
-                    )}
-    
-                    {user.role === "admin" && (
-                        <div>
-                            <h2>Liste des administrateurs :</h2>
-                            <ul>
-                                {adminList.length > 0 ? (
-                                    adminList.map((admin) => <li key={admin.id}>{admin.name}</li>)
-                                ) : (
-                                    <p>Aucun administrateur trouvé.</p>
-                                )}
-                            </ul>
-                        </div>
-                    )}
-        <div>
-      <h1>Tableau de Bord</h1>
-      <button onClick={() => navigate("/marketplace")}>Aller à la Marketplace</button>
-    </div>
-                    <button onClick={handleLogout}>Logout</button> {/* 🔹 Logout Button */}
+                    <UserInfo user={user} onConnectWallet={() => connectWallet(fetchUser)} />
+                    
+                    {user.role === "ip-owner" && <UserIpList UserIpList={UserIpList} />}
+                    {user.role === "admin" && <AdminList adminList={adminList} />}
+                    
+                    <button onClick={() => navigate("/marketplace")}>Aller à la Marketplace</button>
+                    <button onClick={handleLogout}>Logout</button>
                 </>
             ) : (
                 <h1>Loading...</h1>
             )}
         </div>
     );
-    
 }
 
 export default Dashboard;
