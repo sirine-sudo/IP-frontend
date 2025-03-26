@@ -5,8 +5,8 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import Marketplace from "./pages/ Marketplace";
 import UploadPage from "./pages/UploadPage";
+import Marketplace from "./pages/Marketplace";
 
 //  Define or import the theme
 const theme = createTheme({

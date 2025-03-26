@@ -7,7 +7,7 @@ const StyledCard = styled(MuiCard)(({ theme, maxWidth, padding }) => ({
   flexDirection: "column",
   alignSelf: "center",
   width: "100%",
-  maxWidth: maxWidth || "400px", // Default max width
+  maxWidth: maxWidth || "400px ", // Default max width
   padding: padding || theme.spacing(4),
   gap: theme.spacing(2),
   margin: "auto",

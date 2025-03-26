@@ -11,7 +11,6 @@ export default function TitleSection({ title, text }) {
           {text}
         </Typography>
       )}
-      <Divider sx={{ width: "100%", mt: 2, borderColor: "#ddd" }} />
-    </Box>
+     </Box>
   );
 }

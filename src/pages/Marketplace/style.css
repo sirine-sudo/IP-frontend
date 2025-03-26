@@ -1,0 +1,31 @@
+.table {
+    width: 96%;
+    justify-content: center;
+    display: flex;
+    margin: 15px auto; /* Center the table with margin auto */
+  }
+  .body-space {
+    display: inline;
+    overflow: hidden;
+  }
+  .space-between-container {
+    margin-left: 20px;
+    width: 96%;
+  }
+  
+  /* Align action icons to the right */
+  .action-icons-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .data-grid .MuiDataGrid-columnHeader {
+    background-color: #f4f5f8;
+    color: #02032a;
+    font-weight: bold;
+  }
+  .title {
+    margin-left: -1px;
+  }
+  
