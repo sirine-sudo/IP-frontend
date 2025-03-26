@@ -4,7 +4,7 @@ import { fetchUserProfile, logoutUser, connectWallet } from "../api/userApi";
 import UserInfo from "../components/UserInfo";
 import UserIpList from "../components/UserIpList";
 import AdminList from "../components/AdminList";
-
+import CardContainer from "../components/CardContainer"
 function Dashboard() {
     const [user, setUser] = useState(null);
     const [ipList, setIpList] = useState([]);
@@ -39,7 +39,7 @@ function Dashboard() {
     return (
         <div>
             {user ? (
-                <>
+                <CardContainer width="98%" height="95vh" margin="10px">
                     <UserInfo user={user} onConnectWallet={() => connectWallet(fetchUser)} />
 
                     {user.role === "ip-owner" && <UserIpList ipList={ipList} />}
@@ -47,7 +47,7 @@ function Dashboard() {
 
                     <button onClick={() => navigate("/marketplace")}>Aller à la Marketplace</button>
                     <button onClick={handleLogout}>Logout</button>
-                </>
+                </CardContainer>
             ) : (
                 <h1>Loading...</h1>
             )}

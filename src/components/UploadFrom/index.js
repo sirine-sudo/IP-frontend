@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./style.css";
 
 const UploadForm = () => {
   const [formData, setFormData] = useState({
@@ -82,29 +83,43 @@ const UploadForm = () => {
   
 
   return (
-    <form onSubmit={handleSubmit} encType="multipart/form-data">
-      <input type="text" name="title" placeholder="Titre" onChange={handleChange} required />
-      <textarea name="description" placeholder="Description" onChange={handleChange} required />
-      <label>
-  Pourcentage de royalties :
-  <input
-    type="number"
-    name="royalty_percentage"
-    value={formData.royalty_percentage || 0}
-    onChange={(e) => setFormData({ ...formData, royalty_percentage: e.target.value })}
-    min="0"
-    max="100"
-  />
-</label>
+    <form onSubmit={handleSubmit} encType="multipart/form-data" className="upload-form">
+      <div className="form-container">
+        {/* Titre */}
+        <label className="form-label">Titre :</label>
+        <input type="text" name="title" placeholder="Titre" onChange={handleChange} required className="form-input" />
 
-      <select name="type" onChange={handleChange}>
-        <option value="image">Image</option>
-        <option value="audio">Audio</option>
-        <option value="book">Livre</option>
-      </select>
+        {/* Description */}
+        <label className="form-label">Description :</label>
+        <textarea name="description" placeholder="Description" onChange={handleChange} required className="form-textarea" />
 
-      <input type="file" name="file" onChange={handleFileChange} required />
-      <button type="submit">Uploader & Protéger</button>
+        {/* Pourcentage de royalties */}
+        <label className="form-label">Pourcentage de royalties :</label>
+        <input
+          type="number"
+          name="royalty_percentage"
+          value={formData.royalty_percentage || 0}
+          onChange={(e) => setFormData({ ...formData, royalty_percentage: e.target.value })}
+          min="0"
+          max="100"
+          className="form-input"
+        />
+
+        {/* Type de fichier */}
+        <label className="form-label">Type de fichier :</label>
+        <select name="type" onChange={handleChange} className="form-select">
+          <option value="image">Image</option>
+          <option value="audio">Audio</option>
+          <option value="book">Livre</option>
+        </select>
+
+        {/* Upload du fichier */}
+        <label className="form-label">Fichier :</label>
+        <input type="file" name="file" onChange={handleFileChange} required className="form-file" />
+
+        {/* Bouton d'upload */}
+        <button type="submit" className="form-button">Uploader & Protéger</button>
+      </div>
     </form>
   );
 };
