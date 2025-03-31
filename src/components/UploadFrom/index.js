@@ -64,7 +64,7 @@ const UploadForm = () => {
       const response = await fetch("http://localhost:5000/api/ips", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${token}`,  // ✅ Assure-toi qu'il y a "Bearer "
+          "Authorization": `Bearer ${token}`,  //  Assure-toi qu'il y a "Bearer "
         },
         body: data,
       });
