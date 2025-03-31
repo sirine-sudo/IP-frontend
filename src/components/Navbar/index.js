@@ -13,6 +13,8 @@ const Navbar = () => {
             <Link to="/">Accueil</Link>
             <Link to="/marketplace">Marketplace</Link>
             <Link to="/upload">Uploader</Link>
+            <Link to="/audioLyricsEditor">Éditeur Audio/Lyrics</Link>
+
           </div>
         </div>
       </CardContainer>

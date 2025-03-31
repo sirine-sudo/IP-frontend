@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import UploadPage from "./pages/uploadIp";
 import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/Navbar";
+import AudioLyricsEditor from "./pages/AudioLyricsEditor";
 
 // Define or import the theme
 const theme = createTheme({
@@ -55,6 +56,7 @@ function App() {
                   <Route path="/upload" element={<UploadPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/audioLyricsEditor" element={<AudioLyricsEditor />} />
                 </Routes>
               </Layout>
             }
