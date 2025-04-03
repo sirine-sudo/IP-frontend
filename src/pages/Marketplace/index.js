@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
-import { IconButton, Alert } from "@mui/material";
+import { IconButton, Alert, Dialog, DialogTitle, DialogContent, TextField, Button } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { useNavigate } from "react-router-dom";
@@ -9,44 +9,70 @@ import MintNFT from "../../components/MintNFT";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import AppButton from "../../components/AppButton";
+import updateMetadata from "../../services/updateMetadata";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedIP, setSelectedIP] = useState(null);
+  const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchIPs = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/ips");
-        console.log("Données reçues :", res.data);
-        if (Array.isArray(res.data)) {
-          setIps(res.data);
-        } else {
-          throw new Error("Données inattendues");
-        }
+        setIps(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
-        console.error("Erreur lors de la récupération des IPs :", err);
         setError("Impossible de charger les données.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchIPs();
   }, []);
 
-  // Handle the Mint NFT action and show an alert
-  const handleMintNFT = async (fileUrl) => {
-    setAlertMessage("Minting in progress... This will turn your digital asset into a unique NFT.");
+  const handleMintNFT = async (fileUrl, ipId) => {
     try {
-      await MintNFT(fileUrl);
-      setAlertMessage("NFT Minted Successfully! You can now trade or display your NFT.");
-    } catch (error) {
-      setAlertMessage("Minting failed. Please try again.");
+      await MintNFT(fileUrl, ipId);
+      setAlertMessage("✅ NFT Minté avec succès !");
+    } catch {
+      setAlertMessage("❌ Échec du mint.");
     }
+  };
+  
+
+  const openMetadataDialog = (ip) => {
+    setSelectedIP(ip);
+    setFormData({
+      name: ip.title,
+      description: ip.description,
+      image: ip.file_url,
+      royalty_percentage: ip.royalty_percentage || 0,
+    });
+    setOpenDialog(true);
+  };
+
+  const handleMetadataSubmit = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/ips/metadata", formData);
+      const newUri = res.data.uri;
+      await updateMetadata(selectedIP.nft_token_id, newUri);
+      setAlertMessage("✅ Metadonnées mises à jour !");
+    } catch (err) {
+      console.error(err);
+      setAlertMessage("❌ Erreur de mise à jour.");
+    } finally {
+      setOpenDialog(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const columns = [
@@ -58,10 +84,9 @@ function Marketplace() {
     {
       field: "actions",
       headerName: "Actions",
-      flex: 1.5,
+      flex: 2,
       renderCell: (params) => (
         <div style={{ display: "flex", gap: "10px" }}>
-          {/* Eye Icon for Viewing the File */}
           <IconButton
             component="a"
             href={params.row.file_url}
@@ -72,12 +97,19 @@ function Marketplace() {
             <VisibilityIcon />
           </IconButton>
 
-          {/* Mint NFT Button (Using AppButton) */}
           <AppButton
-            onClick={() => handleMintNFT(params.row.file_url)}
-            color="success"
+  onClick={() => handleMintNFT(params.row.file_url, params.row.id)}
+  color="success"
+>
+  Mint NFT
+</AppButton>
+
+
+          <AppButton
+            onClick={() => openMetadataDialog(params.row)}
+            color="primary"
           >
-            Mint NFT
+            Update Metadata
           </AppButton>
         </div>
       ),
@@ -92,6 +124,8 @@ function Marketplace() {
     owner_address: ip.owner_address || "Unknown",
     views: ip.views !== undefined ? ip.views : "N/A",
     file_url: ip.file_url,
+    nft_token_id: ip.nft_token_id,
+    royalty_percentage: ip.royalty_percentage,
   }));
 
   if (loading) return <p>Chargement en cours...</p>;
@@ -100,7 +134,6 @@ function Marketplace() {
   return (
     <CardContainer width="98%" height="95vh" margin="10px">
       <div style={{ padding: "20px" }}>
-        {/* First Alert - Help Message */}
         {alertMessage && (
           <Alert
             severity="info"
@@ -109,12 +142,48 @@ function Marketplace() {
               bottom: '20px',
               right: '20px',
               zIndex: 9999,
-              width: 'auto', // Optional: Set the width as needed
+              width: 'auto',
             }}
           >
             {alertMessage}
           </Alert>
         )}
+
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Modifier les métadonnées</DialogTitle>
+          <DialogContent>
+            <TextField
+              fullWidth
+              label="Nom"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              multiline
+              rows={3}
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              label="Royalties (%)"
+              name="royalty_percentage"
+              value={formData.royalty_percentage}
+              onChange={handleInputChange}
+              type="number"
+              margin="normal"
+            />
+            <Button onClick={handleMetadataSubmit} color="primary" variant="contained">
+              Confirmer
+            </Button>
+          </DialogContent>
+        </Dialog>
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <TitleSection
