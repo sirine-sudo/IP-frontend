@@ -1,38 +1,41 @@
-import { BrowserProvider, Contract } from "ethers";
-import contractABI from "../abis/MyNFT.json"; //  Assure-toi du bon chemin
+import { ethers } from "ethers";
+import contractABI from "../abis/MyNFT.json";
+import axios from "axios";
 
 const CONTRACT_ADDRESS = "0xFD2FE145c0a64982Ebfa41De320FA80846DFAb7A";
 
-export default async function MintNFT(tokenURI) {
+export default async function MintNFT(tokenURI, ipId) {
   if (!window.ethereum) {
     alert("🦊 MetaMask est requis !");
     return;
   }
 
   try {
-    console.log(" Connexion à MetaMask...");
-    const provider = new BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
+    // ✅ Assure la connexion avec MetaMask
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner(); // maintenant on est sûr qu'un compte est dispo
+
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI.abi, signer);
+
     const userAddress = await signer.getAddress();
-    console.log(" Adresse utilisateur :", userAddress);
+    const tx = await contract.mintNFT(userAddress, tokenURI); // ⬅️ mint d'abord
+    const receipt = await tx.wait(); // ⬅️ ensuite on attend la confirmation
+    
+    const transferEvent = receipt.events.find((e) => e.event === "Transfer");
+    const tokenId = transferEvent.args.tokenId.toString();
 
-    const contract = new Contract(CONTRACT_ADDRESS, contractABI.abi, signer);
+    await axios.put(`http://localhost:5000/api/ips/${ipId}/update-token`, {
+      nft_token_id: tokenId,
+      owner_address: userAddress, 
+    });
+    
 
-    console.log(" Chargement du contrat...");
-    console.log(" Adresse du contrat :", CONTRACT_ADDRESS);
-    console.log(" Nom du contrat :", await contract.name());
-    console.log(" Symbole du contrat :", await contract.symbol());
-
-    console.log(" Envoi du mint...");
-    const tx = await contract.mintNFT(userAddress, tokenURI);
-    console.log(" Transaction envoyée :", tx.hash);
-
-    await tx.wait();
-    console.log(` NFT Minté ! Tx : https://sepolia.etherscan.io/tx/${tx.hash}`);
-
-    alert(`NFT Minté ! Voir la transaction : https://sepolia.etherscan.io/tx/${tx.hash}`);
+    console.log("✅ NFT Minté avec tokenId :", tokenId);
+    alert(`✅ NFT Minté avec succès ! ID : ${tokenId}`);
   } catch (error) {
-    console.error(" Erreur pendant le mint :", error);
-    alert("Une erreur est survenue. Voir la console.");
+    console.error("Erreur pendant le mint :", error);
+    alert("❌ Erreur pendant le mint. Voir la console.");
   }
 }
