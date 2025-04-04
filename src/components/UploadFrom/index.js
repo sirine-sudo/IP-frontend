@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./style.css";
 import AppButton from "../../components/AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { uploadIP } from "../../services/api"; // ✅ Import du service
 
 const UploadForm = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,10 @@ const UploadForm = () => {
     description: "",
     type: "image",
     file: null,
+    royalty_percentage: 0,
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,121 +24,87 @@ const UploadForm = () => {
     setFormData({ ...formData, file: e.target.files[0] });
   };
 
-  const refreshAccessToken = async () => {
-    const refreshToken = localStorage.getItem("refreshToken"); // 🔥 Récupérer le refresh token
-    
-    if (!refreshToken) return null; // Pas de refresh token, retourne null
-  
-    try {
-      const response = await fetch("http://localhost:5000/api/refresh-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ refreshToken }),
-      });
-  
-      if (!response.ok) throw new Error("Échec du rafraîchissement du token");
-  
-      const data = await response.json();
-      localStorage.setItem("token", data.accessToken); // Stocke le nouveau token
-      return data.accessToken;
-    } catch (error) {
-      console.error("Erreur lors du refresh token :", error);
-      return null;
-    }
-  };const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    let token = localStorage.getItem("token");
-  
-    if (!token) {
-      console.log("Token expiré, tentative de rafraîchissement...");
-      token = await refreshAccessToken();  // 🔥 Rafraîchir le token si expiré
-    }
-  
-    if (!token) {
-      console.error("⚠️ Impossible de récupérer un token valide.");
-      return;
-    }
-  
-    const data = new FormData();
-    data.append("title", formData.title);
-    data.append("description", formData.description);
-    data.append("type", formData.type);
-    data.append("file", formData.file);
-  
+    setLoading(true);
+    setMessage("");
+
     try {
-      const response = await fetch("http://localhost:5000/api/ips", {
-        method: "POST",
-        headers: { 
-          "Authorization": `Bearer ${token}`,  //  Assure-toi qu'il y a "Bearer "
-        },
-        body: data,
-      });
-  
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Erreur lors de l'upload : ${errorMessage}`);
-      }
-  
-      const responseData = await response.json();
-      console.log("Succès :", responseData);
+      const response = await uploadIP(formData);
+      setMessage("✅ Upload réussi !");
+      console.log("Succès :", response);
     } catch (error) {
-      console.error("Erreur :", error.message);
+      setMessage(`❌ Erreur : ${error.message}`);
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   return (
-<form onSubmit={handleSubmit} encType="multipart/form-data" className="upload-form">
-  <div className="upload-wrapper">
-    
-    {/* Partie droite (Formulaire) */}
-    <div className="form-container">
-      <label className="form-label">Titre :</label>
-      <input type="text" name="title" placeholder="Titre" onChange={handleChange} required className="form-input" />
+    <form onSubmit={handleSubmit} encType="multipart/form-data" className="upload-form">
+      <div className="upload-wrapper">
+        <div className="form-container">
+          {/* Tous les inputs */}
+          <label className="form-label">Titre :</label>
+          <input type="text" name="title" onChange={handleChange} required className="form-input" />
 
-      <label className="form-label">Description :</label>
-      <textarea name="description" placeholder="Description" onChange={handleChange} required className="form-textarea" />
+          <label className="form-label">Description :</label>
+          <textarea name="description" onChange={handleChange} required className="form-textarea" />
 
-      <label className="form-label">Pourcentage de royalties :</label>
-      <input
-        type="number"
-        name="royalty_percentage"
-        value={formData.royalty_percentage || 0}
-        onChange={(e) => setFormData({ ...formData, royalty_percentage: e.target.value })}
-        min="0"
-        max="100"
-        className="form-input"
-      />
+          <label className="form-label">Pourcentage de royalties :</label>
+          <input
+            type="number"
+            name="royalty_percentage"
+            value={formData.royalty_percentage}
+            onChange={handleChange}
+            min="0"
+            max="100"
+            className="form-input"
+          />
 
-      <label className="form-label">Type de fichier :</label>
-      <select name="type" onChange={handleChange} className="form-select">
-        <option value="image">Image</option>
-        <option value="audio">Audio</option>
-        <option value="book">Livre</option>
-      </select>
+          <label className="form-label">Type de fichier :</label>
+          <select name="type" onChange={handleChange} className="form-select">
+            <option value="image">Image</option>
+            <option value="audio">Audio</option>
+            <option value="book">Livre</option>
+          </select>
 
-      <label className="form-label">Fichier :</label>
-      <input type="file" name="file" onChange={handleFileChange} required className="form-file" />
+          <label className="form-label">Fichier :</label>
+          <input type="file" name="file" onChange={handleFileChange} required className="form-file" />
 
-      <AppButton
-        startIcon={<AddRoundedIcon />}
-        type="submit"
-        className="custom-button blue-primary-button-form"
-      >
-        Upload IP
-      </AppButton>
-    </div>
-
-    {/* Partie gauche (uploaded file info) */}
-    <div className="uploaded-file-info">
-      hello the uploaded file is here
-    </div>
-
+          <AppButton
+            startIcon={<AddRoundedIcon />}
+            type="submit"
+            className="custom-button blue-primary-button-form"
+            disabled={loading}
+          >
+            {loading ? "Uploading..." : "Upload IP"}
+          </AppButton>
+          {message && (
+  <div
+    style={{
+      marginTop: "10px",
+      padding: "10px",
+      borderRadius: "8px",
+      backgroundColor: message.startsWith("✅") ? "#d4edda" : "#f8d7da",
+      color: message.startsWith("✅") ? "#155724" : "#721c24",
+      border: message.startsWith("✅") ? "1px solid #c3e6cb" : "1px solid #f5c6cb",
+      fontWeight: "bold",
+    }}
+  >
+    {message}
   </div>
-</form>
+)}
 
+          
+        </div>
 
+        <div className="uploaded-file-info">
+          hello the uploaded file is here
+        </div>
+      </div>
+    </form>
   );
 };
 
