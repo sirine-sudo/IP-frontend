@@ -1,31 +1,68 @@
+/* Table et alignement */
 .table {
-    width: 96%;
-    justify-content: center;
-    display: flex;
-    margin: 15px auto; /* Center the table with margin auto */
-  }
-  .body-space {
-    display: inline;
-    overflow: hidden;
-  }
-  .space-between-container {
-    margin-left: 20px;
-    width: 96%;
-  }
-  
-  /* Align action icons to the right */
-  .action-icons-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  
-  .data-grid .MuiDataGrid-columnHeader {
-    background-color: #f4f5f8;
-    color: #02032a;
-    font-weight: bold;
-  }
-  .title {
-    margin-left: -1px;
-  }
-  
+  width: 96%;
+  justify-content: center;
+  display: flex;
+  overflow: hidden;
+  margin: 15px auto;
+}
+
+.body-space {
+  display: inline;
+  overflow: hidden;
+  overflow: hidden;
+}
+
+.space-between-container {
+  margin-left: 20px;
+  width: 96%;
+}
+
+/* Colonnes DataGrid */
+.data-grid .MuiDataGrid-columnHeader {
+  background-color: #f4f5f8;
+  color: #02032a;
+  font-weight: bold;
+}
+
+/* Boutons personnalisés */
+.custom-button {
+  font-size: 10px;
+  border-radius: 15px;
+  padding: 5px 10px;
+  text-transform: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Couleurs spécifiques */
+.delete-button {
+  color: #ea3d2f;
+  background-color: #fde5e2;
+}
+
+.edit-button {
+  color: #f4a918;
+  background-color: #fdf3d8;
+}
+
+.view-button {
+  color: #377bf6;
+  background-color: #e5efff;
+}
+
+CardContainer{
+  overflow: hidden;
+}
+.custom-button.blue-primary-button {
+  background-color: #e5efff;
+  color: #377bf6;
+  font-size: 15px;
+  border-radius: 15px;
+  text-transform: none;
+  padding: 8px 16px;
+  box-shadow: none;
+  width: 200px;
+  border: 1px solid #377bf6;  
+  cursor: pointer;
+}

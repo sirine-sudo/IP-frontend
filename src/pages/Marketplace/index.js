@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
-import { IconButton, Alert, Dialog, DialogTitle, DialogContent, TextField, Button } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { Alert, Dialog, DialogTitle, DialogContent, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MintNFT from "../../components/MintNFT";
+import updateMetadata from "../../services/updateMetadata";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import AppButton from "../../components/AppButton";
-import updateMetadata from "../../services/updateMetadata";
+import "./style.css"; 
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import { BorderColor } from "@mui/icons-material";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -43,7 +44,6 @@ function Marketplace() {
       setAlertMessage("❌ Échec du mint.");
     }
   };
-  
 
   const openMetadataDialog = (ip) => {
     setSelectedIP(ip);
@@ -61,12 +61,23 @@ function Marketplace() {
       const res = await axios.post("http://localhost:5000/api/ips/metadata", formData);
       const newUri = res.data.uri;
       await updateMetadata(selectedIP.nft_token_id, newUri);
-      setAlertMessage("✅ Metadonnées mises à jour !");
+      setAlertMessage("✅ Métadonnées mises à jour !");
     } catch (err) {
       console.error(err);
       setAlertMessage("❌ Erreur de mise à jour.");
     } finally {
       setOpenDialog(false);
+    }
+  };
+
+  const handleDeleteIP = async (id) => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/ips/${id}`);
+      setIps((prev) => prev.filter((ip) => ip.id !== id));
+      setAlertMessage("✅ IP supprimée !");
+    } catch {
+      setAlertMessage("❌ Échec de la suppression.");
     }
   };
 
@@ -76,41 +87,52 @@ function Marketplace() {
   };
 
   const columns = [
-    { field: "title", headerName: "Title", flex: 1.5 },
-    { field: "description", headerName: "Description", flex: 3 },
+    { field: "title", headerName: "Title", flex: 1 },
+    { field: "description", headerName: "Description", flex: 1.5 },
     { field: "type", headerName: "Type", flex: 1 },
-    { field: "owner_address", headerName: "Owner", flex: 1.5 },
-    { field: "views", headerName: "Views", flex: 1, type: "number" },
+    { field: "owner_address", headerName: "Owner", flex: 1},
+    { field: "views", headerName: "Views", flex: 0.5, type: "number" },
     {
       field: "actions",
       headerName: "Actions",
       flex: 2,
       renderCell: (params) => (
-        <div style={{ display: "flex", gap: "10px" }}>
-          <IconButton
-            component="a"
-            href={params.row.file_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="View File"
-          >
-            <VisibilityIcon />
-          </IconButton>
-
-          <AppButton
+        <div style={{ display: "flex", gap: "8px" }}>
+            {/* mint the nft*/}
+          <button
+  className="custom-button"
+  style={{ backgroundColor: "#e0ffe0", color: "#2e7d32" }}
   onClick={() => handleMintNFT(params.row.file_url, params.row.id)}
-  color="success"
+  disabled={params.row.nft_token_id !== "pending"}
 >
   Mint NFT
-</AppButton>
+</button>
 
+          {/* View on Pinata */}
 
-          <AppButton
-            onClick={() => openMetadataDialog(params.row)}
-            color="primary"
+          <button
+            className="custom-button view-button"
+            onClick={() => window.open(params.row.file_url, "_blank")}
           >
-            Update Metadata
-          </AppButton>
+            View sur Pinata
+          </button>
+
+          {/* Update Metadata */}
+          <button
+            className="custom-button edit-button"
+            onClick={() => openMetadataDialog(params.row)}
+            disabled={params.row.nft_token_id === "pending"}
+          >
+            Mettre à jour les métadonnées
+          </button>
+
+          {/* Delete */}
+          <button
+            className="custom-button delete-button"
+            onClick={() => handleDeleteIP(params.row.id)}
+          >
+            Supprimer
+          </button>
         </div>
       ),
     },
@@ -132,7 +154,7 @@ function Marketplace() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <CardContainer width="98%" height="95vh" margin="10px">
+    <CardContainer width="98%" height="82vh" margin="10px" >
       <div style={{ padding: "20px" }}>
         {alertMessage && (
           <Alert
@@ -149,6 +171,7 @@ function Marketplace() {
           </Alert>
         )}
 
+        {/* Dialog pour update metadata */}
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
           <DialogTitle>Modifier les métadonnées</DialogTitle>
           <DialogContent>
@@ -185,23 +208,28 @@ function Marketplace() {
           </DialogContent>
         </Dialog>
 
+        {/* Titre */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <TitleSection
             title="Marché des Propriétés Intellectuelles"
             text="Explorez et échangez des actifs numériques en toute sécurité."
           />
 
-          <AppButton
-            startIcon={<AddRoundedIcon />}
-            onClick={() => navigate("/upload")}
-          >
-            Upload IP
-          </AppButton>
+<AppButton
+  startIcon={<AddRoundedIcon />}
+  onClick={() => navigate("/upload")}
+  className="custom-button blue-primary-button"
+>
+  Upload IP
+</AppButton>
+
+ 
         </div>
 
         <hr style={{ marginBottom: "20px" }} />
 
-        <div style={{ height: 400, width: "100%" }}>
+        {/* Table */}
+        <div style={{ height: "70%", width: "100%" }}>
           <DataGrid rows={rows} columns={columns} pageSize={6} rowsPerPageOptions={[6]} />
         </div>
       </div>
