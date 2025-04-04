@@ -54,15 +54,18 @@
 CardContainer{
   overflow: hidden;
 }
+
+/* Ton bouton personnalisé */
 .custom-button.blue-primary-button {
-  background-color: #e5efff;
-  color: #377bf6;
+  background-color:  #377bf6;
+  color: #e5efff;
   font-size: 15px;
   border-radius: 15px;
   text-transform: none;
   padding: 8px 16px;
   box-shadow: none;
   width: 200px;
-  border: 1px solid #377bf6;  
+  border: 0.5px solid   #e5efff;
   cursor: pointer;
+ 
 }

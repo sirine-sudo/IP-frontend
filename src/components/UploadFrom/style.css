@@ -1,48 +1,109 @@
 .upload-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top:10px;
+ 
+  margin-left:10px;
+}
+
+.upload-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+ 
+
   
-  .form-container {
-    display: grid;
-   
-    gap: 20px;
-    width: 50%;
-     
-    
-  }
+}
+
+/* Partie formulaire */
+.form-container {
+  display: grid;
+  gap: 05px;
+  width: 40%;
   
-  .form-label {
-    font-weight: bold;
-    align-self: center;
-  }
+ height: auto;
+  flex: 2;
+}
+/* Bloc "hello uploaded file" */
+.uploaded-file-info {  background-color: #e6efff;
+  border: 1px solid #7e96bd;
+
+  margin-top: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  font-size: 16px;
+  color: #333;
   
-  .form-input,
-  .form-textarea,
-  .form-select,
-  .form-file {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+  height: 50vh;
   
-  .form-textarea {
-    height: 80px;
-  }
-  
-  .form-button {
-    grid-column: span 2;
-    background-color: #2196F3;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .form-button:hover {
-    background-color: #1976D2;
-  }
-  
+  display: flex; /* Ajouté pour centrer */
+  align-items: center;
+  justify-content: center;
+  text-align: center; /* (Optionnel) Centrer aussi le texte */
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #02032a;
+}
+
+.form-input,
+.form-textarea,
+.form-select,
+.form-file {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.form-file {
+  background-color: #e6efff;
+  border: 1px solid #7e96bd;
+
+}
+
+.form-textarea {
+  height: 70px;
+}
+
+.form-button {
+  grid-column: span 2;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-button:hover {
+  background-color: #1976D2;
+}
+
+
+
+/*  bouton personnalisé */
+
+.custom-button.blue-primary-button-form {
+  background-color: #377bf6;
+  color: #e5efff;
+  font-size: 15px;
+  border-radius: 15px;
+  text-transform: none;
+  padding: 8px 16px;
+  box-shadow: none;
+
+  border: 0.5px solid   #e5efff;
+  cursor: pointer;
+  width: 100%;
+}

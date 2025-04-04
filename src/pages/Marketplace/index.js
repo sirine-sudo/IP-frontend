@@ -10,7 +10,7 @@ import CardContainer from "../../components/CardContainer";
 import AppButton from "../../components/AppButton";
 import "./style.css"; 
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { BorderColor } from "@mui/icons-material";
+
 
 function Marketplace() {
   const [ips, setIps] = useState([]);

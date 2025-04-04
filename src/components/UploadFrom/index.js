@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./style.css";
+import AppButton from "../../components/AppButton";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 const UploadForm = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +65,7 @@ const UploadForm = () => {
     try {
       const response = await fetch("http://localhost:5000/api/ips", {
         method: "POST",
-        headers: {
+        headers: { 
           "Authorization": `Bearer ${token}`,  //  Assure-toi qu'il y a "Bearer "
         },
         body: data,
@@ -83,44 +85,56 @@ const UploadForm = () => {
   
 
   return (
-    <form onSubmit={handleSubmit} encType="multipart/form-data" className="upload-form">
-      <div className="form-container">
-        {/* Titre */}
-        <label className="form-label">Titre :</label>
-        <input type="text" name="title" placeholder="Titre" onChange={handleChange} required className="form-input" />
+<form onSubmit={handleSubmit} encType="multipart/form-data" className="upload-form">
+  <div className="upload-wrapper">
+    
+    {/* Partie droite (Formulaire) */}
+    <div className="form-container">
+      <label className="form-label">Titre :</label>
+      <input type="text" name="title" placeholder="Titre" onChange={handleChange} required className="form-input" />
 
-        {/* Description */}
-        <label className="form-label">Description :</label>
-        <textarea name="description" placeholder="Description" onChange={handleChange} required className="form-textarea" />
+      <label className="form-label">Description :</label>
+      <textarea name="description" placeholder="Description" onChange={handleChange} required className="form-textarea" />
 
-        {/* Pourcentage de royalties */}
-        <label className="form-label">Pourcentage de royalties :</label>
-        <input
-          type="number"
-          name="royalty_percentage"
-          value={formData.royalty_percentage || 0}
-          onChange={(e) => setFormData({ ...formData, royalty_percentage: e.target.value })}
-          min="0"
-          max="100"
-          className="form-input"
-        />
+      <label className="form-label">Pourcentage de royalties :</label>
+      <input
+        type="number"
+        name="royalty_percentage"
+        value={formData.royalty_percentage || 0}
+        onChange={(e) => setFormData({ ...formData, royalty_percentage: e.target.value })}
+        min="0"
+        max="100"
+        className="form-input"
+      />
 
-        {/* Type de fichier */}
-        <label className="form-label">Type de fichier :</label>
-        <select name="type" onChange={handleChange} className="form-select">
-          <option value="image">Image</option>
-          <option value="audio">Audio</option>
-          <option value="book">Livre</option>
-        </select>
+      <label className="form-label">Type de fichier :</label>
+      <select name="type" onChange={handleChange} className="form-select">
+        <option value="image">Image</option>
+        <option value="audio">Audio</option>
+        <option value="book">Livre</option>
+      </select>
 
-        {/* Upload du fichier */}
-        <label className="form-label">Fichier :</label>
-        <input type="file" name="file" onChange={handleFileChange} required className="form-file" />
+      <label className="form-label">Fichier :</label>
+      <input type="file" name="file" onChange={handleFileChange} required className="form-file" />
 
-        {/* Bouton d'upload */}
-        <button type="submit" className="form-button">Uploader & Protéger</button>
-      </div>
-    </form>
+      <AppButton
+        startIcon={<AddRoundedIcon />}
+        type="submit"
+        className="custom-button blue-primary-button-form"
+      >
+        Upload IP
+      </AppButton>
+    </div>
+
+    {/* Partie gauche (uploaded file info) */}
+    <div className="uploaded-file-info">
+      hello the uploaded file is here
+    </div>
+
+  </div>
+</form>
+
+
   );
 };
 
