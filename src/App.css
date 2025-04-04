@@ -64,3 +64,15 @@ html, body {
     transform: rotate(360deg);
   }
 }
+.custom-button.blue-primary-button {
+  background-color: #e5efff;
+  color: #377bf6;
+  font-size: 15px;
+  border-radius: 15px;
+  text-transform: none;
+  padding: 8px 16px;
+  box-shadow: none;
+  width: 200px;
+  border: 1px solid #377bf6;  
+  cursor: pointer;
+}
