@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import contractABI from "../abis/MyNFT.json";
 
-const CONTRACT_ADDRESS = "0xFD2FE145c0a64982Ebfa41De320FA80846DFAb7A";
+const CONTRACT_ADDRESS = "0x525fFff54Cc4a2E33C9aD562B609B29a2983De61";
 
 export default async function updateMetadata(tokenId, newUri) {
   if (!window.ethereum) {
