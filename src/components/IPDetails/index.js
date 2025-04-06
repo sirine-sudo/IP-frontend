@@ -29,31 +29,38 @@ const IPDetails = () => {
   if (!ip) return <p style={{ color: "red" }}>Propriété introuvable.</p>;
 
   return (
-    <CardContainer width="98%" height="auto" margin="10px">
-      <div className="ip-details-container">
+<CardContainer width="98%" height="auto" margin="10px">
+  <div className="ip-details-container">
+    <div className="details-container">
+      
+      {/* Bloc Image */}
+      <div className="ip-details-image">
+        <img src={ip.file_url} alt={ip.title} />
+      </div>
 
-<div className="details-container">
+      {/* Bloc Infos */}
+      <div className="ip-details-info">
+        <h3>{ip.title}</h3>
 
-
-          <div className="ip-details-image">
-          <img src={ip.file_url} alt={ip.title} />
-        </div>
-
-        <div className="ip-details-info">
-          <h3>{ip.title}</h3>
-          <p><strong>Description :</strong> {ip.description}</p>
-          <p><strong>Type :</strong> {ip.type}</p>
-          <p><strong>Adresse du propriétaire :</strong> {ip.owner_address}</p>
-          <p><strong>Smart Contract :</strong> {ip.smart_contract_address || "Non défini"}</p>
-          <p><strong>Token ID :</strong> {ip.nft_token_id}</p>
-          <p><strong>Royalties :</strong> {ip.royalty_percentage} %</p>
-          <p><strong>Fichier IPFS :</strong> <a href={ip.file_url} target="_blank" rel="noreferrer">Voir sur IPFS</a></p>
-        </div>
-
-</div>
+        <p><strong>Description :</strong> {ip.description}</p>
+        <p><strong>Type :</strong> {ip.type}</p>
+        <p><strong>Adresse du propriétaire :</strong> {ip.owner_address}</p>
+        <p><strong>Smart Contract :</strong> {ip.smart_contract_address || "Non défini"}</p>
+        <p><strong>Token ID :</strong> {ip.nft_token_id}</p>
+        <p><strong>Royalties :</strong> {ip.royalty_percentage} %</p>
+        <p><strong>File Hash :</strong> {ip.file_hash}</p>
+        <p><strong>IPFS CID :</strong> {ip.ipfs_cid}</p>
+        <p><strong>Créateur (User ID) :</strong> {ip.creator_id}</p>
+        <p><strong>Fichier IPFS :</strong> <a href={ip.file_url} target="_blank" rel="noreferrer">Voir sur IPFS</a></p>
+        <p><strong>Date de création :</strong> {new Date(ip.createdAt).toLocaleString()}</p>
+        <p><strong>Dernière mise à jour :</strong> {new Date(ip.updatedAt).toLocaleString()}</p>
 
       </div>
-    </CardContainer>
+
+    </div>
+  </div>
+</CardContainer>
+
   );
 };
 
