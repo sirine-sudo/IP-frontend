@@ -117,3 +117,15 @@
   text-transform: none;
   font-size: 14px;
 }
+.custom-button.blue-primary-button {
+  background-color: #377bf6;
+  color: #e5efff; 
+  font-size: 15px;
+  border-radius: 15px;
+  text-transform: none;
+  padding: 8px 16px;
+  box-shadow: none;
+  width: 200px;
+  border: 1px solid#e5efff; 
+  cursor: pointer;
+}
