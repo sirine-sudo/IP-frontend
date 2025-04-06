@@ -33,13 +33,13 @@ const UploadForm = () => {
 
     try {
       const response = await uploadIP(formData);
-            toast.success("✅ Upload réussi !");
+            toast.success(" Upload réussi !");
       
       navigate("/marketplace"); 
 
       console.log("Succès :", response);
     } catch (error) {
-      toast.success("`❌ Erreur : ${error.message}`");
+      toast.error(` Erreur : ${error.message}`);
 
       console.error(error);
     } finally {

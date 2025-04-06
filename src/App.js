@@ -13,6 +13,7 @@ import IPDetails from "./components/IPDetails";
 import UpdateMetadataForm from "./components/UpdateMetadataForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Style par défaut
+import UsersList from "./pages/AdminDashboard/UsersList";
 
 // Define or import the theme
 const theme = createTheme({
@@ -63,7 +64,7 @@ function App() {
                   <Route path="/audioLyricsEditor" element={<AudioLyricsEditor />} />
                   <Route path="/ip/:id" element={<IPDetails />} />
                   <Route path="/update-metadata/:id" element={<UpdateMetadataForm />} />
-
+                  <Route path="/admin/users" element={<UsersList />} />
                 </Routes>
               </Layout>
             }

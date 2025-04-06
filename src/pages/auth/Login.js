@@ -2,6 +2,7 @@ import { useState } from "react";
 import { loginUser } from "../../api/auth"; // API call
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import * as React from "react";
+import { toast } from "react-toastify";
 
 import AppTheme from "../../theme/AppTheme";
 import { validateEmail, validatePassword } from "../../utils/validation";
@@ -34,27 +35,27 @@ export default function Login() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handles form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
   
     try {
-      const res = await loginUser(formData);
+      const res = await loginUser(formData); // res === { accessToken, refreshToken, role }
+  
       if (res && res.accessToken && res.refreshToken) {
-        // Stocker les tokens dans localStorage
-        localStorage.setItem("token", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
+        // Stocker les tokens et le rôle
+        localStorage.setItem("role", res.role);   // 🔥 Corrigé ici
+        localStorage.setItem("token", res.accessToken); 
+        localStorage.setItem("refreshToken", res.refreshToken); 
   
-        alert("Login successful! Redirecting...");
+        toast.success("Login successful! Redirecting...");
   
-        // Utiliser setTimeout pour éviter tout problème de navigation immédiate
         setTimeout(() => {
           navigate("/dashboard");
-        }, 500); // Délai de 500ms pour éviter les interruptions
-  
+        }, 500);
+        return res; // ✅ PAS res.data
       } else {
-        alert("Unexpected response. Please try again.");
+        toast.error("Unexpected response. Please try again.");
       }
     } catch (error) {
       alert(error.response?.data?.message || "Login failed. Try again.");

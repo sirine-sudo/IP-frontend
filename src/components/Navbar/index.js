@@ -7,9 +7,12 @@ import logo from "../../assets/images/logo/logo-light-mode.png";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const role = localStorage.getItem("role"); // 🔥 Récupère le rôle depuis localStorage
 
   const handleLogout = useCallback(async () => {
     await logoutUser();
+    localStorage.removeItem("token"); // 🔥 Supprime aussi le token au logout
+    localStorage.removeItem("role");  // 🔥 Supprime le rôle
     navigate("/");
   }, [navigate]);
 
@@ -23,10 +26,15 @@ const Navbar = () => {
           </Link>
 
           <div className="nav-links">
-
             <Link to="/marketplace">Marketplace</Link>
             <Link to="/upload">Uploader</Link>
             <Link to="/audioLyricsEditor">Éditeur Audio/Lyrics</Link>
+
+            {/* 🔥 Lien visible uniquement si c'est un admin */}
+            {role === "admin" && (
+              <Link to="/admin/users">Liste des Utilisateurs</Link>
+            )}
+
             <Link to="/" onClick={handleLogout}>Logout</Link>
           </div>
         </div>
