@@ -13,7 +13,7 @@ import { Box, Button, Checkbox, FormControlLabel, Link, Divider, Typography } fr
 import TitleSection from "../../components/TitleSection";
 
 export default function Register() {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" ,role: "simple-user" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
