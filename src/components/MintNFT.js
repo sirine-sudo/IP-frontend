@@ -34,6 +34,7 @@ export default async function MintNFT(tokenURI, ipId) {
     await axios.put(`http://localhost:5000/api/ips/${ipId}/update-token`, {
       nft_token_id: tokenId,
       owner_address: userAddress,
+      smart_contract_address: CONTRACT_ADDRESS,
     });
 
     console.log("✅ NFT Minté avec tokenId :", tokenId);

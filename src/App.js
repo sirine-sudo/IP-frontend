@@ -9,6 +9,7 @@ import UploadPage from "./pages/uploadIp";
 import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/Navbar";
 import AudioLyricsEditor from "./pages/AudioLyricsEditor";
+import IPDetails from "./components/IPDetails";
 
 // Define or import the theme
 const theme = createTheme({
@@ -57,6 +58,8 @@ function App() {
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="/audioLyricsEditor" element={<AudioLyricsEditor />} />
+                  <Route path="/ip/:id" element={<IPDetails />} />
+
                 </Routes>
               </Layout>
             }

@@ -1,0 +1,67 @@
+/* Container général */
+.ip-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap; /* ✅ Pour responsive mobile */
+  padding: 20px;
+  gap: 40px;
+}
+.details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+ 
+ 
+  
+}
+/* Bloc image */
+.ip-details-image {
+  flex: 1;
+  min-width: 300px;
+  max-width: 450px;
+  display: flex;
+  justify-content: center;
+
+align-items: center;
+}
+
+.ip-details-image img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
+
+box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Bloc infos texte */
+.ip-details-info {
+  flex: 2;
+min-width: 300px;
+margin-left: 50px;
+
+}
+
+.ip-details-info h3 {
+  margin-bottom: 20px;
+  font-size: 24px;
+
+color: #02032a;
+}
+
+.ip-details-info p {
+  margin-bottom: 15px;
+  font-size: 16px;
+  color: #555;
+}
+
+.ip-details-info a {
+  color: #377bf6;
+  text-decoration: underline;
+}
+
+.ip-details-info strong {
+  color: #000;
+}

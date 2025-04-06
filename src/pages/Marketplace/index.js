@@ -1,31 +1,29 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { DataGrid } from "@mui/x-data-grid";
-import { Alert, Dialog, DialogTitle, DialogContent, TextField, Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MintNFT from "../../components/MintNFT";
 import updateMetadata from "../../services/updateMetadata";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import AppButton from "../../components/AppButton";
-import "./style.css"; 
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-
+import "./style.css";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedIP, setSelectedIP] = useState(null);
-  const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  const API_URL = "http://localhost:5000/api/ips";
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3; //  how many cards per page
 
   useEffect(() => {
     const fetchIPs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/ips");
+        const res = await axios.get(`${API_URL}`);
         setIps(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         setError("Impossible de charger les données.");
@@ -45,35 +43,10 @@ function Marketplace() {
     }
   };
 
-  const openMetadataDialog = (ip) => {
-    setSelectedIP(ip);
-    setFormData({
-      name: ip.title,
-      description: ip.description,
-      image: ip.file_url,
-      royalty_percentage: ip.royalty_percentage || 0,
-    });
-    setOpenDialog(true);
-  };
-
-  const handleMetadataSubmit = async () => {
-    try {
-      const res = await axios.post("http://localhost:5000/api/ips/metadata", formData);
-      const newUri = res.data.uri;
-      await updateMetadata(selectedIP.nft_token_id, newUri);
-      setAlertMessage("✅ Métadonnées mises à jour !");
-    } catch (err) {
-      console.error(err);
-      setAlertMessage("❌ Erreur de mise à jour.");
-    } finally {
-      setOpenDialog(false);
-    }
-  };
-
   const handleDeleteIP = async (id) => {
     if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/ips/${id}`);
+      await axios.delete(`${API_URL}/${id}`);
       setIps((prev) => prev.filter((ip) => ip.id !== id));
       setAlertMessage("✅ IP supprimée !");
     } catch {
@@ -81,85 +54,15 @@ function Marketplace() {
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const columns = [
-    { field: "title", headerName: "Title", flex: 1 },
-    { field: "description", headerName: "Description", flex: 1.5 },
-    { field: "type", headerName: "Type", flex: 1 },
-    { field: "owner_address", headerName: "Owner", flex: 1},
-    { field: "smart_contract_address", headerName: "Smart_Contract_Address", flex: 0.5 },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 2,
-      renderCell: (params) => (
-        <div style={{ display: "flex", gap: "8px" }}>
-            {/* mint the nft*/}
-          <button
-  className="custom-button"
-  style={{ backgroundColor: "#e0ffe0", color: "#2e7d32" }}
-  onClick={() => handleMintNFT(params.row.file_url, params.row.id)}
-  disabled={params.row.nft_token_id !== "pending"}
->
-  Mint NFT
-</button>
-
-          {/* View on Pinata */}
-
-          <button
-            className="custom-button view-button"
-            onClick={() => window.open(params.row.file_url, "_blank")}
-          >
-            View sur Pinata
-          </button>
-
-          {/* Update Metadata */}
-          <button
-            className="custom-button edit-button"
-            onClick={() => openMetadataDialog(params.row)}
-            disabled={params.row.nft_token_id === "pending"}
-          >
-            Mettre à jour les métadonnées
-          </button>
-
-          {/* Delete */}
-          <button
-            className="custom-button delete-button"
-            onClick={() => handleDeleteIP(params.row.id)}
-          >
-            Supprimer
-          </button>
-        </div>
-      ),
-    },
-  ];
-
-  const rows = ips.map((ip, index) => ({
-    id: ip.id || index,
-    title: ip.title,
-    description: ip.description,
-    type: ip.type || "N/A",
-    owner_address: ip.owner_address || "Unknown",
-    
-    smart_contract_address: ip.smart_contract_address,
-    file_url: ip.file_url,
-    nft_token_id: ip.nft_token_id,
-    royalty_percentage: ip.royalty_percentage,
-  }));
-
   if (loading) return <p>Chargement en cours...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <CardContainer width="98%" height="82vh" margin="10px" >
+    <CardContainer width="98%" height="82vh" margin="10px">
       <div style={{ padding: "20px" }}>
         {alertMessage && (
           <Alert
-            severity="info"
+            severity={alertMessage.includes("❌") ? "error" : "success"}
             style={{
               position: 'fixed',
               bottom: '20px',
@@ -172,67 +75,123 @@ function Marketplace() {
           </Alert>
         )}
 
-        {/* Dialog pour update metadata */}
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Modifier les métadonnées</DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              label="Nom"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="Description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              multiline
-              rows={3}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="Royalties (%)"
-              name="royalty_percentage"
-              value={formData.royalty_percentage}
-              onChange={handleInputChange}
-              type="number"
-              margin="normal"
-            />
-            <Button onClick={handleMetadataSubmit} color="primary" variant="contained">
-              Confirmer
-            </Button>
-          </DialogContent>
-        </Dialog>
-
-        {/* Titre */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <TitleSection
             title="Marché des Propriétés Intellectuelles"
             text="Explorez et échangez des actifs numériques en toute sécurité."
           />
 
-<AppButton
-  startIcon={<AddRoundedIcon />}
-  onClick={() => navigate("/upload")}
-  className="custom-button blue-primary-button"
->
-  Upload IP
-</AppButton>
-
- 
+          <AppButton
+            startIcon={<AddRoundedIcon />}
+            onClick={() => navigate("/upload")}
+            className="custom-button blue-primary-button"
+          >
+            Upload IP
+          </AppButton>
         </div>
 
         <hr style={{ marginBottom: "20px" }} />
 
-        {/* Table */}
-        <div style={{ height: "70%", width: "100%" }}>
-          <DataGrid rows={rows} columns={columns} pageSize={6} rowsPerPageOptions={[6]} />
+        {/* Cards Layout */}
+        <div className="ip-card-list">
+          {ips
+            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+            .map((ip) => (
+
+              <div
+               key={ip.id} className="ip-card"
+               onClick={() => navigate(`/ip/${ip.id}`)} //  Click to go to IP details
+               style={{ cursor: "pointer" }} //  Change cursor to pointer
+               
+               >
+                {/* File Preview */}
+                <div className="ip-card-file">
+                  {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview" />}
+                  {ip.type === "video" && (
+                    <video className="file-preview" controls muted>
+                      <source src={ip.file_url} type="video/mp4" />
+                    </video>
+                  )}
+                  {ip.type === "audio" && (
+                    <audio className="file-audio" controls>
+                      <source src={ip.file_url} type="audio/mp4" />
+                    </audio>
+                  )}
+                </div>
+
+                {/* IP Info */}
+                <div className="ip-card-info">
+                  <h3 className="ip-title">{ip.title}</h3>
+                  <p className="ip-description">{ip.description}</p>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="ip-card-actions">
+  <Button
+    variant="contained"
+    color="success"
+    className="view-button"
+    size="small"
+    onClick={(e) => {
+      e.stopPropagation(); // 🔥 Stop click propagation
+      handleMintNFT(ip.file_url, ip.id); // ✅ Call your MintNFT function
+    }}
+    disabled={ip.nft_token_id !== "pending"}
+  >
+    Mint NFT
+  </Button>
+
+  <Button
+    variant="contained"
+    color="warning"
+    className="edit-button"
+    size="small"
+    style={{ marginTop: "10px" }}
+    onClick={(e) => {
+      e.stopPropagation(); // 🔥 VERY IMPORTANT
+      // Here you should call your updateMetadata function
+      console.log('Update metadata clicked for', ip.id);
+    }}
+  >
+    Update Metadata
+  </Button>
+
+  <Button
+    variant="contained"
+    color="error"
+    size="small"
+    className="delete-button"
+    style={{ marginTop: "10px" }}
+    onClick={(e) => {
+      e.stopPropagation(); // 🔥 VERY IMPORTANT
+      handleDeleteIP(ip.id); // ✅ Call your delete function
+    }}
+  >
+    Delete
+  </Button>
+</div>
+
+              </div>
+            ))}
         </div>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", gap: "10px" }}>
+  <Button
+    variant="outlined"
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage((prev) => prev - 1)}
+  >
+    Previous
+  </Button>
+
+  <Button
+    variant="outlined"
+    disabled={currentPage * itemsPerPage >= ips.length}
+    onClick={() => setCurrentPage((prev) => prev + 1)}
+  >
+    Next
+  </Button>
+</div>
+
       </div>
     </CardContainer>
   );
