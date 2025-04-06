@@ -10,6 +10,9 @@ import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/Navbar";
 import AudioLyricsEditor from "./pages/AudioLyricsEditor";
 import IPDetails from "./components/IPDetails";
+import UpdateMetadataForm from "./components/UpdateMetadataForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Style par défaut
 
 // Define or import the theme
 const theme = createTheme({
@@ -59,6 +62,7 @@ function App() {
                   <Route path="/marketplace" element={<Marketplace />} />
                   <Route path="/audioLyricsEditor" element={<AudioLyricsEditor />} />
                   <Route path="/ip/:id" element={<IPDetails />} />
+                  <Route path="/update-metadata/:id" element={<UpdateMetadataForm />} />
 
                 </Routes>
               </Layout>
@@ -66,6 +70,7 @@ function App() {
           />
         </Routes>
       </Router>
+      <ToastContainer position="bottom-right" autoClose={3000} />
     </ThemeProvider>
   );
 }

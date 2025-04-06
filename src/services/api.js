@@ -1,4 +1,6 @@
  
+
+import axios from "axios";
 export const refreshAccessToken = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) return null;
@@ -46,4 +48,14 @@ export const refreshAccessToken = async () => {
   
     return await response.json();
   };
+  
+  export async function updateIPMetadata(id, data) {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/ips/${id}/update-metadata`, data);
+      return response.data;
+    } catch (error) {
+      console.error("Erreur updateIPMetadata :", error);
+      throw error;
+    }
+  }
   
