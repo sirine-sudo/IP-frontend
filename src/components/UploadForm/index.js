@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./style.css";
 import AppButton from "../AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { uploadIP } from "../../services/api"; 
+import { uploadIP } from "../../services/api";
+import { useNavigate } from "react-router-dom"; 
+import { toast } from "react-toastify";
 
 const UploadForm = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +16,7 @@ const UploadForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -31,10 +33,14 @@ const UploadForm = () => {
 
     try {
       const response = await uploadIP(formData);
-      setMessage("✅ Upload réussi !");
+            toast.success("✅ Upload réussi !");
+      
+      navigate("/marketplace"); 
+
       console.log("Succès :", response);
     } catch (error) {
-      setMessage(`❌ Erreur : ${error.message}`);
+      toast.success("`❌ Erreur : ${error.message}`");
+
       console.error(error);
     } finally {
       setLoading(false);
@@ -82,22 +88,22 @@ const UploadForm = () => {
             {loading ? "Uploading..." : "Upload IP"}
           </AppButton>
           {message && (
-  <div
-    style={{
-      marginTop: "10px",
-      padding: "10px",
-      borderRadius: "8px",
-      backgroundColor: message.startsWith("✅") ? "#d4edda" : "#f8d7da",
-      color: message.startsWith("✅") ? "#155724" : "#721c24",
-      border: message.startsWith("✅") ? "1px solid #c3e6cb" : "1px solid #f5c6cb",
-      fontWeight: "bold",
-    }}
-  >
-    {message}
-  </div>
-)}
+            <div
+              style={{
+                marginTop: "10px",
+                padding: "10px",
+                borderRadius: "8px",
+                backgroundColor: message.startsWith("✅") ? "#d4edda" : "#f8d7da",
+                color: message.startsWith("✅") ? "#155724" : "#721c24",
+                border: message.startsWith("✅") ? "1px solid #c3e6cb" : "1px solid #f5c6cb",
+                fontWeight: "bold",
+              }}
+            >
+              {message}
+            </div>
+          )}
 
-          
+
         </div>
 
         <div className="uploaded-file-info">
