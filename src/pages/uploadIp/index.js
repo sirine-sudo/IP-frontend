@@ -1,5 +1,5 @@
 import React from "react";
-import UploadForm from "../../components/UploadFrom";
+import UploadForm from "../../components/UploadForm";
 import CardContainer from "../../components/CardContainer";
 import TitleSection from "../../components/TitleSection";
 

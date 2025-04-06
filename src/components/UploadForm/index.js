@@ -1,8 +1,8 @@
 import { useState } from "react";
 import "./style.css";
-import AppButton from "../../components/AppButton";
+import AppButton from "../AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { uploadIP } from "../../services/api"; // ✅ Import du service
+import { uploadIP } from "../../services/api"; 
 
 const UploadForm = () => {
   const [formData, setFormData] = useState({
