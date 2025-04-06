@@ -7,7 +7,8 @@ import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import AppButton from "../../components/AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import "./style.css";import { toast } from "react-toastify";
+import "./style.css";
+import { toast } from "react-toastify";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -25,7 +26,7 @@ function Marketplace() {
       try {
         const res = await axios.get(`${API_URL}`);
         if (Array.isArray(res.data)) {
-          const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
+          const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
           setIps(sorted);
         } else {
           setIps([]);
@@ -50,7 +51,7 @@ function Marketplace() {
 
   const handleDeleteIP = async (id) => {
     if (!window.confirm("⚠️ Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
-  
+
     try {
       await axios.delete(`http://localhost:5000/api/ips/${id}`);
       setIps((prev) => prev.filter((ip) => ip.id !== id));
@@ -62,7 +63,7 @@ function Marketplace() {
 
     }
   };
-  
+
 
   // Filtrer IPs selon recherche
   const filteredIps = ips.filter(
@@ -132,17 +133,17 @@ function Marketplace() {
         {/* Cards Layout */}
         <div className="ip-card-list">
           {currentIps.map((ip) => (
-     <div
-     key={ip.id}
-     className="ip-card"
-     onClick={() => {
-       if (ip.nft_token_id === "pending") {
-         navigate(`/ip/${ip.id}`); // 🔥 Clique vers détails SEULEMENT si ce n'est pas minté
-       }
-     }}
-     style={{ cursor: ip.nft_token_id === "pending" ? "pointer" : "not-allowed" }}
-   >
-   
+            <div
+              key={ip.id}
+              className="ip-card"
+              onClick={() => {
+                if (ip.nft_token_id === "pending") {
+                  navigate(`/ip/${ip.id}`); // 🔥 Clique vers détails SEULEMENT si ce n'est pas minté
+                }
+              }}
+              style={{ cursor: ip.nft_token_id === "pending" ? "pointer" : "not-allowed" }}
+            >
+
               {/* File Preview */}
               <div className="ip-card-file">
                 {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview" />}
@@ -166,18 +167,20 @@ function Marketplace() {
 
               {/* Action Buttons */}
               <div className="ip-card-actions">
-   <Button
-  variant="contained"
-  color="success"
-  size="small"
-  onClick={(e) => {
-    e.stopPropagation();
-    handleMintNFT(ip.file_url, ip.id);
-  }}
-  disabled={ip.nft_token_id !== "pending"}
->
-  Mint NFT
-</Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleMintNFT(ip.file_url, ip.id);
+                  }}
+                  disabled={ip.nft_token_id !== "pending"}
+                  className={ip.nft_token_id !== "pending" ? "button-disabled" : ""}
+                >
+                  Mint NFT
+                </Button>
+
 
 
                 <Button
@@ -230,20 +233,20 @@ function Marketplace() {
             Suivant
           </Button>
         </div>{alertMessage && (
-  <Alert
-    severity={alertMessage.includes("❌") ? "error" : "success"}
-    style={{
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      zIndex: 9999,
-      width: 'auto',
-      transition: 'all 0.5s ease-in-out'
-    }}
-  >
-    {alertMessage}
-  </Alert>
-)}
+          <Alert
+            severity={alertMessage.includes("❌") ? "error" : "success"}
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              zIndex: 9999,
+              width: 'auto',
+              transition: 'all 0.5s ease-in-out'
+            }}
+          >
+            {alertMessage}
+          </Alert>
+        )}
 
       </div>
     </CardContainer>

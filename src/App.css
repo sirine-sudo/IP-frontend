@@ -1,69 +1,4 @@
-.App {
-  text-align: center;  overflow: hidden;
-  overflow-x: hidden;overflow-y: hidden;
-}
-body {
-  background-color: #BED5EB;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
 
-}
-/* Global Styles to Prevent Overflow */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Prevents scrolling */
-}
-
-#root {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* Ensures no child elements cause overflow */
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 .custom-button.blue-primary-button {
   background-color: #e5efff;
   color: #377bf6;
@@ -75,4 +10,20 @@ html, body {
   width: 200px;
   border: 1px solid #377bf6;  
   cursor: pointer;
+}
+.button-disabled {
+  opacity: 0.6; /* 🔥 Effet plus clair */
+  cursor: not-allowed; /* 🔥 Curseur interdit */
+  pointer-events: none; /* 🔥 Vraiment désactiver tous les clics */
+}
+.button-disabled:hover {
+  background-color: #d3d3d3; /* léger effet hover même grisé */
+}
+body {
+  overflow: hidden !important;  /* 🔥 Empêche tout scroll */
+ margin-right: 0px !important;
+ height: 100%;
+ width: 100%;
+ margin: 0;
+ padding: 0;
 }

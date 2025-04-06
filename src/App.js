@@ -14,7 +14,7 @@ import UpdateMetadataForm from "./components/UpdateMetadataForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Style par défaut
 import UsersList from "./pages/AdminDashboard/UsersList";
-
+import './App.css'
 // Define or import the theme
 const theme = createTheme({
   palette: {
