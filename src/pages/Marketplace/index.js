@@ -132,12 +132,17 @@ function Marketplace() {
         {/* Cards Layout */}
         <div className="ip-card-list">
           {currentIps.map((ip) => (
-            <div
-              key={ip.id}
-              className="ip-card"
-              onClick={() => navigate(`/ip/${ip.id}`)}
-              style={{ cursor: "pointer" }}
-            >
+     <div
+     key={ip.id}
+     className="ip-card"
+     onClick={() => {
+       if (ip.nft_token_id === "pending") {
+         navigate(`/ip/${ip.id}`); // 🔥 Clique vers détails SEULEMENT si ce n'est pas minté
+       }
+     }}
+     style={{ cursor: ip.nft_token_id === "pending" ? "pointer" : "not-allowed" }}
+   >
+   
               {/* File Preview */}
               <div className="ip-card-file">
                 {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview" />}
@@ -161,19 +166,19 @@ function Marketplace() {
 
               {/* Action Buttons */}
               <div className="ip-card-actions">
-                <Button
-                  variant="contained"
-                  color="success"
-                  className="view-button"
-                  size="small"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleMintNFT(ip.file_url, ip.id);
-                  }}
-                  disabled={ip.nft_token_id !== "pending"}
-                >
-                  Mint NFT
-                </Button>
+   <Button
+  variant="contained"
+  color="success"
+  size="small"
+  onClick={(e) => {
+    e.stopPropagation();
+    handleMintNFT(ip.file_url, ip.id);
+  }}
+  disabled={ip.nft_token_id !== "pending"}
+>
+  Mint NFT
+</Button>
+
 
                 <Button
                   variant="contained"
