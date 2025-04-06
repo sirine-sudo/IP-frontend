@@ -7,7 +7,8 @@ import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import AppButton from "../../components/AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import "./style.css";
+import "./style.css";import { toast } from "react-toastify";
+
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,15 +49,20 @@ function Marketplace() {
   };
 
   const handleDeleteIP = async (id) => {
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
+    if (!window.confirm("⚠️ Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
+  
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`http://localhost:5000/api/ips/${id}`);
       setIps((prev) => prev.filter((ip) => ip.id !== id));
-      setAlertMessage("✅ IP supprimée !");
-    } catch {
-      setAlertMessage("❌ Échec de la suppression.");
+      toast.success(" IP supprimée avec succès !");
+
+    } catch (error) {
+      console.error(error);
+      toast.error(" Échec de la suppression.");
+
     }
   };
+  
 
   // Filtrer IPs selon recherche
   const filteredIps = ips.filter(
@@ -218,7 +224,22 @@ function Marketplace() {
           >
             Suivant
           </Button>
-        </div>
+        </div>{alertMessage && (
+  <Alert
+    severity={alertMessage.includes("❌") ? "error" : "success"}
+    style={{
+      position: 'fixed',
+      bottom: '20px',
+      right: '20px',
+      zIndex: 9999,
+      width: 'auto',
+      transition: 'all 0.5s ease-in-out'
+    }}
+  >
+    {alertMessage}
+  </Alert>
+)}
+
       </div>
     </CardContainer>
   );
