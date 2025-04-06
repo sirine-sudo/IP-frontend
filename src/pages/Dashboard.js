@@ -39,7 +39,7 @@ function Dashboard() {
     return (
         <div>
             {user ? (
-                <CardContainer width="98%" height="95vh" margin="10px">
+                <CardContainer width="98%" height="84vh">
                     <UserInfo user={user} onConnectWallet={() => connectWallet(fetchUser)} />
 
                     {user.role === "ip-owner" && <UserIpList ipList={ipList} />}

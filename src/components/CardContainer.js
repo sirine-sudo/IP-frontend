@@ -2,7 +2,7 @@ import React from "react";
 
 const CardContainer = ({ 
   children, 
-  margin = "0", 
+  margin = "10px", 
   width = "100%", 
   height = "auto", 
   display = "block", 

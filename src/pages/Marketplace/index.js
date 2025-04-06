@@ -81,7 +81,7 @@ function Marketplace() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <CardContainer width="98%" height="auto" margin="10px">
+    <CardContainer width="98%" height="84vh" >
       <div style={{ padding: "20px" }}>
         {alertMessage && (
           <Alert
