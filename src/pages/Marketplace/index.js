@@ -91,7 +91,7 @@ function Marketplace() {
     { field: "description", headerName: "Description", flex: 1.5 },
     { field: "type", headerName: "Type", flex: 1 },
     { field: "owner_address", headerName: "Owner", flex: 1},
-    { field: "views", headerName: "Views", flex: 0.5, type: "number" },
+    { field: "smart_contract_address", headerName: "Smart_Contract_Address", flex: 0.5 },
     {
       field: "actions",
       headerName: "Actions",
@@ -144,7 +144,8 @@ function Marketplace() {
     description: ip.description,
     type: ip.type || "N/A",
     owner_address: ip.owner_address || "Unknown",
-    views: ip.views !== undefined ? ip.views : "N/A",
+    
+    smart_contract_address: ip.smart_contract_address,
     file_url: ip.file_url,
     nft_token_id: ip.nft_token_id,
     royalty_percentage: ip.royalty_percentage,
