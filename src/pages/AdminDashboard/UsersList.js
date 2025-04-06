@@ -58,21 +58,24 @@ const UsersList = () => {
   };
   
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?")) return;
+
+  const handleDelete = async (userId) => {
+    const token = localStorage.getItem("token");
+  
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      await axios.delete(`http://localhost:5000/api/users/admin/users/${id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
+      await axios.delete(`${API_URL}/${userId}`, {   
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       alert("✅ Utilisateur supprimé !");
-      fetchUsers();
+      fetchUsers(); // 🔥 Recharge la liste après suppression
     } catch (error) {
       console.error(error);
       alert("❌ Erreur de suppression.");
     }
   };
-
+  
   return (
     <div style={{ padding: "20px" }}>
       <Typography variant="h4" gutterBottom>Liste des Utilisateurs</Typography>
