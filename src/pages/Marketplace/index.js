@@ -41,14 +41,10 @@ function Marketplace() {
   }, []);
 
   const handleMintNFT = async (fileUrl, ipId) => {
-    try {
+   
       await MintNFT(fileUrl, ipId);
-      setAlertMessage("✅ NFT Minté avec succès !");
-    } catch {
-      setAlertMessage("❌ Échec du mint.");
-    }
+ 
   };
-
   const handleDeleteIP = async (id) => {
     if (!window.confirm("⚠️ Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
 

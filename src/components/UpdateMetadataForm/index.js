@@ -55,11 +55,11 @@ const UpdateMetadataForm = () => {
         description: formData.description,
         royalty_percentage: formData.royalty_percentage,
       });
-      toast.success("✅ Métadonnées mises à jour !");
+      toast.success(" Métadonnées mises à jour !");
       navigate("/marketplace");
       
     } catch (error) {
-        toast.error("❌ Erreur pendant la mise à jour");
+        toast.error(" Erreur pendant la mise à jour");
 
       console.error(error);
     } finally {
