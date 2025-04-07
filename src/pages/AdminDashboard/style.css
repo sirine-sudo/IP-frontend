@@ -1,0 +1,132 @@
+/* ===== Marketplace Layout ===== */
+
+.ip-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* ===== IP Card ===== */
+  
+  .ip-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer; /* Make the card clickable */
+  }
+  
+  .ip-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  /* ===== File (Image / Video / Audio Preview) ===== */
+  
+  .ip-card-file {
+    flex: 0 0 auto;
+  }
+  
+  .file-preview {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .file-audio {
+    width: 120px;
+    height: 40px;
+    margin-top: 5px;
+  }
+  
+  /* ===== IP Information ===== */
+  
+  .ip-card-info {
+    flex: 1;
+    padding: 0 20px;
+  }
+  
+  .ip-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .ip-description {
+    font-size: 14px;
+    color: gray;
+    margin-top: 5px;
+  }
+  
+  /* ===== Action Buttons ===== */
+  
+  .ip-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .view-button {
+    background-color: #e5efff !important;
+    color: #377bf6 !important;
+  }
+  
+  .edit-button {
+    background-color: #fdf3d8 !important;
+    color: #f4a918 !important;
+  }
+  
+  .delete-button {
+    background-color: #fde5e2 !important;
+    color: #ea3d2f !important;
+  }
+  
+  /* ===== Pagination Buttons ===== */
+  
+  .pagination-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+  }
+  
+  .pagination-buttons button {
+    min-width: 100px;
+  }
+  
+  /* ===== Title and Upload Button Section ===== */
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .upload-button {
+    background-color: #377bf6;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 8px 20px;
+    text-transform: none;
+    font-size: 14px;
+  }
+  .custom-button.blue-primary-button {
+    background-color: #377bf6;
+    color: #e5efff; 
+    font-size: 15px;
+    border-radius: 15px;
+    text-transform: none;
+    padding: 8px 16px;
+    box-shadow: none;
+    width: 200px;
+    border: 1px solid#e5efff; 
+    cursor: pointer;
+  }
+  
