@@ -41,9 +41,9 @@ function Marketplace() {
   }, []);
 
   const handleMintNFT = async (fileUrl, ipId) => {
-   
-      await MintNFT(fileUrl, ipId);
- 
+
+    await MintNFT(fileUrl, ipId);
+
   };
   const handleDeleteIP = async (id) => {
     if (!window.confirm("⚠️ Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
@@ -129,16 +129,13 @@ function Marketplace() {
         {/* Cards Layout */}
         <div className="ip-card-list">
           {currentIps.map((ip) => (
-            <div
-              key={ip.id}
-              className="ip-card"
-              onClick={() => {
-                if (ip.nft_token_id === "pending") {
-                  navigate(`/ip/${ip.id}`); // 🔥 Clique vers détails SEULEMENT si ce n'est pas minté
-                }
-              }}
-              style={{ cursor: ip.nft_token_id === "pending" ? "pointer" : "not-allowed" }}
-            >
+ <div
+ key={ip.id}
+ className="ip-card"
+ onClick={() => navigate(`/ip/${ip.id}`)}  // 🔥 On autorise toujours
+ style={{ cursor: "pointer" }}             // 🔥 Toujours un curseur pointer
+>
+
 
               {/* File Preview */}
               <div className="ip-card-file">
@@ -168,10 +165,10 @@ function Marketplace() {
                   color="success"
                   size="small"
                   onClick={(e) => {
-                    e.stopPropagation();
+                    e.stopPropagation(); // 🔥 Pour ne pas déclencher le clic de la card
                     handleMintNFT(ip.file_url, ip.id);
                   }}
-                  disabled={ip.nft_token_id !== "pending"}
+                  disabled={ip.nft_token_id !== "pending"} // 🔥 Désactiver seulement si déjà minté
                   className={ip.nft_token_id !== "pending" ? "button-disabled" : ""}
                 >
                   Mint NFT

@@ -44,9 +44,35 @@ const IPDetails = () => {
 
             <p><strong>Description :</strong> {ip.description}</p>
             <p><strong>Type :</strong> {ip.type}</p>
-            <p><strong>Adresse du propriétaire :</strong> {ip.owner_address}</p>
-            <p><strong>Smart Contract :</strong> {ip.smart_contract_address || "Non défini"}</p>
-            <p><strong>Token ID :</strong> {ip.nft_token_id}</p>
+            <p><strong>Adresse du propriétaire :</strong>
+    
+
+              {ip.owner_address === "unknown" ? (
+                <span style={{ color: "gray" }}>
+                  Adresse du propriétaire indisponible — le NFT n'a pas encore été minté.
+                </span>
+              ) : (
+                ip.owner_address
+              )}
+            </p>
+            <p><strong>Smart Contract :</strong>{!ip.smart_contract_address ? (
+              <span style={{ color: "gray" }}>
+                Smart Contract non défini — disponible après le mint.
+              </span>
+            ) : (
+              ip.smart_contract_address
+            )}
+            </p>
+            <p>
+              <strong>Token ID :</strong>{" "}
+              {ip.nft_token_id === "pending" ? (
+                <span style={{ color: "gray" }}>
+                  pending (NFT non créé. Token ID disponible après mint.)
+                </span>
+              ) : (
+                ip.nft_token_id
+              )}
+            </p>
             <p><strong>Royalties :</strong> {ip.royalty_percentage} %</p>
             <p><strong>File Hash :</strong> {ip.file_hash}</p>
             <p><strong>IPFS CID :</strong> {ip.ipfs_cid}</p>
