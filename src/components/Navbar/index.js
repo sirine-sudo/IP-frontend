@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback ,useState} from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./style.css";
 import { logoutUser } from "../../api/userApi";
 import logo from "../../assets/images/logo/logo-light-mode.png";
 import { ShoppingCart, CloudUpload, Users, LogOut } from "lucide-react";
-
+import { Menu, X } from "lucide-react"; // 🔥 Icônes burger et croix
 const Navbar = () => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role"); // 🔥 Récupère le rôle
@@ -15,13 +15,14 @@ const Navbar = () => {
     localStorage.removeItem("role");
     navigate("/");
   }, [navigate]);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <NavLink to="/dashboard" className="navbar-logo">
+        <NavLink to="/dashboard" className="navbar-logo nav-title" >
           <img src={logo} alt="Logo" />
-          <h1>iP Management</h1>
+         iP Management
         </NavLink>
 
         <div className="nav-links">
