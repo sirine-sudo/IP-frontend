@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     background: {
-      default: "#BED5EB", // Applique la couleur en fond global
+      default: "#ffffff", // Applique la couleur en fond global
     },
   },
 });

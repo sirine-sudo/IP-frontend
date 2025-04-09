@@ -1,5 +1,5 @@
 .navbar {
-  background-color: #f9f9f9;
+  background-color: #fef5e4;
   margin: 1% 6%;
   border-radius: 20em;
   padding: 0 2%;
@@ -8,7 +8,7 @@
 }
 /* When hovering the whole navbar */
 .navbar:hover {
-  background-color: #f1f1f1; /* Slight background change */
+  background-color: #fef5e8; /* Slight background change */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
 }
 .navbar-content {
