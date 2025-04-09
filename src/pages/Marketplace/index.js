@@ -9,7 +9,8 @@ import AppButton from "../../components/AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import "./style.css";
 import { toast } from "react-toastify";
-
+import { FaFilePdf } from "react-icons/fa";
+ 
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -163,6 +164,12 @@ function Marketplace() {
                     <source src={ip.file_url} type="audio/mp4" />
                   </audio>
                 )}
+{ip.type === "book" && (
+  <div className="file-preview pdf-preview">
+    <FaFilePdf size={50} />
+  </div>
+)}
+
               </div>
 
               {/* IP Info */}
