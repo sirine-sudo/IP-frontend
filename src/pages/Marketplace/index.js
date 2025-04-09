@@ -73,7 +73,7 @@ function Marketplace() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentIps = filteredIps.slice(indexOfFirstItem, indexOfLastItem);
 
-  if (loading) return <p>Chargement en cours...</p>;
+  if (loading) return <CardContainer ></CardContainer>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
