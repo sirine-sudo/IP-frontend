@@ -10,6 +10,7 @@ import "./style.css";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
 import { ChevronLeft, Edit, ChevronRight, Trash } from "lucide-react";
+import { grey } from "@mui/material/colors";
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -53,6 +54,8 @@ function Marketplace() {
     };
     fetchIPs();
   }, []);
+  const [selectedType, setSelectedType] = useState("");
+  const [onlyForSale, setOnlyForSale] = useState(false);
 
   const handleMintNFT = async (fileUrl, ipId) => {
 
@@ -76,11 +79,14 @@ function Marketplace() {
 
 
   // Filtrer IPs selon recherche
-  const filteredIps = ips.filter(
-    (ip) =>
-      ip.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ip.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredIps = ips.filter((ip) => {
+    const matchesSearch = ip.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ip.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = selectedType ? ip.type === selectedType : true;
+    const matchesSale = onlyForSale ? ip.is_for_sale : true;
+    return matchesSearch && matchesType && matchesSale;
+  });
+
 
   // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -92,7 +98,7 @@ function Marketplace() {
 
   return (
     <CardContainer  >
-      <div style={{ padding: "20px" }}>
+      <div>
         {alertMessage && (
           <Alert
             severity={alertMessage.includes("❌") ? "error" : "success"}
@@ -114,6 +120,58 @@ function Marketplace() {
             title="Marché des Propriétés Intellectuelles"
             text="Explorez et échangez des actifs numériques en toute sécurité."
           />
+          <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: "space-between", marginBottom: "20px"  ,width:"90vh",}}>
+            {/* Search Text */}
+            <TextField
+              label="Rechercher..."
+              variant="standard"
+              className="search-bar"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{ flex: 2 }} // 🔥 occupe plus d’espace
+            />
+
+            {/* Type Select */}
+            <TextField
+              select
+              label="Type"
+              variant="standard"
+              className="search-bar"
+              value={selectedType}
+              onChange={(e) => {
+                setSelectedType(e.target.value);
+                setCurrentPage(1);
+              }}
+              SelectProps={{
+                native: true,
+              }}
+              style={{ flex: 2,  }}
+            >
+              <option value=""></option>
+              <option value="image">Image</option>
+              <option value="audio">Audio</option>
+              <option value="video">Video</option>
+              <option value="book">Book</option>
+              <option value="other">Other</option>
+            </TextField>
+
+            {/* Vente Toggle */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 2, minWidth: "100px" ,marginTop:'13px'}}>
+              <p style={{ fontSize: "14px", color: "gray", margin: 0 }}>En vente</p>
+              <input
+                type="checkbox"
+                checked={onlyForSale}
+                onChange={(e) => {
+                  setOnlyForSale(e.target.checked);
+                  setCurrentPage(1);
+                }}
+                style={{ transform: "scale(1.3)", cursor: "pointer" }}
+              />
+            </div>
+          </div>
 
           <Button
             startIcon={<AddRoundedIcon />}
@@ -124,19 +182,6 @@ function Marketplace() {
           </Button>
         </div>
 
-        {/* Search Bar */}
-        <div style={{ margin: "20px 0" }}>
-          <TextField
-            label="Rechercher par titre ou description"
-            variant="outlined"
-            fullWidth
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1); // reset to page 1 on search
-            }}
-          />
-        </div>
 
         <hr style={{ marginBottom: "20px" }} />
 
