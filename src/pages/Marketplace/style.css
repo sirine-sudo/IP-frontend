@@ -1,15 +1,18 @@
 /* ===== Marketplace Layout ===== */
 
 .ip-card-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+  width: 100%; /* prend toute la largeur */
 }
+
+
 
 /* ===== IP Card ===== */
 
 .ip-card {
-  display: flex;
+  
   align-items: center;
   justify-content: space-between;
   background-color: #ffffff;
@@ -28,23 +31,33 @@
 /* ===== File (Image / Video / Audio Preview) ===== */
 
 .ip-card-file {
-  flex: 0 0 auto;
+  width: 100%;
+  height: 200px; /* Same as image height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+
 .file-preview {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;          /* Cover, but... */
+  object-position: top left;  /* 🛠️ Start from the top left */
   border-radius: 8px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  background-color: #fff6e5;
+  margin-bottom: 10px;
 }
+
+
 .pdf-preview {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 7vh; /* 📄 plus grand */
-  background-color: #f5f5f5; /* gris clair */
+  background-color: #fff6e5; /* gris clair */
   color: #d32f2f; /* rouge doux */
 }
 
@@ -63,9 +76,10 @@
 }
 
 .ip-title {
-  font-size: 18px;
+  font-size: clamp(1.3rem, 1vw, 1vh);
   font-weight: bold;
   margin: 0;
+    height: 8vh;
 }
 
 .ip-description {
@@ -76,15 +90,44 @@
 
 /* ===== Action Buttons ===== */
 
+/* ===== Style Buttons inside IP Card ===== */
+.ip-card-actions button {
+  border-radius: 20em;           /* pill shape */
+  transform: scale(1.05);        /* small zoom */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* soft shadow */
+  text-transform: none;          /* keep original text */
+  color: black;                  /* optional: black text */
+  font-weight: 200;             /* optional: bold text */
+  font-size: 14px;               /* optional: good font size */
+  padding: 10px ;             /* optional: better padding */
+  transition: all 0.3s ease;     /* smooth hover */
+  font-family: "Source Serif Pro", serif;
+  min-width: 6vh;
+  max-height: 40px;
+  align-items: center;
+  justify-content: center;
+  margin: 0%;
+
+}
 .ip-card-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: flex;          /*  FLEX to make them in one line */
+  justify-content: space-between; /*  Space nicely between buttons */
+  align-items: center;    /*  Center vertically */
+  flex-wrap: wrap;        /*  (optional) if too small screen, they wrap */
+  gap: 10px;              /*  small gap between buttons */
+  margin-top: 10px;       /* optional */
 }
 
-.view-button {
-  background-color: #e5efff !important;
-  color: #377bf6 !important;
+/* Optional: hover effect to look even cooler */
+.ip-card-actions button:hover {
+  background-color: #fcbf3c;
+  transform: scale(1.08); /* little more zoom on hover */
+}
+
+
+.vente-button {
+  background-color:  #83af9a !important;
+  color: #d5f4e7 !important; 
 }
 
 .edit-button {
@@ -96,7 +139,11 @@
   background-color: #fde5e2 !important;
   color: #ea3d2f !important;
 }
+.mint-button{
 
+  background-color:  #f9c551 !important;
+  color: #fdf3d3 !important; 
+}
 /* ===== Pagination Buttons ===== */
 
 .pagination-buttons {
@@ -118,27 +165,108 @@
   align-items: center;
   margin-bottom: 20px;
 }
+.pagination-buttons{
+  border-radius: 20em;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-transform: none;
+  color: black;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: "Source Serif Pro", serif;
+  min-width: 4vh;    /*  fix button width */
+  max-width: 20vh;    /*  fix button width */
+  height: 40px;        /*  fix button height */
+  display: flex;       /*  center text + icon */
+  align-items: center; 
+  justify-content: center;
+  gap: 8px;            /*  spacing between icon and text */
+  margin: 0;  
+}
+.pagination-button { 
+  border-radius: 20em !important;  /* <- Add !important */
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-transform: none;
+   font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: "Source Serif Pro", serif;
+  min-width: 100px;
+  max-width: 200px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 20px;
+   border: none !important; /* <- border important */
+}
+
+
+.pagination-button:hover {
+  transform: scale(1.08);
+}
+
+.ip-card-actions  button {
+  border-radius: 20em;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-transform: none;
+  color: black;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: "Source Serif Pro", serif;
+  min-width: 4vh;    /*  fix button width */
+  max-width: 20vh;    /*  fix button width */
+  height: 40px;        /*  fix button height */
+  display: flex;       /*  center text + icon */
+  align-items: center; 
+  justify-content: center;
+  gap: 8px;            /*  spacing between icon and text */
+  margin: 0;           /*  no margin */
+}
+.ip-card-actions {
+  display: flex;          
+  justify-content: space-between; 
+  align-items: flex-start;    
+  flex-wrap: nowrap;   /*  NEVER wrap */
+  gap: 10px;           
+  margin-top: 10px;    
+}
+
+.ip-card-actions button:hover {
+  background-color: #fcbf3c;
+  transform: scale(1.08);
+}
+
 
 .upload-button {
-  background-color: #377bf6;
-  color: #ffffff;
-  border-radius: 10px;
-  padding: 8px 20px;
-  text-transform: none;
-  font-size: 14px;
+  font-weight: bold !important;
+  background-color: #fec447 !important;
+  transform: scale(1.05) !important;
+  border-radius: 20em !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important;
+  text-transform: none !important;
+  color: black !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease !important;
+  font-family: "Source Serif Pro", serif !important;
+  min-width: 20vh !important;
+  max-width: 30vh !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
 }
-.custom-button.blue-primary-button {
-  background-color: #377bf6;
-  color: #e5efff; 
-  font-size: 15px;
-  border-radius: 15px;
-  text-transform: none;
-  padding: 8px 16px;
-  box-shadow: none;
-  width: 200px;
-  border: 1px solid#e5efff; 
-  cursor: pointer;
-}
+
+
 .badge-for-sale {
   background-color: #4caf50; /* Vert */
   color: white;

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Alert, Button, TextField } from "@mui/material";
+import { Alert, Button, IconButton, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MintNFT from "../../components/MintNFT";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
-import AppButton from "../../components/AppButton";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import "./style.css";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
- 
+import { ChevronLeft, Edit, ChevronRight, Trash } from "lucide-react";
+
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,11 +20,11 @@ function Marketplace() {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
-  const itemsPerPage = 3; // 3 cards per page
+  const itemsPerPage = 8; // 3 cards per page
   const handlePutOnSale = async (ipId) => {
     const price = prompt("Prix de vente en ETH :"); // 🔥 Demander le prix
     if (!price) return;
-  
+
     try {
       await axios.put(`http://localhost:5000/api/ips/${ipId}/sale`, { is_for_sale: true, price });
       toast.success("IP mise en vente !");
@@ -34,7 +34,7 @@ function Marketplace() {
       toast.error("Erreur lors de la mise en vente.");
     }
   };
-  
+
   useEffect(() => {
     const fetchIPs = async () => {
       try {
@@ -115,13 +115,13 @@ function Marketplace() {
             text="Explorez et échangez des actifs numériques en toute sécurité."
           />
 
-          <AppButton
+          <Button
             startIcon={<AddRoundedIcon />}
             onClick={() => navigate("/upload")}
-            className="custom-button blue-primary-button"
+            className="upload-button"
           >
             Upload IP
-          </AppButton>
+          </Button>
         </div>
 
         {/* Search Bar */}
@@ -143,12 +143,12 @@ function Marketplace() {
         {/* Cards Layout */}
         <div className="ip-card-list">
           {currentIps.map((ip) => (
- <div
- key={ip.id}
- className="ip-card"
- onClick={() => navigate(`/ip/${ip.id}`)}  // 🔥 On autorise toujours
- style={{ cursor: "pointer" }}             // 🔥 Toujours un curseur pointer
->
+            <div
+              key={ip.id}
+              className="ip-card"
+              onClick={() => navigate(`/ip/${ip.id}`)}  // 🔥 On autorise toujours
+              style={{ cursor: "pointer" }}             // 🔥 Toujours un curseur pointer
+            >
 
 
               {/* File Preview */}
@@ -164,110 +164,114 @@ function Marketplace() {
                     <source src={ip.file_url} type="audio/mp4" />
                   </audio>
                 )}
-{ip.type === "book" && (
-  <div className="file-preview pdf-preview">
-    <FaFilePdf size={50} />
-  </div>
-)}
+                {ip.type === "book" && (
+                  <div className="file-preview pdf-preview">
+                    <FaFilePdf size={50} />
+                  </div>
+                )}
 
               </div>
 
               {/* IP Info */}
               <div className="ip-card-info">
-  <h3 className="ip-title">
-    {ip.title}
-    {ip.is_for_sale && (
-      <span className="badge-for-sale">En Vente</span>
-    )}
-  </h3>
-  <p className="ip-description">{ip.description}</p>
-</div>
+                <h3 className="ip-title">
+                  {ip.title}
+                  {ip.is_for_sale && (
+                    <span className="badge-for-sale">En Vente</span>
+                  )}
+                </h3>
+              </div>
 
 
               {/* Action Buttons */}
               <div className="ip-card-actions">
                 <Button
+
                   variant="contained"
                   color="success"
-                  size="small"
+
                   onClick={(e) => {
                     e.stopPropagation(); // 🔥 Pour ne pas déclencher le clic de la card
                     handleMintNFT(ip.file_url, ip.id);
                   }}
                   disabled={ip.nft_token_id !== "pending"} // 🔥 Désactiver seulement si déjà minté
-                  className={ip.nft_token_id !== "pending" ? "button-disabled" : ""}
+                  className={ip.nft_token_id !== "pending" ? "button-disabled" : "mint-button"}
                 >
                   Mint NFT
                 </Button>
 
 
 
+
                 <Button
                   variant="contained"
+                  color={ip.is_for_sale ? "secondary" : "primary"}
+
+                  disabled={ip.is_for_sale} // 🔥 désactiver si déjà en vente
+                  className="vente-button"
+
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!ip.is_for_sale) {
+                      handlePutOnSale(ip.id);
+                    }
+                  }}
+                >
+                  {ip.is_for_sale ? "Déjà en vente" : "Mettre en vente"}
+                </Button>
+
+
+                <IconButton
                   color="warning"
                   className="edit-button"
-                  size="small"
-                  style={{ marginTop: "10px" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate(`/update-metadata/${ip.id}`);
                   }}
                 >
-                  Update Metadata
-                </Button>
-                <Button
-  variant="contained"
-  color={ip.is_for_sale ? "secondary" : "primary"}
-  size="small"
-  disabled={ip.is_for_sale} // 🔥 désactiver si déjà en vente
-  style={{ marginTop: "10px" }}
-  onClick={(e) => {
-    e.stopPropagation();
-    if (!ip.is_for_sale) {
-      handlePutOnSale(ip.id);
-    }
-  }}
->
-  {ip.is_for_sale ? "Déjà en vente" : "Mettre en vente"}
-</Button>
+                  <Edit size={20} />
+                </IconButton>
 
-
-                <Button
-                  variant="contained"
+                <IconButton
                   color="error"
-                  size="small"
                   className="delete-button"
-                  style={{ marginTop: "10px" }}
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteIP(ip.id);
                   }}
                 >
-                  Delete
-                </Button>
+                  <Trash size={20} />
+                </IconButton>
               </div>
+
+
             </div>
           ))}
         </div>
 
         {/* Pagination Buttons */}
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", gap: "10px" }}>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px", gap: "10px" }}>
           <Button
+            className="pagination-button"
             variant="outlined"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
           >
-            Précédent
+            <ChevronLeft size={20} /> {/* 👈 Left arrow icon */}
           </Button>
 
           <Button
+            className="pagination-button"
             variant="outlined"
             disabled={currentPage * itemsPerPage >= filteredIps.length}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
-            Suivant
+            <ChevronRight size={20} /> {/* 👉 Right arrow icon */}
           </Button>
-        </div>{alertMessage && (
+        </div>
+
+
+        {alertMessage && (
           <Alert
             severity={alertMessage.includes("❌") ? "error" : "success"}
             style={{
