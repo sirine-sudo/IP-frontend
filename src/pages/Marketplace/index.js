@@ -20,7 +20,20 @@ function Marketplace() {
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
   const itemsPerPage = 3; // 3 cards per page
-
+  const handlePutOnSale = async (ipId) => {
+    const price = prompt("Prix de vente en ETH :"); // 🔥 Demander le prix
+    if (!price) return;
+  
+    try {
+      await axios.put(`http://localhost:5000/api/ips/${ipId}/sale`, { is_for_sale: true, price });
+      toast.success("IP mise en vente !");
+      window.location.reload(); // 🔥 Simple, recharger la page
+    } catch (error) {
+      console.error(error);
+      toast.error("Erreur lors de la mise en vente.");
+    }
+  };
+  
   useEffect(() => {
     const fetchIPs = async () => {
       try {
@@ -154,9 +167,15 @@ function Marketplace() {
 
               {/* IP Info */}
               <div className="ip-card-info">
-                <h3 className="ip-title">{ip.title}</h3>
-                <p className="ip-description">{ip.description}</p>
-              </div>
+  <h3 className="ip-title">
+    {ip.title}
+    {ip.is_for_sale && (
+      <span className="badge-for-sale">En Vente</span>
+    )}
+  </h3>
+  <p className="ip-description">{ip.description}</p>
+</div>
+
 
               {/* Action Buttons */}
               <div className="ip-card-actions">
@@ -189,6 +208,22 @@ function Marketplace() {
                 >
                   Update Metadata
                 </Button>
+                <Button
+  variant="contained"
+  color={ip.is_for_sale ? "secondary" : "primary"}
+  size="small"
+  disabled={ip.is_for_sale} // 🔥 désactiver si déjà en vente
+  style={{ marginTop: "10px" }}
+  onClick={(e) => {
+    e.stopPropagation();
+    if (!ip.is_for_sale) {
+      handlePutOnSale(ip.id);
+    }
+  }}
+>
+  {ip.is_for_sale ? "Déjà en vente" : "Mettre en vente"}
+</Button>
+
 
                 <Button
                   variant="contained"

@@ -129,3 +129,11 @@
   border: 1px solid#e5efff; 
   cursor: pointer;
 }
+.badge-for-sale {
+  background-color: #4caf50; /* Vert */
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  margin-left: 10px;
+}
