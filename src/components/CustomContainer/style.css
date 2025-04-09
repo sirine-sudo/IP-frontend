@@ -1,0 +1,18 @@
+.custom-container {
+    width: 100%;
+    max-width: 600px; /* Default maxWidth */
+    height: auto;
+    padding: 32px; /* 4 * 8px (spacing(4)) */
+    border-radius: 30px;
+    background-color: #fff; /* Default background */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Default box shadow */
+    overflow: hidden;
+    margin: 0 auto; /* Centered if needed */
+    transition: box-shadow 0.3s ease;
+  }
+  
+  /* If you want a stronger shadow on hover */
+  .custom-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
