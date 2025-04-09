@@ -13,7 +13,11 @@ const UploadForm = () => {
     type: "image",
     file: null,
     royalty_percentage: 0,
+    is_for_sale: "false", 
+    price: "", 
+    preferred_creator_name: "", 
   });
+  
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -68,6 +72,22 @@ const UploadForm = () => {
             max="100"
             className="form-input"
           />
+<label className="form-label">Nom du créateur (optionnel) :</label>
+<input type="text" name="preferred_creator_name" onChange={handleChange} className="form-input" />
+
+<label className="form-label">Mettre en vente ?</label>
+<select name="is_for_sale" onChange={handleChange} className="form-select">
+  <option value="false">Non</option>
+  <option value="true">Oui</option>
+</select>
+
+{/* Si en vente ➔ afficher Prix */}
+{formData.is_for_sale === "true" && (
+  <>
+    <label className="form-label">Prix (€) :</label>
+    <input type="number" name="price" onChange={handleChange} className="form-input" min="0" step="0.01" />
+  </>
+)}
 
           <label className="form-label">Type de fichier :</label>
           <select name="type" onChange={handleChange} className="form-select">
