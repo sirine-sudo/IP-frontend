@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./style.css";
-import CardContainer from "../CardContainer";
 import { logoutUser } from "../../api/userApi";
 import logo from "../../assets/images/logo/logo-light-mode.png";
+import { ShoppingCart, CloudUpload, Users, LogOut } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,36 +11,43 @@ const Navbar = () => {
 
   const handleLogout = useCallback(async () => {
     await logoutUser();
-    localStorage.removeItem("token"); 
-    localStorage.removeItem("role"); 
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
     navigate("/");
   }, [navigate]);
 
   return (
     <nav className="navbar">
-      <CardContainer width="98%" height="8%" margin="10px" style={{ padding: "10px" }}>
-        <div className="navbar-content">
-          <Link to="/dashboard" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "inherit" }}>
-            <img src={logo} alt="Logo" style={{ height: "60px" }} />
-            <h2>IP Management</h2>
-          </Link>
+      <div className="navbar-content">
+        <NavLink to="/dashboard" className="navbar-logo">
+          <img src={logo} alt="Logo" />
+          <h1>IP Management</h1>
+        </NavLink>
 
-          <div className="nav-links">
-            {role === "admin" ? (
-              // 🔥 Si admin ➔ Seulement ce lien
-              <Link to="/admin/users">Liste des Utilisateurs</Link>
-            ) : (
-              // 🔥 Sinon (non admin) ➔ Tous les liens classiques
-              <>
-                <Link to="/marketplace">Marketplace</Link>
-                <Link to="/upload">Uploader</Link>
-                <Link to="/audioLyricsEditor">Éditeur Audio/Lyrics</Link>
-              </>
-            )}
-            <Link to="/" onClick={handleLogout}>Logout</Link>
-          </div>
+        <div className="nav-links">
+          {role === "admin" ? (
+            <NavLink to="/admin/users" className={({ isActive }) => (isActive ? "active-link" : "")}>
+              <Users size={18} style={{ marginRight: "5px" }} />
+              Liste des Utilisateurs
+            </NavLink>
+          ) : (
+            <>
+              <NavLink to="/marketplace" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                <ShoppingCart size={18} style={{ marginRight: "5px" }} />
+                Marketplace
+              </NavLink>
+              <NavLink to="/upload" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                <CloudUpload size={18} style={{ marginRight: "5px" }} />
+                Uploader
+              </NavLink>
+            </>
+          )}
+          <NavLink to="/" onClick={handleLogout} className={({ isActive }) => (isActive ? "active-link" : "")}>
+            <LogOut size={18} style={{ marginRight: "5px" }} />
+            Logout
+          </NavLink>
         </div>
-      </CardContainer>
+      </div>
     </nav>
   );
 };

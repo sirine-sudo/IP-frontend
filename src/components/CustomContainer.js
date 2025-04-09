@@ -12,6 +12,8 @@ const StyledContainer = styled(Box)(({ theme, maxWidth, height, padding, borderR
   boxShadow: boxShadow || "0px 4px 10px rgba(0, 0, 0, 0.1)", // Soft shadow
   backgroundColor: theme.palette.background.paper,
   overflow: "hidden",
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 }));
 
 const CustomContainer = ({ children, maxWidth, height, padding, borderRadius, boxShadow, centered }) => {
