@@ -21,7 +21,7 @@ const Navbar = () => {
       <div className="navbar-content">
         <NavLink to="/dashboard" className="navbar-logo">
           <img src={logo} alt="Logo" />
-          <h1>IP Management</h1>
+          <h1>iP Management</h1>
         </NavLink>
 
         <div className="nav-links">
