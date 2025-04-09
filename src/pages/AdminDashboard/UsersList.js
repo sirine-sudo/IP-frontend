@@ -131,7 +131,7 @@ const UsersList = () => {
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   return (
-    <CardContainer width="98%" height="84vh">
+    <CardContainer >
       <div>
 
         {/* Header Title + Search Bar */}

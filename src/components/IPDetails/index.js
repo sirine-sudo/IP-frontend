@@ -29,7 +29,7 @@ const IPDetails = () => {
   if (!ip) return <p style={{ color: "red" }}>Propriété introuvable.</p>;
 
   return (
-    <CardContainer width="98%" height="84vh">
+    <CardContainer >
       <div className="ip-details-container">
         <div className="details-container">
 

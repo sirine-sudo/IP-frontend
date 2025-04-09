@@ -5,7 +5,7 @@ import TitleSection from "../../components/TitleSection";
 
 function UploadPage() {
   return (
-    <CardContainer width="98%" height="84vh">
+    <CardContainer >
       <TitleSection
         title="Uploader votre propriété intellectuelle"
         text="Ajoutez votre propriété intellectuelle pour la sécuriser sur la blockchain et garantir son authenticité."

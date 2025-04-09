@@ -1,73 +1,38 @@
 .card-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 1em;
-    margin: 10px auto; /* Center the container */
-    width: 100%;  max-width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: flex-start;
-    box-shadow: none;
-    overflow: auto;
-    overflow-anchor: none;
- 
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  }
-  
-  
-  
-  /* For medium screens (tablets) */
-  @media (max-width: 992px) {
-    .card-container {
-      max-width:900px;
-    }
-  }
-  
-  /* For small screens (tablets and big phones) */
-  @media (max-width: 768px) {
-    .card-container {
-      max-width: 700px;
-      flex-direction: column;
-      padding: 15px;
-    }
-  }
-  
-  /* For very small screens (mobile) */
-  @media (max-width: 480px) {
-    .card-container {
-      max-width: 90%; /* Use percentage on very small devices */
-      padding: 10px;
-      border-radius: 0.5em;
-      margin: 5px auto;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-  }
+  background-color: gainsboro;
+  padding: 20px;
+  border-radius: 1em;
+  width: 95%;
+  height: 80vh; /* 🔥 Responsive height: 80% of screen height */
+  align-items: stretch;
+  justify-content: flex-start;
+  box-shadow: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overflow-anchor: none;
+  margin: 50px auto;
+}
+
+
+
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;   
+  width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-
-  border-radius: 80px;  
- 
-  
-  margin:5vh ; 
-  min-height: 30px;
+  background: #f1f1f1;
+  border-radius: 80px; /* Rounded track */
 }
 
 /* Handle (Thumb) */
 ::-webkit-scrollbar-thumb {
-  background: #fede98;
+  background: #fede98; /* Light orange */
   border-radius: 80px;
- 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #fbf2d5;  
- 
+  background: #fbf2d5; /* Lighter on hover */
 }

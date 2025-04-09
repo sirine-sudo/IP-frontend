@@ -20,10 +20,8 @@
   background-color: #d3d3d3; /* léger effet hover même grisé */
 }
 body {
-  overflow: hidden !important;  /* 🔥 Empêche tout scroll */
- margin-right: 0px !important;
- height: 100%;
- width: 100%;
+  overflow: hidden ;  /* 🔥 Empêche tout scroll */
+
  margin: 0;
  padding: 0;
 }
