@@ -17,7 +17,7 @@
 }
 
 .welcome-title {
-  font-size: 40px;
+  font-size: clamp(2rem, 4vw, 4vh);
   font-weight: 900;
   font-family: 'Playfair Display', serif;
   animation: fadeIn 2s ease-in-out;
@@ -48,13 +48,15 @@
   position: relative;
   z-index: 1;
   color: #f2f0fa;
-  font-size: 80px;
+  font-size: clamp(2rem, 6vw, 8vh);
   font-weight: 900;
   font-family: 'Playfair Display', serif;
   font-style: italic;
   text-align: center;
   text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7);
+  transition: font-size 0.5s ease; /* 🔥 Smooth transition */
 }
+
 
 /*  Latest IPs Section */
 .latest-ips {
@@ -62,7 +64,7 @@
 }
 
 .latest-ips h2 {
-  font-size: 28px;
+  font-size: clamp(1.2rem, 1vw, 1vh);
   color: #f2f0fa; /* Text over dark background */
   margin-bottom: 15px;
 }
@@ -102,9 +104,10 @@
 
 /*  IP Title */
 .ip-info h3 {
-  font-size: 22px;
+  font-size: clamp(1.4rem, 1vw, 1vh);
   color: #333;
-  margin: 0 10px;
+  margin: 0 1%;
+  justify-content: left;
 }
 
 /*  IP Actions (Buttons) */
@@ -121,7 +124,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
-  width: 120px;
+  width: 15vh;
   font-weight: bold;
   background-color: #fec447;
   transform: scale(1.05);
