@@ -6,12 +6,37 @@ import { fetchUserProfile, logoutUser } from "../../api/userApi";
 import CardContainer from "../../components/CardContainer";
 import "./style.css";
 import { FaFilePdf } from "react-icons/fa";
+import { toast } from "react-toastify";
+
+const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
+
 function Dashboard() {
     const [user, setUser] = useState(null);
     const [ips, setIps] = useState([]);
     const navigate = useNavigate();
     const API_URL = "http://localhost:5000/api/ips";
+  const handleBuyIP = (ipId) => {
+    const confirmWallet = window.confirm("🔔 Connecter votre portefeuille pour acheter cette IP ?");
+    if (!confirmWallet) return;
 
+    const confirmBuy = window.confirm(
+      "✅ Confirmez-vous l'achat de cette IP numérique ?\n\n" +
+      "En validant, vous deviendrez officiellement le propriétaire de cet actif.\n" +
+      "Le transfert de propriété sera effectué automatiquement vers votre portefeuille connecté.\n\n"
+      
+    );
+        if (!confirmBuy) return;
+
+    toast.success(" Achat  avec succès !");
+    
+    setIps((prevIps) =>
+      prevIps.map((ip) =>
+        ip.id === ipId
+          ? { ...ip, is_for_sale: false, owner_address: connectedWalletAddress } // Adresse simulée
+          : ip
+      )
+    );
+  };
     const handleLogout = useCallback(async () => {
         await logoutUser();
         navigate("/");
@@ -114,7 +139,11 @@ function Dashboard() {
 
                                                 <button
                                                     className="ip-button buy-button"
-                                                    onClick={() => alert("Acheter IP en construction...")} // 🔥 Fonction d'achat à faire
+                                                    onClick={() => {
+                                                         handleBuyIP(ip.id);
+                                                      }}
+
+
                                                 >
                                                     Acheter IP
                                                 </button>

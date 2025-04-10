@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./style.css";
 import { logoutUser } from "../../api/userApi";
 import logo from "../../assets/images/logo/logo-light-mode.png";
-import { ShoppingCart, CloudUpload, Users, LogOut } from "lucide-react";
+import { ShoppingCart, CloudUpload, Users, LogOut, UserSquare } from "lucide-react";
 import { Menu, X } from "lucide-react"; // 🔥 Icônes burger et croix
 const Navbar = () => {
   const navigate = useNavigate();
@@ -36,6 +36,17 @@ const Navbar = () => {
             </NavLink>
           ) : (
             <>
+<NavLink 
+  to="/my-ips" 
+  className={({ isActive }) => (isActive ? "active-link" : "")} 
+  style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none", color: "inherit" }}
+>
+  <UserSquare size={18} /> 
+  Mes IPs
+</NavLink>
+
+
+
               <NavLink to="/marketplace" className={({ isActive }) => (isActive ? "active-link" : "")}>
                 <ShoppingCart size={18} style={{ marginRight: "5px" }} />
                 Marketplace

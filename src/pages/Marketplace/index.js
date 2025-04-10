@@ -10,9 +10,6 @@ import "./style.css";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
 import { ChevronLeft, Edit, ChevronRight, Trash } from "lucide-react";
-import { grey } from "@mui/material/colors";
-const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF"; // 🔥 ton "wallet" fictif connecté
-
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -20,7 +17,8 @@ function Marketplace() {
   const [error, setError] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);  const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
+  const [currentPage, setCurrentPage] = useState(1); 
+   const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
   const itemsPerPage = 8; // 3 cards per page
@@ -215,8 +213,8 @@ function Marketplace() {
             <div
               key={ip.id}
               className="ip-card"
-              onClick={() => navigate(`/ip/${ip.id}`)}  // 🔥 On autorise toujours
-              style={{ cursor: "pointer" }}             // 🔥 Toujours un curseur pointer
+              onClick={() => navigate(`/ip/${ip.id}`)}  //   On autorise toujours
+              style={{ cursor: "pointer" }}             //   Toujours un curseur pointer
             >
 
 
