@@ -5,12 +5,13 @@ import * as React from "react";
 
 import AppTheme from "../../theme/AppTheme";
 import { validateEmail, validatePassword } from "../../utils/validation";
-import AuthForm from "../../components/AuthForm";
-import AuthContainer from "../../components/AuthContainer";
-import AuthCard from "../../components/AuthCard";
+import AuthForm from "../../components/AuthComponents/AuthForm";
+import AuthContainer from "../../components/AuthComponents/AuthContainer";
+import AuthCard from "../../components/AuthComponents/AuthCard";
 
 import { Box, Button, Checkbox, FormControlLabel, Link, Divider, Typography } from "@mui/material";
 import TitleSection from "../../components/TitleSection";
+import AppButton from "../../components/AppButton";
 
 export default function Register() {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" ,role: "simple-user" });
@@ -50,6 +51,7 @@ export default function Register() {
       <AuthContainer>
         <AuthCard >
         <TitleSection title="Créez votre compte" text="Rejoignez-nous pour protéger et gérer votre propriété intellectuelle efficacement." />
+            <Divider></Divider>
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <AuthForm
@@ -80,13 +82,25 @@ export default function Register() {
               helperText={errors.password}
             />
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-            <Button type="submit" fullWidth variant="contained">
-              Sign up
-            </Button>
+      
+
+                        <AppButton
+            
+                          type="submit"
+                          className="custom-button blue-primary-button-form"
+            
+                        >
+                            Sign up
+                        </AppButton>
+            
+            
           </Box>
           <Divider>or</Divider>
           <Typography sx={{ textAlign: "center" }}>
-            Already have an account? <Link href="/">Sign in</Link>
+            Already have an account? <Link href="/"  
+              className="Link"
+            
+            >Sign in</Link>
           </Typography>
         </AuthCard>
       </AuthContainer>

@@ -3,13 +3,15 @@ import { loginUser } from "../../api/auth"; // API call
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import * as React from "react";
 import { toast } from "react-toastify";
+import AppButton from "../../components/AppButton";
 
 import AppTheme from "../../theme/AppTheme";
 import { validateEmail, validatePassword } from "../../utils/validation";
-import AuthForm from "../../components/AuthForm"; // Reusable input component
-import AuthContainer from "../../components/AuthContainer"; // Page layout
-import AuthCard from "../../components/AuthCard"; // Card container
+import AuthForm from "../../components/AuthComponents/AuthForm"; // Reusable input component
+import AuthContainer from "../../components/AuthComponents/AuthContainer"; // Page layout
+import AuthCard from "../../components/AuthComponents/AuthCard"; // Card container
 import ForgotPassword from "./ForgotPassword"; // Forgot password modal
+import './style.css'
 
 import { Box, Button, FormControlLabel, Checkbox, Link, Divider, Typography } from "@mui/material";
 import TitleSection from "../../components/TitleSection";
@@ -37,18 +39,18 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-  
+
     try {
       const res = await loginUser(formData); // res === { accessToken, refreshToken, role }
-  
+
       if (res && res.accessToken && res.refreshToken) {
         // Stocker les tokens et le rôle
         localStorage.setItem("role", res.role);
         localStorage.setItem("token", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
-  
+
         toast.success("Login successful! Redirecting...");
-  
+
         setTimeout(() => {
           if (res.role === "admin") {
             navigate("/admin/users");  // 🔥 Redirect admins to the user list
@@ -64,16 +66,18 @@ export default function Login() {
       alert(error.response?.data?.message || "Login failed. Try again.");
     }
   };
-  
-  
+
+
   return (
     <AppTheme>
-      <AuthContainer>
+      <AuthContainer  >
         <AuthCard>
           <TitleSection title="S'authentifier" text="Connectez-vous pour gérer votre propriété intellectuelle en toute sécurité." />
-
+            <Divider></Divider>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <AuthForm
+
+              className="text-input"
               label="Email"
               name="email"
               type="email"
@@ -83,6 +87,9 @@ export default function Login() {
               helperText={errors.email}
             />
             <AuthForm
+
+              className="text-input"
+
               label="Password"
               name="password"
               type="password"
@@ -92,20 +99,32 @@ export default function Login() {
               helperText={errors.password}
             />
             <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Se souvenir de moi" />
-            <Button type="submit" fullWidth variant="contained">
+
+            <AppButton
+
+              type="submit"
+              className="custom-button blue-primary-button-form"
+
+            >
               Connexion
-            </Button>
+            </AppButton>
+
+
+
           </Box>
           <Divider>ou</Divider>
           <Typography sx={{ textAlign: "center" }}>
             Vous n'avez pas de compte ?{" "}
-            <Link to="/register" component={RouterLink}>
+            <Link to="/register" 
+              className="Link"
+            
+            component={RouterLink}>
               Inscrivez-vous
             </Link>
           </Typography>
           <Typography sx={{ textAlign: "center", marginTop: "10px" }}>
             <Link
-              type="button"
+              className="Link"
               component="button"
               onClick={(e) => {
                 e.preventDefault();

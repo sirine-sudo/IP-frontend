@@ -1,0 +1,14 @@
+
+/* Style commun aux inputs, textarea, select */
+.text-input{
+    border-radius: 20em;
+    border: 1px solid #fec349;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-family: "Source Serif Pro", serif;
+    margin-top: 5px;
+    background-color: #fffcf7;
+    font-weight: 500;
+  }
+
+
