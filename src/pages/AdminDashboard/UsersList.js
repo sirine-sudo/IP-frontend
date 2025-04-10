@@ -102,7 +102,7 @@ const UsersList = () => {
 
   const handleDelete = async (userId) => {
     const token = localStorage.getItem("token");
-
+    const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
     try {
       await axios.delete(`${API_URL}/${userId}`, {
         headers: {

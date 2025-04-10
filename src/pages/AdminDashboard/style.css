@@ -2,8 +2,8 @@
 
 .ip-card-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
   width: 100%; /* prend toute la largeur */
 }
 
@@ -11,7 +11,7 @@
 
 /* ===== IP Card ===== */
 
-.ip-card {
+.user-card{
   
   align-items: center;
   justify-content: space-between;
@@ -20,6 +20,7 @@
   padding: 15px;
   transition: all 0.3s ease;
   cursor: pointer; /* Make the card clickable */  
+  background-color: white;
 
 }
 
