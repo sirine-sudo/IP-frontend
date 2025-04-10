@@ -167,7 +167,7 @@ const UsersList = () => {
             currentUsers.filter((user) => user.role !== "admin").map((user) => (
               <div
                 key={user.id}
-                className="ip-card"
+                className="user-card"
                 style={{ cursor: "default" }}
               >
                 <div className="ip-card-info">
