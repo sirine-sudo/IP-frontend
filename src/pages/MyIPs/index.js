@@ -56,15 +56,12 @@ function MyIPs() {
   useEffect(() => {
     const fetchMyIPs = async () => {
       try {
-        const res = await axios.get(API_URL);
-        if (Array.isArray(res.data)) {
-          const ownedIps = res.data.filter(
-            (ip) => ip.owner_address?.toLowerCase() === connectedWalletAddress.toLowerCase()
-          );
-          setMyIps(ownedIps);
-        } else {
-          setMyIps([]);
-        }
+        const res = await axios.get(`${API_URL}/my-ips`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}` // Ton token si tu utilises JWT
+          }
+        });
+        setMyIps(res.data);
       } catch (err) {
         setError("Impossible de charger vos IPs.");
       } finally {
@@ -73,6 +70,7 @@ function MyIPs() {
     };
     fetchMyIPs();
   }, []);
+  
 
   // 🔥 Applique la recherche sur myIps
   const filteredIps = myIps.filter((ip) => {
