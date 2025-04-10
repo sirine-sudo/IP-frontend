@@ -198,9 +198,9 @@ function Marketplace() {
 
               {/* File Preview */}
               <div className="ip-card-file">
-                {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview" />}
+                {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview-marketplace" />}
                 {ip.type === "video" && (
-                  <video className="file-preview" controls muted>
+                  <video className="file-preview-marketplace" controls muted>
                     <source src={ip.file_url} type="video/mp4" />
                   </video>
                 )}
@@ -210,7 +210,7 @@ function Marketplace() {
                   </audio>
                 )}
                 {ip.type === "book" && (
-                  <div className="file-preview pdf-preview">
+                  <div className="file-preview-marketplace pdf-preview-marketplace">
                     <FaFilePdf size={50} />
                   </div>
                 )}
@@ -218,8 +218,8 @@ function Marketplace() {
               </div>
 
               {/* IP Info */}
-              <div className="ip-card-info">
-                <h3 className="ip-title">
+              <div className="ip-card-info-marketplace">
+                <h3 className="ip-title-marketplace">
                   {ip.title}
                   {ip.is_for_sale && (
                     <span className="badge-for-sale">En Vente</span>
@@ -229,7 +229,7 @@ function Marketplace() {
 
 
               {/* Action Buttons */}
-              <div className="ip-card-actions">
+              <div className="ip-card-actions-marketplace">
                 <Button
 
                   variant="contained"

@@ -39,7 +39,7 @@
 }
 
 
-.file-preview {
+.file-preview-marketplace {
   width: 100%;
   height: 200px;
   object-fit: cover;          /* Cover, but... */
@@ -52,7 +52,7 @@
 }
 
 
-.pdf-preview {
+.pdf-preview-marketplace {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,12 +70,12 @@
 
 /* ===== IP Information ===== */
 
-.ip-card-info {
+.ip-card-info-marketplace {
   flex: 1;
   padding: 0 20px;
 }
 
-.ip-title {
+.ip-ip-title-marketplace {
   font-size: clamp(1.3rem, 1vw, 1vh);
   font-weight: bold;
   margin: 0;
@@ -91,7 +91,7 @@
 /* ===== Action Buttons ===== */
 
 /* ===== Style Buttons inside IP Card ===== */
-.ip-card-actions button {
+.ip-card-actions-marketplace button {
   border-radius: 20em;           /* pill shape */
   transform: scale(1.05);        /* small zoom */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* soft shadow */
@@ -109,7 +109,7 @@
   margin: 0%;
 
 }
-.ip-card-actions {
+.ip-card-actions-marketplace {
   display: flex;          /*  FLEX to make them in one line */
   justify-content: space-between; /*  Space nicely between buttons */
   align-items: center;    /*  Center vertically */
@@ -119,7 +119,7 @@
 }
 
 /* Optional: hover effect to look even cooler */
-.ip-card-actions button:hover {
+.ip-card-actions-marketplace button:hover {
   background-color: #fcbf3c;
   transform: scale(1.08); /* little more zoom on hover */
 }
@@ -146,18 +146,18 @@
 }
 /* ===== Pagination Buttons ===== */
 
-.pagination-buttons {
+.pagination-buttons-marketplace {
   display: flex;
   justify-content: center;
   margin-top: 20px;
   gap: 10px;
 }
 
-.pagination-buttons button {
+.pagination-buttons-marketplace button {
   min-width: 100px;
 }
 
-/* ===== Title and Upload Button Section ===== */
+/* ===== ip-title-marketplace and Upload Button Section ===== */
 
 .header-section {
   display: flex;
@@ -165,7 +165,7 @@
   align-items: center;
   margin-bottom: 20px;
 }
-.pagination-buttons{
+.pagination-buttons-marketplace{
   border-radius: 20em;
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -210,7 +210,7 @@
   transform: scale(1.08);
 }
 
-.ip-card-actions  button {
+.ip-card-actions-marketplace  button {
   border-radius: 20em;
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -229,7 +229,7 @@
   gap: 8px;            /*  spacing between icon and text */
   margin: 0;           /*  no margin */
 }
-.ip-card-actions {
+.ip-card-actions-marketplace {
   display: flex;          
   justify-content: space-between; 
   align-items: flex-start;    
@@ -238,7 +238,7 @@
   margin-top: 10px;    
 }
 
-.ip-card-actions button:hover {
+.ip-card-actions-marketplace button:hover {
   background-color: #fcbf3c;
   transform: scale(1.08);
 }
