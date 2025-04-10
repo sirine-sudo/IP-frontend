@@ -1,10 +1,10 @@
 import { useState } from "react";
-import "./style.css";
 import AppButton from "../AppButton";
 import { uploadIP } from "../../services/api";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {  CloudUpload } from "lucide-react";
+import { CloudUpload } from "lucide-react";
+import styles from "./style.module.css"; // ✅ CSS Modules
 
 const UploadForm = () => {
   const [formData, setFormData] = useState({
@@ -13,9 +13,9 @@ const UploadForm = () => {
     type: "image",
     file: null,
     royalty_percentage: 0,
-    is_for_sale: "false", 
-    price: "", 
-    preferred_creator_name: "", 
+    is_for_sale: "false",
+    price: "",
+    preferred_creator_name: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ const UploadForm = () => {
     try {
       const response = await uploadIP(formData);
       toast.success("Upload réussi !");
-      navigate("/marketplace"); 
+      navigate("/marketplace");
       console.log("Succès :", response);
     } catch (error) {
       toast.error(`Erreur : ${error.message}`);
@@ -50,34 +50,54 @@ const UploadForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} encType="multipart/form-data" className="upload-form">
-      <div className="upload-wrapper">
+    <form onSubmit={handleSubmit} encType="multipart/form-data" className={styles.uploadForm}>
+      <div className={styles.uploadWrapper}>
 
         {/* Ligne 1: Titre | Créateur */}
-        <div className="form-row">
-          <div className="form-column">
-            <label className="form-label">Titre :</label>
-            <input type="text" name="title" onChange={handleChange} required className="form-input" />
+        <div className={styles.formRow}>
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Titre :</label>
+            <input
+              type="text"
+              name="title"
+              onChange={handleChange}
+              required
+              className={styles.formInput}
+            />
           </div>
-          <div className="form-column">
-            <label className="form-label">Nom du créateur :</label>
-            <input type="text" name="preferred_creator_name" onChange={handleChange} className="form-input" />
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Nom du créateur :</label>
+            <input
+              type="text"
+              name="preferred_creator_name"
+              onChange={handleChange}
+              className={styles.formInput}
+            />
           </div>
         </div>
 
         {/* Ligne 2: Description seule */}
-        <div className="form-row">
-          <div className="form-column">
-            <label className="form-label">Description :</label>
-            <textarea name="description" onChange={handleChange} required className="form-textarea" />
+        <div className={styles.formRow}>
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Description :</label>
+            <textarea
+              name="description"
+              onChange={handleChange}
+              required
+              className={styles.formTextarea}
+            />
           </div>
         </div>
 
         {/* Ligne 3: Type de fichier | Upload fichier */}
-        <div className="form-row">
-          <div className="form-column">
-            <label className="form-label">Type de fichier :</label>
-            <select name="type" onChange={handleChange} className="form-select">
+        <div className={styles.formRow}>
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Type de fichier :</label>
+            <select
+              name="type"
+              onChange={handleChange}
+              className={styles.formSelect}
+            >
               <option value="image">Image</option>
               <option value="audio">Audio</option>
               <option value="video">Vidéo</option>
@@ -85,16 +105,22 @@ const UploadForm = () => {
             </select>
           </div>
 
-          <div className="form-column">
-            <label className="form-label">Fichier :</label>
-            <input type="file" name="file" onChange={handleFileChange} required className="form-file" />
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Fichier :</label>
+            <input
+              type="file"
+              name="file"
+              onChange={handleFileChange}
+              required
+              className={styles.formFile}
+            />
           </div>
         </div>
 
         {/* Ligne 4: Royalties | Vente | Prix */}
-        <div className="form-row">
-          <div className="form-column">
-            <label className="form-label">Pourcentage de royalties :</label>
+        <div className={styles.formRow}>
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Pourcentage de royalties :</label>
             <input
               type="number"
               name="royalty_percentage"
@@ -102,21 +128,32 @@ const UploadForm = () => {
               onChange={handleChange}
               min="0"
               max="100"
-              className="form-input"
+              className={styles.formInput}
             />
           </div>
 
-          <div className="form-column">
-            <label className="form-label">Mettre en vente ?</label>
-            <select name="is_for_sale" onChange={handleChange} className="form-select">
+          <div className={styles.formColumn}>
+            <label className={styles.formLabel}>Mettre en vente ?</label>
+            <select
+              name="is_for_sale"
+              onChange={handleChange}
+              className={styles.formSelect}
+            >
               <option value="false">Non</option>
               <option value="true">Oui</option>
             </select>
 
             {formData.is_for_sale === "true" && (
               <>
-                <label className="form-label">Prix (ETH) :</label>
-                <input type="number" name="price" onChange={handleChange} className="form-input" min="0" step="0.01" />
+                <label className={styles.formLabel}>Prix (ETH) :</label>
+                <input
+                  type="number"
+                  name="price"
+                  onChange={handleChange}
+                  className={styles.formInput}
+                  min="0"
+                  step="0.01"
+                />
               </>
             )}
           </div>
@@ -127,7 +164,7 @@ const UploadForm = () => {
           <AppButton
             startIcon={<CloudUpload />}
             type="submit"
-            className="custom-button blue-primary-button-form"
+            className={`${styles.customButton} ${styles.bluePrimaryButtonForm}`}
             disabled={loading}
           >
             {loading ? "Uploading..." : "Upload IP"}
@@ -136,7 +173,7 @@ const UploadForm = () => {
 
         {/* Message succès/erreur */}
         {message && (
-          <div className={`upload-message ${message.startsWith("✅") ? "success" : "error"}`}>
+          <div className={`${styles.uploadMessage} ${message.startsWith("✅") ? styles.success : styles.error}`}>
             {message}
           </div>
         )}

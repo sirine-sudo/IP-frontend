@@ -1,27 +1,24 @@
-.upload-wrapper {
+.uploadWrapper {
   padding: 30px;
-
   width: 90%;
   margin: 0 auto;
 }
 
-/* Organiser les inputs en lignes flexibles */
-.form-row {
+.formRow {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
 
-.form-column {
+.formColumn {
   flex: 1;
   min-width: 200px;
   display: flex;
   flex-direction: column;
 }
 
-/* Style commun aux inputs, textarea, select */
-.form-input, .form-textarea, .form-select, .form-file {
+.formInput, .formTextarea, .formSelect, .formFile {
   border-radius: 20em;
   border: 1px solid white;
   padding: 10px 15px;
@@ -32,21 +29,20 @@
   font-weight: 500;
 }
 
-.form-textarea {
+.formTextarea {
   resize: vertical;
   min-height: 50px;
-  width: 100%; /* 🔥 pour qu'elle prenne toute la largeur de la colonne */
+  width: 100%;
 }
 
-.form-p{
+.formP {
   font-weight: 400;
-  font-size:10px;
+  font-size: 10px;
   margin-bottom: 5px;
   color: gray;
 }
 
-/* Bouton Upload */
-.blue-primary-button-form {
+.bluePrimaryButtonForm {
   background-color: #fec447 !important;
   color: black !important;
   border-radius: 20em !important;
@@ -58,8 +54,7 @@
   padding: 10px 30px;
 }
 
-/* Messages de succès/erreur */
-.upload-message {
+.uploadMessage {
   margin-top: 20px;
   padding: 10px;
   border-radius: 8px;
@@ -67,13 +62,13 @@
   text-align: center;
 }
 
-.upload-message.success {
+.success {
   background-color: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
 }
 
-.upload-message.error {
+.error {
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
