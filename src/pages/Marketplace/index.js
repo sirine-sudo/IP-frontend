@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
 import { ChevronLeft, Edit, ChevronRight, Trash } from "lucide-react";
 import { grey } from "@mui/material/colors";
+const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF"; // 🔥 ton "wallet" fictif connecté
+
 
 function Marketplace() {
   const [ips, setIps] = useState([]);
@@ -18,7 +20,7 @@ function Marketplace() {
   const [error, setError] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);  const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
   const itemsPerPage = 8; // 3 cards per page
@@ -35,7 +37,29 @@ function Marketplace() {
       toast.error("Erreur lors de la mise en vente.");
     }
   };
+  const handleBuyIP = (ipId) => {
+    const confirmWallet = window.confirm("🔔 Connecter votre portefeuille pour acheter cette IP ?");
+    if (!confirmWallet) return;
 
+    const confirmBuy = window.confirm(
+      "✅ Confirmez-vous l'achat de cette IP numérique ?\n\n" +
+      "En validant, vous deviendrez officiellement le propriétaire de cet actif.\n" +
+      "Le transfert de propriété sera effectué automatiquement vers votre portefeuille connecté.\n\n"
+      
+    );
+        if (!confirmBuy) return;
+
+    toast.success(" Achat  avec succès !");
+    
+    setIps((prevIps) =>
+      prevIps.map((ip) =>
+        ip.id === ipId
+          ? { ...ip, is_for_sale: false, owner_address: connectedWalletAddress } // Adresse simulée
+          : ip
+      )
+    );
+  };
+  
   useEffect(() => {
     const fetchIPs = async () => {
       try {
@@ -245,25 +269,41 @@ function Marketplace() {
                   Mint NFT
                 </Button>
 
-
-
-
-                <Button
-                  variant="contained"
-                  color={ip.is_for_sale ? "secondary" : "primary"}
-
-                  disabled={ip.is_for_sale} // 🔥 désactiver si déjà en vente
-                  className="vente-button"
-
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (!ip.is_for_sale) {
-                      handlePutOnSale(ip.id);
-                    }
-                  }}
-                >
-                  {ip.is_for_sale ? "Déjà en vente" : "Mettre en vente"}
-                </Button>
+                {ip.is_for_sale ? (
+  ip.owner_address !== connectedWalletAddress ? ( // 🔥 Si en vente ET pas toi
+    <Button
+      variant="contained"
+      className="vente-button"
+      onClick={(e) => {
+        e.stopPropagation();
+        handleBuyIP(ip.id);
+      }}
+    >
+      Acheter
+    </Button>
+  ) : ( // 🔥 Si en vente ET c'est toi
+    <Button
+      variant="contained"
+      color="secondary"
+      className="vente-button"
+      disabled
+    >
+      Déjà en vente
+    </Button>
+  )
+) : ( // 🔥 Si PAS en vente
+  <Button
+    variant="contained"
+    color="primary"
+    className="vente-button"
+    onClick={(e) => {
+      e.stopPropagation();
+      handlePutOnSale(ip.id);
+    }}
+  >
+    Mettre en vente
+  </Button>
+)}
 
 
                 <IconButton
