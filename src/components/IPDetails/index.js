@@ -49,20 +49,23 @@ const IPDetails = () => {
                 <source src={ip.file_url} type="audio/mp4" />
               </audio>
             )}
-            {ip.type === "book" && (
-              <iframe
-                src={ip.file_url}
-                title="PDF Viewer"
-                className="file-preview"
-                style={{
-                  width: '100%',
-                  height: '80vh',
-                  border: 'none',
-                  borderRadius: '8px',
-                  boxShadow: '0px 0px 8px rgba(0,0,0,0.1)',
-                }}
-              />
-            )}
+            {
+              ip.type === "book" && (
+                <iframe
+                  src={`https://ipfs.io/ipfs/${ip.file_url.split("ipfs/")[1]}`}
+                  title="PDF Viewer"
+                  className="file-preview"
+                  style={{
+                    width: '100%',
+                    height: '80vh',
+                    border: 'none',
+                    borderRadius: '8px',
+                    boxShadow: '0px 0px 8px rgba(0,0,0,0.1)',
+                  }}
+                />
+              )
+            }
+
 
             <p style={{ fontSize: '15px', textAlign: 'center', marginLeft: '-20px' }}>
               <strong>Type :</strong> {ip.type}
