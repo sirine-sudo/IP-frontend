@@ -265,7 +265,6 @@
   margin: 0 !important;
 }
 
-
 .badge-for-sale {
   background-color: #4caf50; /* Vert */
   color: white;
@@ -273,7 +272,12 @@
   padding: 2px 8px;
   border-radius: 12px;
   margin-left: 10px;
+  white-space: nowrap;
+  min-width: 80px; /* 🎯 Par exemple */
+  width: 180px; /* 🎯 Par exemple */
+  text-align: center; /* 🛡️ Pour centrer le texte */
 }
+
 .search-bar {
  align-items: center;
  justify-content: space-between;

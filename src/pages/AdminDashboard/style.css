@@ -227,12 +227,14 @@
 
 
 .badge-for-sale {
-  background-color: #4caf50; /* Vert */
+  display: list-item;
+   background-color: #4caf50; /* Vert */
   color: white;
   font-size: 12px;
   padding: 2px 8px;
   border-radius: 12px;
   margin-left: 10px;
+  width: 20%;
 }
 .search-bar {
  align-items: center;
