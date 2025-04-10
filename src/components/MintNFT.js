@@ -2,7 +2,6 @@ import { ethers } from "ethers";
 import contractABI from "../abis/MyNFT.json";
 import axios from "axios";
 import { toast } from "react-toastify"; 
-import { useNavigate } from "react-router-dom"; 
 const CONTRACT_ADDRESS = "0x525fFff54Cc4a2E33C9aD562B609B29a2983De61";
 
 export default async function MintNFT(tokenURI, ipId) {

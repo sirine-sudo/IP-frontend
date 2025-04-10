@@ -4,8 +4,7 @@ import "./style.css";
 import { logoutUser } from "../../api/userApi";
 import logo from "../../assets/images/logo/logo-light-mode.png";
 import { ShoppingCart, CloudUpload, Users, LogOut, UserSquare } from "lucide-react";
-import { Menu, X } from "lucide-react"; // 🔥 Icônes burger et croix
-const Navbar = () => {
+ const Navbar = () => {
   const navigate = useNavigate();
   const role = localStorage.getItem("role"); // 🔥 Récupère le rôle
 

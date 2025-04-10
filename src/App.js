@@ -8,8 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import UploadPage from "./pages/uploadIp";
 import Marketplace from "./pages/Marketplace";
 import Navbar from "./components/Navbar";
-import AudioLyricsEditor from "./pages/AudioLyricsEditor";
-import IPDetails from "./components/IPDetails";
+ import IPDetails from "./components/IPDetails";
 import UpdateMetadataForm from "./components/UpdateMetadataForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Style par défaut
@@ -62,8 +61,7 @@ function App() {
                   <Route path="/upload" element={<UploadPage />} />
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/audioLyricsEditor" element={<AudioLyricsEditor />} />
-                  <Route path="/ip/:id" element={<IPDetails />} />
+                   <Route path="/ip/:id" element={<IPDetails />} />
                   <Route path="/update-metadata/:id" element={<UpdateMetadataForm />} />
                   <Route path="/admin/users" element={<UsersList />} />
                   <Route path="/my-ips" element={<MyIPs />} />
