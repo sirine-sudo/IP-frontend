@@ -17,8 +17,8 @@ function Marketplace() {
   const [error, setError] = useState(null);
   const [alertMessage, setAlertMessage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1); 
-   const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
+  const [currentPage, setCurrentPage] = useState(1);
+  const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
   const itemsPerPage = 8; // 3 cards per page
@@ -43,12 +43,12 @@ function Marketplace() {
       "✅ Confirmez-vous l'achat de cette IP numérique ?\n\n" +
       "En validant, vous deviendrez officiellement le propriétaire de cet actif.\n" +
       "Le transfert de propriété sera effectué automatiquement vers votre portefeuille connecté.\n\n"
-      
+
     );
-        if (!confirmBuy) return;
+    if (!confirmBuy) return;
 
     toast.success(" Achat  avec succès !");
-    
+
     setIps((prevIps) =>
       prevIps.map((ip) =>
         ip.id === ipId
@@ -57,7 +57,7 @@ function Marketplace() {
       )
     );
   };
-  
+
   useEffect(() => {
     const fetchIPs = async () => {
       try {
@@ -142,7 +142,7 @@ function Marketplace() {
             title="Marché des Propriétés Intellectuelles"
             text="Explorez et échangez des actifs numériques en toute sécurité."
           />
-          <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: "space-between", marginBottom: "20px"  ,width:"90vh",}}>
+          <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", width: "90vh", }}>
             {/* Search Text */}
             <TextField
               label="Rechercher..."
@@ -170,7 +170,7 @@ function Marketplace() {
               SelectProps={{
                 native: true,
               }}
-              style={{ flex: 2,  }}
+              style={{ flex: 2, }}
             >
               <option value=""></option>
               <option value="image">Image</option>
@@ -181,7 +181,7 @@ function Marketplace() {
             </TextField>
 
             {/* Vente Toggle */}
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 2, minWidth: "100px" ,marginTop:'13px'}}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 2, minWidth: "100px", marginTop: '13px' }}>
               <p style={{ fontSize: "14px", color: "gray", margin: 0 }}>En vente</p>
               <input
                 type="checkbox"
@@ -252,80 +252,31 @@ function Marketplace() {
 
               {/* Action Buttons */}
               <div className="ip-card-actions-marketplace">
-                <Button
-
-                  variant="contained"
-                  color="success"
-
-                  onClick={(e) => {
-                    e.stopPropagation(); // 🔥 Pour ne pas déclencher le clic de la card
-                    handleMintNFT(ip.file_url, ip.id);
-                  }}
-                  disabled={ip.nft_token_id !== "pending"} // 🔥 Désactiver seulement si déjà minté
-                  className={ip.nft_token_id !== "pending" ? "button-disabled" : "mint-button"}
-                >
-                  Mint NFT
-                </Button>
-
                 {ip.is_for_sale ? (
-  ip.owner_address !== connectedWalletAddress ? ( // 🔥 Si en vente ET pas toi
-    <Button
-      variant="contained"
-      className="vente-button"
-      onClick={(e) => {
-        e.stopPropagation();
-        handleBuyIP(ip.id);
-      }}
-    >
-      Acheter
-    </Button>
-  ) : ( // 🔥 Si en vente ET c'est toi
-    <Button
-      variant="contained"
-      color="secondary"
-      className="vente-button"
-      disabled
-    >
-      Déjà en vente
-    </Button>
-  )
-) : ( // 🔥 Si PAS en vente
-  <Button
-    variant="contained"
-    color="primary"
-    className="vente-button"
-    onClick={(e) => {
-      e.stopPropagation();
-      handlePutOnSale(ip.id);
-    }}
-  >
-    Mettre en vente
-  </Button>
-)}
-
-
-                <IconButton
-                  color="warning"
-                  className="edit-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/update-metadata/${ip.id}`);
-                  }}
-                >
-                  <Edit size={20} />
-                </IconButton>
-
-                <IconButton
-                  color="error"
-                  className="delete-button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteIP(ip.id);
-                  }}
-                >
-                  <Trash size={20} />
-                </IconButton>
+                  ip.owner_address !== connectedWalletAddress ? (
+                    <Button
+                      variant="contained"
+                      className="mint-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBuyIP(ip.id);
+                      }}
+                    >
+                      Acheter
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      className="vente-button"
+                      disabled
+                    >
+                      Votre IP
+                    </Button>
+                  )
+                ) : null} {/* 🔥 Ne rien afficher si pas en vente */}
               </div>
+
 
 
             </div>
