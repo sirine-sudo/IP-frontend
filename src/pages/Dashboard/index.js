@@ -50,9 +50,9 @@ function Dashboard() {
             {user ? (
                 <CardContainer className="dashboard-card fade-in">
                     <div className="welcome-section">
-                    <h1 className="welcome-title fade-in-delay-1">Bienvenue, {user.name}</h1>
-                    
-                    <div className="slogan fade-in-delay-2">
+                        <h1 className="welcome-title fade-in-delay-1">Bienvenue, {user.name}</h1>
+
+                        <div className="slogan fade-in-delay-2">
                             <div className="slogan-background"></div>
                             <h1 className="slogan-text">" Vos créations sont uniques, leur protection aussi. "</h1>
                         </div>
@@ -74,33 +74,33 @@ function Dashboard() {
                                         <div key={index} className="ip-item">
 
                                             {/* Image à gauche */}
-                                         
-              {/* File Preview */}
-              <div className="ip-card-file">
-                {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview" />}
-                {ip.type === "video" && (
-                  <video className="file-preview" controls muted>
-                    <source src={ip.file_url} type="video/mp4" />
-                  </video>
-                )}
-                {ip.type === "audio" && (
-                  <audio className="file-audio" controls>
-                    <source src={ip.file_url} type="audio/mp4" />
-                  </audio>
-                )}
-                {ip.type === "book" && (
-                  <div className="file-preview pdf-preview">
-                    <FaFilePdf size={50} />
-                  </div>
-                )}
 
-              </div>
+                                            {/* File Preview */}
+                                            <div className="ip-image">
+                                                {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="ip-image" />}
+                                                {ip.type === "video" && (
+                                                    <video className="ip-image" controls muted>
+                                                        <source src={ip.file_url} type="video/mp4" />
+                                                    </video>
+                                                )}
+                                                {ip.type === "audio" && (
+                                                    <audio className="file-audio" controls>
+                                                        <source src={ip.file_url} type="audio/mp4" />
+                                                    </audio>
+                                                )}
+                                                {ip.type === "book" && (
+                                                    <div className="ip-image pdf-preview">
+                                                        <FaFilePdf size={50} />
+                                                    </div>
+                                                )}
+
+                                            </div>
                                             {/* Titre au centre */}
                                             <div className="ip-info">
                                                 <h3>{ip.title || `IP ${index + 1}`}</h3>
                                                 {ip.is_for_sale && (
-                    <span className="badge-for-sale">En Vente</span>
-                  )}
+                                                    <span className="badge-for-sale">En Vente</span>
+                                                )}
                                             </div>
 
                                             {/* Boutons à droite */}

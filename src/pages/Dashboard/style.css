@@ -194,14 +194,19 @@
   animation-delay: 0.6s;
 }
 /*  IP Image */
-.ip-image img {
-  max-width: 100px;
-  max-height: 100px;
+.ip-image  {
+  max-width: 12vh;
+  max-height: 12vh;
+  min-width: 12vh;
+  min-height: 12vh;
   object-fit: cover;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  background-color:#fff6e5 ;
 }
 
 .ip-card-file {
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
   max-width: 100px;
   margin-right: 10px;
   margin-left: 10px;
