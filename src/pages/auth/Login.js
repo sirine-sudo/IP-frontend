@@ -39,34 +39,45 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
-
+  
     try {
-      const res = await loginUser(formData); // res === { accessToken, refreshToken, role }
-
+      const res = await loginUser(formData);
+  
       if (res && res.accessToken && res.refreshToken) {
-        // Stocker les tokens et le rôle
         localStorage.setItem("role", res.role);
         localStorage.setItem("token", res.accessToken);
         localStorage.setItem("refreshToken", res.refreshToken);
-
-        toast.success("Login successful! Redirecting...");
-
+  
+        toast.success("Connexion réussie ! Redirection...");
+  
         setTimeout(() => {
           if (res.role === "admin") {
-            navigate("/admin/users");  // 🔥 Redirect admins to the user list
+            navigate("/admin/users");
           } else {
-            navigate("/dashboard");    // 🔥 Normal users go to dashboard
+            navigate("/dashboard");
           }
         }, 500);
         return res;
       } else {
-        toast.error("Unexpected response. Please try again.");
+        toast.error("Réponse inattendue. Réessayez.");
       }
     } catch (error) {
-      alert(error.response?.data?.message || "Login failed. Try again.");
+      if (error.response) {
+        const errorMessage = error.response.data.message;
+  
+        if (errorMessage.includes("User not found")) {
+          toast.error("Utilisateur non trouvé !");
+        } else if (errorMessage.includes("Incorrect password")) {
+          toast.error("Mot de passe incorrect !");
+        } else {
+          toast.error(errorMessage || "Erreur lors de la connexion.");
+        }
+      } else {
+        toast.error("Erreur réseau. Vérifiez votre connexion.");
+      }
     }
   };
-
+  
 
   return (
     <AppTheme>
