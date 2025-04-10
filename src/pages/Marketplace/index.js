@@ -9,8 +9,8 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import "./style.css";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
-import { ChevronLeft, Edit, ChevronRight, Trash } from "lucide-react";
-
+import { ChevronLeft, Edit, ChevronRight, Trash, Eye } from "lucide-react";
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -250,33 +250,54 @@ function Marketplace() {
               </div>
 
 
-              {/* Action Buttons */}
-              <div className="ip-card-actions-marketplace">
-                {ip.is_for_sale ? (
-                  ip.owner_address !== connectedWalletAddress ? (
-                    <Button
-                      variant="contained"
-                      className="mint-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleBuyIP(ip.id);
-                      }}
-                    >
-                      Acheter
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="secondary"
-                      className="vente-button"
-                      disabled
-                    >
-                      Votre IP
-                    </Button>
-                  )
-                ) : null} {/* 🔥 Ne rien afficher si pas en vente */}
-              </div>
+{/* Action Buttons */}
+<div className="ip-card-actions-marketplace">
+  {/* View Button (toujours visible) */}
+ 
 
+  {/* Acheter / Mon IP / Pas en vente */}
+  {ip.is_for_sale ? (
+    ip.owner_address !== connectedWalletAddress ? (
+      <Button
+        variant="contained"
+        className="mint-button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleBuyIP(ip.id);
+        }}
+      >
+        Acheter
+      </Button>
+    ) : (
+      <Button
+        variant="contained"
+        className="button-disabled"
+        disabled
+      >
+        Mon IP
+      </Button>
+    )
+  ) : (
+    <Button
+      variant="contained"
+      className="button-disabled"
+      disabled
+    >
+      Pas en vente
+    </Button>
+
+  )}
+    <IconButton
+    className="mint-button"
+    onClick={(e) => {
+      e.stopPropagation();
+      navigate(`/ip/${ip.id}`); // 🔥 Redirige vers la page de détail IP
+    }}
+  >
+    <VisibilityOutlinedIcon size={20} /> {/* 👁️ Icone 'Eye' pour "Voir" */}
+  </IconButton>
+
+</div>
 
 
             </div>
