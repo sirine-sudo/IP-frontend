@@ -34,7 +34,6 @@ export default function Login() {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateInputs()) return;
@@ -44,16 +43,20 @@ export default function Login() {
   
       if (res && res.accessToken && res.refreshToken) {
         // Stocker les tokens et le rôle
-        localStorage.setItem("role", res.role);   // 🔥 Corrigé ici
-        localStorage.setItem("token", res.accessToken); 
-        localStorage.setItem("refreshToken", res.refreshToken); 
+        localStorage.setItem("role", res.role);
+        localStorage.setItem("token", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
   
         toast.success("Login successful! Redirecting...");
   
         setTimeout(() => {
-          navigate("/dashboard");
+          if (res.role === "admin") {
+            navigate("/admin/users");  // 🔥 Redirect admins to the user list
+          } else {
+            navigate("/dashboard");    // 🔥 Normal users go to dashboard
+          }
         }, 500);
-        return res; // ✅ PAS res.data
+        return res;
       } else {
         toast.error("Unexpected response. Please try again.");
       }
@@ -61,6 +64,7 @@ export default function Login() {
       alert(error.response?.data?.message || "Login failed. Try again.");
     }
   };
+  
   
   return (
     <AppTheme>

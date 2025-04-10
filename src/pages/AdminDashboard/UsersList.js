@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CardContainer from "../../components/CardContainer";
 import TitleSection from "../../components/TitleSection";
-
+import './style.css'
 const UsersList = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,7 +13,7 @@ const UsersList = () => {
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/users/admin/users";
 
-  const usersPerPage = 3; // ➡️ 3 users par page
+  const usersPerPage = 8; // ➡️ 3 users par page
 
   useEffect(() => {
     fetchUsersWithWhitelist();
@@ -162,9 +162,9 @@ const UsersList = () => {
         {/* User List */}
         <div className="ip-card-list">
           {currentUsers.length === 0 ? (
-            <p>Aucun utilisateur trouvé.</p>
+            <p></p>
           ) : (
-            currentUsers.map((user) => (
+            currentUsers.filter((user) => user.role !== "admin").map((user) => (
               <div
                 key={user.id}
                 className="ip-card"
@@ -173,8 +173,10 @@ const UsersList = () => {
                 <div className="ip-card-info">
                   <h3 className="ip-title">{user.name}</h3>
                   <p className="ip-description">
-                    <strong>Email :</strong> {user.email}  |   <strong>Rôle :</strong> {user.role}
+                    <strong>Email :</strong> {user.email}  
                   </p>
+
+                  <p className="ip-description"> <strong>Rôle :</strong> {user.role}</p>
                   <p className="ip-description">
                     <strong>Adresse Ethereum :</strong>{" "}
                     {user.ethereum_address || (
@@ -199,38 +201,49 @@ const UsersList = () => {
 
                 {/* Actions */}
                 <div className="ip-card-actions">
-                  {user.role === "simple-user" && (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      size="small"
-                      onClick={() => handlePromote(user.id)}
-                    >
-                      Promouvoir en IP Owner
-                    </Button>
-                  )}
+  {/* Promotion Button */}
+  {user.role === "simple-user" ? (
+    <Button
+      className="vente-button"
+      variant="contained"
+      size="small"
+      onClick={() => handlePromote(user.id)}
+    >
+      Promouvoir en IP Owner
+    </Button>
+  ) : user.role === "ip-owner" && (
+    <Button
+      variant="outlined"
+      size="small"
+      disabled
+      style={{ backgroundColor: "lightgray", color: "gray", border: "none" }}
+    >
+      Déjà Owner
+    </Button>
+  )}
 
-                  <Button
-                    variant="contained"
-                    color="error"
-                    size="small"
-                    style={{ marginTop: "10px" }}
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Supprimer
-                  </Button>
+  {/* Whitelist Button */}
+  <Button
+    variant="contained"
+    color="info"
+    size="small"
+    disabled={!user.ethereum_address || user.isWhitelisted}
+    onClick={() => handleWhitelist(user.ethereum_address, user.id)}
+  >
+    Ajouter à la Whitelist
+  </Button>
 
-                  <Button
-                    variant="contained"
-                    color="info"
-                    size="small"
-                    style={{ marginTop: "10px" }}
-                    disabled={!user.ethereum_address || user.isWhitelisted}
-                    onClick={() => handleWhitelist(user.ethereum_address, user.id)}
-                  >
-                    Ajouter à la Whitelist
-                  </Button>
-                </div>
+  {/* Delete Button */}
+  <Button
+    variant="contained"
+    className="delete-button"
+    size="small"
+    onClick={() => handleDelete(user.id)}
+  >
+    Supprimer
+  </Button>
+</div>
+
               </div>
             ))
           )}
@@ -240,6 +253,7 @@ const UsersList = () => {
         <div style={{ display: "flex", justifyContent: "center", marginTop: "20px", gap: "10px" }}>
           <Button
             variant="outlined"
+            className="pagination-button"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
           >
@@ -247,6 +261,7 @@ const UsersList = () => {
           </Button>
 
           <Button
+            className="pagination-button"
             variant="outlined"
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((prev) => prev + 1)}

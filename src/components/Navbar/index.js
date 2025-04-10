@@ -20,10 +20,13 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-content">
-        <NavLink to="/dashboard" className="navbar-logo nav-title" >
-          <img src={logo} alt="Logo" />
-         iP Management
-        </NavLink>
+      <NavLink
+  to={role === "admin" ? "/admin/users" : "/dashboard"}  // 🔥 redirect based on role
+  className="navbar-logo nav-title"
+>
+  <img src={logo} alt="Logo" />
+  iP Management
+</NavLink>
 
         <div className="nav-links">
           {role === "admin" ? (
