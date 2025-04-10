@@ -83,7 +83,7 @@ export default function Login() {
     <AppTheme>
       <AuthContainer  >
         <AuthCard>
-          <TitleSection title="S'authentifier" text="Connectez-vous pour gérer votre propriété intellectuelle en toute sécurité." />
+          <TitleSection title="Connexion" text="Connectez-vous pour gérer votre propriété intellectuelle en toute sécurité." />
             <Divider></Divider>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <AuthForm

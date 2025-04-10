@@ -12,6 +12,7 @@ const StyledCard = styled(MuiCard)(({ theme, maxWidth, padding }) => ({
   gap: theme.spacing(2),
   margin: "auto",
   boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.1)",
+  backgroundColor:"#fef5e4"
 }));
 
 const AuthCard = ({ title, children, maxWidth, padding }) => {
