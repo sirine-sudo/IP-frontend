@@ -93,8 +93,8 @@ function Dashboard() {
                             </div>
                         ) : (
                             <div>
-                                <h2>Vos 3 derniers IPs :</h2>
-                                <div className="ip-grid">
+<h2>Découvrez les dernières propriétés intellectuelles ajoutées à notre marketplace</h2>
+<div className="ip-grid">
                                     {ips.slice(0, 3).map((ip, index) => (
                                         <div key={index} className="ip-item">
 

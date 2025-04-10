@@ -15,7 +15,9 @@
   text-align: center;
   color: #e5efff;
 }
-
+h2{
+  text-decoration: underline ;
+}
 .welcome-title {
   font-size: clamp(2rem, 4vw, 4vh);
   font-weight: 900;
