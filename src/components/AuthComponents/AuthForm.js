@@ -1,4 +1,4 @@
-import { TextField, FormLabel, FormControl } from "@mui/material";
+import {  FormLabel, FormControl } from "@mui/material";
 import './style.css';
 
 export default function AuthForm({ label, name, type, value, onChange, error, helperText }) {

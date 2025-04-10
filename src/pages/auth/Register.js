@@ -9,7 +9,7 @@ import AuthForm from "../../components/AuthComponents/AuthForm";
 import AuthContainer from "../../components/AuthComponents/AuthContainer";
 import AuthCard from "../../components/AuthComponents/AuthCard";
 
-import { Box, Button, Checkbox, FormControlLabel, Link, Divider, Typography } from "@mui/material";
+import { Box,   Checkbox, FormControlLabel, Link, Divider, Typography } from "@mui/material";
 import TitleSection from "../../components/TitleSection";
 import AppButton from "../../components/AppButton";
 

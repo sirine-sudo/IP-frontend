@@ -2,39 +2,26 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Alert, Button, IconButton, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import MintNFT from "../../components/MintNFT";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import "./style.css";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
-import { ChevronLeft, Edit, ChevronRight, Trash, Eye } from "lucide-react";
+import { ChevronLeft,  ChevronRight  } from "lucide-react";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [alertMessage, setAlertMessage] = useState(null);
+  const [alertMessage] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
   const itemsPerPage = 8; // 3 cards per page
-  const handlePutOnSale = async (ipId) => {
-    const price = prompt("Prix de vente en ETH :"); // 🔥 Demander le prix
-    if (!price) return;
-
-    try {
-      await axios.put(`http://localhost:5000/api/ips/${ipId}/sale`, { is_for_sale: true, price });
-      toast.success("IP mise en vente !");
-      window.location.reload(); // 🔥 Simple, recharger la page
-    } catch (error) {
-      console.error(error);
-      toast.error("Erreur lors de la mise en vente.");
-    }
-  };
+ 
   const handleBuyIP = (ipId) => {
     const confirmWallet = window.confirm("🔔 Connecter votre portefeuille pour acheter cette IP ?");
     if (!confirmWallet) return;
@@ -79,26 +66,8 @@ function Marketplace() {
   const [selectedType, setSelectedType] = useState("");
   const [onlyForSale, setOnlyForSale] = useState(false);
 
-  const handleMintNFT = async (fileUrl, ipId) => {
-
-    await MintNFT(fileUrl, ipId);
-
-  };
-  const handleDeleteIP = async (id) => {
-    if (!window.confirm("⚠️ Êtes-vous sûr de vouloir supprimer cet IP ?")) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/api/ips/${id}`);
-      setIps((prev) => prev.filter((ip) => ip.id !== id));
-      toast.success(" IP supprimée avec succès !");
-
-    } catch (error) {
-      console.error(error);
-      toast.error(" Échec de la suppression.");
-
-    }
-  };
-
+ 
+  
 
   // Filtrer IPs selon recherche
   const filteredIps = ips.filter((ip) => {

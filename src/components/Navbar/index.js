@@ -1,4 +1,4 @@
-import React, { useCallback ,useState} from "react";
+import React, { useCallback} from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./style.css";
 import { logoutUser } from "../../api/userApi";
@@ -14,7 +14,6 @@ import { ShoppingCart, CloudUpload, Users, LogOut, UserSquare } from "lucide-rea
     localStorage.removeItem("role");
     navigate("/");
   }, [navigate]);
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav className="navbar">

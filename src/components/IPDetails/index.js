@@ -5,8 +5,7 @@ import { Button, CircularProgress } from "@mui/material";
 
 import CardContainer from "../../components/CardContainer";
 import './style.css'
-import { FaFilePdf } from "react-icons/fa";
-import { ChevronLeft } from "lucide-react";
+ import { ChevronLeft } from "lucide-react";
 const IPDetails = () => {
   const { id } = useParams();
   const [ip, setIP] = useState(null);

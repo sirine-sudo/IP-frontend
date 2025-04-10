@@ -13,7 +13,7 @@ import AuthCard from "../../components/AuthComponents/AuthCard"; // Card contain
 import ForgotPassword from "./ForgotPassword"; // Forgot password modal
 import './style.css'
 
-import { Box, Button, FormControlLabel, Checkbox, Link, Divider, Typography } from "@mui/material";
+import { Box,  FormControlLabel, Checkbox, Link, Divider, Typography } from "@mui/material";
 import TitleSection from "../../components/TitleSection";
 
 export default function Login() {
