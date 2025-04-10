@@ -94,13 +94,6 @@
   background-color: #e5efff;
 }
 
-/*  IP Image */
-.ip-image img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px;
-}
 
 /*  IP Title */
 .ip-info h3 {
@@ -199,4 +192,51 @@
 .fade-in-delay-2 {
   animation: fadeIn 1.5s ease-in-out both;
   animation-delay: 0.6s;
+}
+/*  IP Image */
+.ip-image img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.ip-card-file {
+  max-width: 100px;
+  margin-right: 10px;
+  margin-left: 10px;
+  max-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.file-preview {
+  max-width: 120px;
+  max-height: 100px;
+  object-fit: cover;          /* Cover, but... */
+  object-position: top left;  /* 🛠️ Start from the top left */
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #fff6e5;
+  margin-bottom: 10px;
+}
+
+
+.pdf-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7vh; /* 📄 plus grand */
+  background-color: #fff6e5; /* gris clair */
+  color: #d32f2f; /* rouge doux */
+}
+
+
+.file-audio {
+  width: 120px;
+  height: 40px;
+  margin-top: 5px;
 }

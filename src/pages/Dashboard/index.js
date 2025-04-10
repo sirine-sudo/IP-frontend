@@ -5,7 +5,7 @@ import { fetchUserProfile, logoutUser } from "../../api/userApi";
 
 import CardContainer from "../../components/CardContainer";
 import "./style.css";
-
+import { FaFilePdf } from "react-icons/fa";
 function Dashboard() {
     const [user, setUser] = useState(null);
     const [ips, setIps] = useState([]);
@@ -74,13 +74,33 @@ function Dashboard() {
                                         <div key={index} className="ip-item">
 
                                             {/* Image à gauche */}
-                                            <div className="ip-image">
-                                                <img src={ip.file_url} alt={`IP ${index + 1}`} />
-                                            </div>
+                                         
+              {/* File Preview */}
+              <div className="ip-card-file">
+                {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview" />}
+                {ip.type === "video" && (
+                  <video className="file-preview" controls muted>
+                    <source src={ip.file_url} type="video/mp4" />
+                  </video>
+                )}
+                {ip.type === "audio" && (
+                  <audio className="file-audio" controls>
+                    <source src={ip.file_url} type="audio/mp4" />
+                  </audio>
+                )}
+                {ip.type === "book" && (
+                  <div className="file-preview pdf-preview">
+                    <FaFilePdf size={50} />
+                  </div>
+                )}
 
+              </div>
                                             {/* Titre au centre */}
                                             <div className="ip-info">
                                                 <h3>{ip.title || `IP ${index + 1}`}</h3>
+                                                {ip.is_for_sale && (
+                    <span className="badge-for-sale">En Vente</span>
+                  )}
                                             </div>
 
                                             {/* Boutons à droite */}
