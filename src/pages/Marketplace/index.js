@@ -176,7 +176,7 @@ function Marketplace() {
           <Button
             startIcon={<AddRoundedIcon />}
             onClick={() => navigate("/upload")}
-            className="upload-button"
+            className="upload-button-marketplace"
           >
             Upload IP
           </Button>
@@ -186,7 +186,7 @@ function Marketplace() {
         <hr style={{ marginBottom: "20px" }} />
 
         {/* Cards Layout */}
-        <div className="ip-card-list">
+        <div className="ip-card-list-marketplace">
           {currentIps.map((ip) => (
             <div
               key={ip.id}
@@ -197,7 +197,7 @@ function Marketplace() {
 
 
               {/* File Preview */}
-              <div className="ip-card-file">
+              <div className="ip-card-file-marketplace">
                 {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview-marketplace" />}
                 {ip.type === "video" && (
                   <video className="file-preview-marketplace" controls muted>
