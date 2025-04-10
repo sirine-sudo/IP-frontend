@@ -22,7 +22,7 @@ const theme = createTheme({
       main: "#1976d2",
     },
     background: {
-      default: "#fff6e5", // Set background color here
+      default: "#fffff", // Set background color here
     },
   },
 });
