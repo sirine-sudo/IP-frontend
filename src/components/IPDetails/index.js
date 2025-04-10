@@ -49,34 +49,34 @@ const IPDetails = () => {
                 <source src={ip.file_url} type="audio/mp4" />
               </audio>
             )}
-  {ip.type === "book" && (
-  <iframe
-    src={ip.file_url}
-    title="PDF Viewer"
-    className="file-preview"
-    style={{
-      width: '100%',
-      height: '80vh',
-      border: 'none',
-      borderRadius: '8px',
-      boxShadow: '0px 0px 8px rgba(0,0,0,0.1)',
-    }}
-  />
-)}
+            {ip.type === "book" && (
+              <iframe
+                src={ip.file_url}
+                title="PDF Viewer"
+                className="file-preview"
+                style={{
+                  width: '100%',
+                  height: '80vh',
+                  border: 'none',
+                  borderRadius: '8px',
+                  boxShadow: '0px 0px 8px rgba(0,0,0,0.1)',
+                }}
+              />
+            )}
 
-<p style={{ fontSize: '15px', textAlign: 'center'  ,marginLeft:'-20px'}}>
-  <strong>Type :</strong> {ip.type}
-</p>
+            <p style={{ fontSize: '15px', textAlign: 'center', marginLeft: '-20px' }}>
+              <strong>Type :</strong> {ip.type}
+            </p>
 
           </div>
 
           {/* Bloc Infos */}
           <div className="ip-details-info">
-            <h3  style={{ marginBottom:'10px'} } >{ip.title}</h3>
+            <h3 style={{ marginBottom: '10px' }} >{ip.title}</h3>
             <p><strong>ID Créateur :</strong> {ip.creator_id} | <strong>Créateur préféré :</strong> {ip.preferred_creator_name || "Non défini"}</p>
 
             <p><strong>Description :</strong> {ip.description}</p>
- 
+
             <p><strong>Adresse du propriétaire :</strong> {ip.owner_address === "unknown" ? (
               <span style={{ color: "gray" }}>Indisponible — NFT pas encore minté.</span>
             ) : ip.owner_address}
@@ -109,17 +109,17 @@ const IPDetails = () => {
             <p><strong>Date de création :</strong> {new Date(ip.createdAt).toLocaleString()} | <strong>Dernière mise à jour :</strong> {new Date(ip.updatedAt).toLocaleString()}</p>
 
             {/* Bouton retour */}
- <div 
+            <div
               className="back-button-div"
 
->  <Button
+            >  <Button
               className="back-button"
               variant="outlined"
               onClick={() => window.history.back()}
             > Retour
-              <ChevronLeft size={20} /> {/* 👈 Left arrow icon */}
-            </Button></div>
-          
+                <ChevronLeft size={20} /> {/* 👈 Left arrow icon */}
+              </Button></div>
+
 
           </div>
 
