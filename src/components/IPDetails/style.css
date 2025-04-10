@@ -67,3 +67,85 @@ color: #02032a;
 .ip-details-info strong {
   color: #000;
 }
+
+
+.ip-card-file {
+  display: block;
+  width: 65%;
+  max-width: 65vh;
+  height: 60%;
+  max-height: 70vh;
+  margin: 10px auto;
+   align-items: center;
+  justify-content: center;
+  background-color: #fff6e5;
+  border-radius: 10px;
+ 
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  overflow: hidden; /* 🔥 Important pour pas que ça dépasse */
+}
+
+
+
+.file-preview {
+  width: 100%;          /* Toujours occuper 100% du parent */
+  max-width: 100vh;     /* Largeur max 100vh */
+  height: 100%;         /* Toujours occuper 100% du parent */
+  max-height: 150vh;    /* Hauteur max 150vh */
+  object-fit: cover;    /* 🔥 Couvrir tout l'espace */
+  object-position: center; /* 🔥 Centrer l'image/vidéo */
+  border-radius: 8px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff6e5;
+  margin-bottom: 10px;
+}
+
+
+.pdf-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7vh; /* 📄 plus grand */
+  background-color: #fff6e5; /* gris clair */
+  color: #d32f2f; /* rouge doux */
+}
+
+
+.file-audio {
+  width: 120px;
+  height: 40px;
+  margin-top: 5px;
+}
+
+
+.file-audio {
+  width: 120px;
+  height: 40px;
+  margin-top: 5px;
+}
+  
+.back-button {
+  border-radius: 20em !important;  /* <- Add !important */
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-transform: none;
+   font-weight: 700;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 100px;
+  max-width: 200px;
+  height: 40px;
+
+  gap: 8px;
+  padding: 10px 20px;
+   border: none !important; /* <- border important */
+}
+
+.back-button:hover {
+  background-color: gainsboro; /* petit effet hover sympa */
+}
+.back-button-div{
+
+  margin-left: 80vh;
+
+}
