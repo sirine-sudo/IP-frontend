@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css"; // Style par défaut
 import UsersList from "./pages/AdminDashboard/UsersList";
 import './App.css'
 import MyIPs from "./pages/MyIPs";
+import TTLUploader from "./pages/TTLUploader";
 // Define or import the theme
 const theme = createTheme({
   palette: {
@@ -65,7 +66,7 @@ function App() {
                   <Route path="/update-metadata/:id" element={<UpdateMetadataForm />} />
                   <Route path="/admin/users" element={<UsersList />} />
                   <Route path="/my-ips" element={<MyIPs />} />
-
+                  <Route path="/ttl-uploader" element={< TTLUploader/>} />
                 </Routes>
               </Layout>
             }
