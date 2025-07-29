@@ -5,17 +5,20 @@
   padding: 0 2%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   transition: background-color 0.5s ease, box-shadow 0.5s ease;
+  position: relative;
 }
-/* When hovering the whole navbar */
+
 .navbar:hover {
-  background-color: #fef5e8; /* Slight background change */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Add a soft shadow */
+  background-color: #fef5e8;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
+
 .navbar-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;    transition: box-shadow 0.3s ease, transform 0.3s ease;
-
+  align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  padding: 10px 0;
 }
 
 .navbar-logo {
@@ -24,10 +27,12 @@
   gap: 10px;
   text-decoration: none;
   color: inherit;
+  z-index: 10;
 }
 
 .navbar-logo img {
   height: 5vh;
+  transition: height 0.3s ease;
 }
 
 .nav-links {
@@ -36,47 +41,34 @@
   font-size: 18px;
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
 }
+
 .nav-title {
   font-family: "Source Serif Pro", serif;
   font-weight: 900;
   font-size: 24px;
   display: flex;
   align-items: center;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  margin: 1% 0;
 }
+
 .nav-links a {
   color: black;
   text-decoration: none;
-  margin: 0 40px;
-
+  margin: 0 20px;
   padding: 10px 25px;
   border-radius: 20em;
-  transition: 
-    color   0.3s  ease-in-out, 
-    background-color   0.3s  ease-in-out, 
-    font-weight   0.3s  ease-in-out,
-    transform   0.3s  ease-in-out;
-}
-
-/* Hover effect */
-
-.nav-links a {
-  transition: 
-    color 0.3s ease-in-out, 
-    background-color 0.3s ease-in-out, 
-    font-weight 0.3s ease-in-out,
-    transform 0.3s ease-in-out,
- 
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
 }
 
 .nav-links a:hover {
   transform: translateY(-5px);
   font-weight: bold;
- }
+}
 
-/* Active link style with smooth transition */
 .active-link {
   font-weight: bold;
   background-color: #fec447;
@@ -84,7 +76,23 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* 🔥 Rendre le Navbar Responsive */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 20;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .nav-links a {
+    margin: 0 15px;
+    padding: 8px 20px;
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 768px) {
   .navbar {
     margin: 2% 4%;
@@ -93,51 +101,60 @@
   }
 
   .navbar-logo img {
-    height: 40px; /* 🔥 Logo plus petit */
+    height: 40px;
   }
 
-  .navbar-logo h1 {
-    font-size: 18px; /* 🔥 Titre plus petit */
-  }
-
-  .nav-links {
-    flex-wrap: wrap; /* 🔥 Les liens vont passer à la ligne */
-    justify-content: center; /* 🔥 Centrer les liens */
-  }
-
-  .nav-links a {
-    margin: 5px 10px; /* 🔥 Moins d'espace entre les liens */
-    font-size: 16px; /* 🔥 Police plus petite */
-    padding: 8px 15px;
-  }
-}
-.navbar {
-  flex-direction: column;
-}
-@media (max-width: 600px) {
-  .navbar-content {
-    flex-direction: column; /* 🔥 Mettre la navbar en colonne */
-    align-items: center; /* 🔥 Centrer les éléments */
+  .menu-toggle {
+    display: block;
   }
 
   .nav-links {
-    flex-direction: column; /* 🔥 Les liens passent aussi en colonne */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fef5e4;
+    flex-direction: column;
     align-items: center;
-    width: 100%;
+    padding: 20px 0;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .nav-links.open {
+    max-height: 500px;
+    opacity: 1;
+    z-index: 15;
   }
 
   .nav-links a {
-    margin: 10px 0; /* 🔥 Un peu d'espace entre les liens */
-    font-size: 16px; /* 🔥 Texte plus petit */
-    width: 100%; /* 🔥 Les liens prennent toute la largeur */
-    text-align: center; /* 🔥 Texte centré */
+    width: 80%;
+    text-align: center;
+    margin: 5px 0;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    margin: 2%;
+    padding: 0 2%;
   }
 
   .navbar-logo img {
-    height: 40px; /* 🔥 Logo plus petit */
+    height: 35px;
   }
 
-  .navbar-logo h1 {
-    font-size: 20px; /* 🔥 Titre plus petit */
+  .nav-title {
+    font-size: 20px;
+  }
+
+  .nav-links a {
+    width: 90%;
+    font-size: 15px;
   }
 }
