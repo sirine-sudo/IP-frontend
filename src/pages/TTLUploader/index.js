@@ -48,8 +48,8 @@ const TTLUploader = () => {
     <CardContainer>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <TitleSection
-          title="Uploader un contrat TTL"
-          text="Transformez vos contrats en smart contracts MPEG-21"
+          title="Upload a TTL contract"
+          text="Turn your contracts into MPEG-21 smart contracts"
         />
       </div>
 
@@ -83,7 +83,7 @@ const TTLUploader = () => {
               disabled={!file}
               className="parse-button"
             >
-              Parser le Contrat
+              Parse the contract
             </Button>
 
             {parsedData && (
@@ -93,23 +93,23 @@ const TTLUploader = () => {
                 onClick={handleGenerate}
                 className="generate-button"
               >
-                Déployer le Smart Contract
+                Deploy the smart contract
               </Button>
             )}
           </div>
-
+          </div>
           {/* Parsed Data Preview */}
           {parsedData && (
             <div className="parsed-data-container">
               <Typography variant="h6" gutterBottom>
-                Données Parsées:
+                Parsed data:
               </Typography>
               <pre className="parsed-data-preview">
                 {JSON.stringify(parsedData, null, 2)}
               </pre>
             </div>
           )}
-        </div>
+        
       </div>
     </CardContainer>
   );

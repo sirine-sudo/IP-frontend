@@ -77,7 +77,7 @@ const Navbar = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 <UserSquare size={18} /> 
-                Mes IPs
+                My IPs
               </NavLink>
               <NavLink 
                 to="/marketplace" 
@@ -93,7 +93,7 @@ const Navbar = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 <CloudUpload size={18} style={{ marginRight: "5px" }} />
-                Uploader
+                Upload
               </NavLink>
             </>
           )}
