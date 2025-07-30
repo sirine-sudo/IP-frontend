@@ -8,8 +8,9 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import "./style.css";
 import { toast } from "react-toastify";
 import { FaFilePdf } from "react-icons/fa";
-import { ChevronLeft,  ChevronRight  } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+
 function Marketplace() {
   const [ips, setIps] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,26 +21,25 @@ function Marketplace() {
   const connectedWalletAddress = "0xCfa5C9015dd6949d1913AD58Df99e6a7A82BfFCF";
   const navigate = useNavigate();
   const API_URL = "http://localhost:5000/api/ips";
-  const itemsPerPage = 8; // 3 cards per page
- 
+  const itemsPerPage = 8;
+
   const handleBuyIP = (ipId) => {
-    const confirmWallet = window.confirm("🔔 Connecter votre portefeuille pour acheter cette IP ?");
+    const confirmWallet = window.confirm("🔔 Connect your wallet to purchase this IP?");
     if (!confirmWallet) return;
 
     const confirmBuy = window.confirm(
-      "✅ Confirmez-vous l'achat de cette IP numérique ?\n\n" +
-      "En validant, vous deviendrez officiellement le propriétaire de cet actif.\n" +
-      "Le transfert de propriété sera effectué automatiquement vers votre portefeuille connecté.\n\n"
-
+      "✅ Confirm purchase of this digital IP?\n\n" +
+      "By validating, you will officially become the owner of this asset.\n" +
+      "Ownership transfer will be automatically processed to your connected wallet.\n\n"
     );
     if (!confirmBuy) return;
 
-    toast.success(" Achat  avec succès !");
+    toast.success("Purchase successful!");
 
     setIps((prevIps) =>
       prevIps.map((ip) =>
         ip.id === ipId
-          ? { ...ip, is_for_sale: false, owner_address: connectedWalletAddress } // Adresse simulée
+          ? { ...ip, is_for_sale: false, owner_address: connectedWalletAddress }
           : ip
       )
     );
@@ -49,27 +49,21 @@ function Marketplace() {
     const fetchIPs = async () => {
       try {
         const res = await axios.get(`${API_URL}`);
-        if (Array.isArray(res.data)) {
-          const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-          setIps(sorted);
-        } else {
-          setIps([]);
-        }
+        setIps(Array.isArray(res.data) 
+          ? res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          : []);
       } catch (err) {
-        setError("Impossible de charger les données.");
+        setError("Unable to load data.");
       } finally {
         setLoading(false);
       }
     };
     fetchIPs();
   }, []);
+
   const [selectedType, setSelectedType] = useState("");
   const [onlyForSale, setOnlyForSale] = useState(false);
 
- 
-  
-
-  // Filtrer IPs selon recherche
   const filteredIps = ips.filter((ip) => {
     const matchesSearch = ip.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       ip.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -78,17 +72,15 @@ function Marketplace() {
     return matchesSearch && matchesType && matchesSale;
   });
 
-
-  // Pagination
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentIps = filteredIps.slice(indexOfFirstItem, indexOfLastItem);
 
-  if (loading) return <CardContainer ></CardContainer>;
+  if (loading) return <CardContainer></CardContainer>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <CardContainer  >
+    <CardContainer>
       <div>
         {alertMessage && (
           <Alert
@@ -105,16 +97,14 @@ function Marketplace() {
           </Alert>
         )}
 
-        {/* Title & Upload Button */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <TitleSection
-            title="Marché des Propriétés Intellectuelles"
-            text="Explorez et échangez des actifs numériques en toute sécurité."
+            title="Intellectual Property Marketplace"
+            text="Explore and trade digital assets securely."
           />
-          <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", width: "90vh", }}>
-            {/* Search Text */}
+          <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: "space-between", marginBottom: "20px", width: "90vh" }}>
             <TextField
-              label="Rechercher..."
+              label="Search..."
               variant="standard"
               className="search-bar"
               value={searchTerm}
@@ -122,10 +112,9 @@ function Marketplace() {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              style={{ flex: 2 }} // 🔥 occupe plus d’espace
+              style={{ flex: 2 }}
             />
 
-            {/* Type Select */}
             <TextField
               select
               label="Type"
@@ -139,7 +128,7 @@ function Marketplace() {
               SelectProps={{
                 native: true,
               }}
-              style={{ flex: 2, }}
+              style={{ flex: 2 }}
             >
               <option value=""></option>
               <option value="image">Image</option>
@@ -149,9 +138,8 @@ function Marketplace() {
               <option value="other">Other</option>
             </TextField>
 
-            {/* Vente Toggle */}
             <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 2, minWidth: "100px", marginTop: '13px' }}>
-              <p style={{ fontSize: "14px", color: "gray", margin: 0 }}>En vente</p>
+              <p style={{ fontSize: "14px", color: "gray", margin: 0 }}>For sale</p>
               <input
                 type="checkbox"
                 checked={onlyForSale}
@@ -173,21 +161,16 @@ function Marketplace() {
           </Button>
         </div>
 
-
         <hr style={{ marginBottom: "20px" }} />
 
-        {/* Cards Layout */}
         <div className="ip-card-list-marketplace">
           {currentIps.map((ip) => (
             <div
               key={ip.id}
               className="ip-card"
-              onClick={() => navigate(`/ip/${ip.id}`)}  //   On autorise toujours
-              style={{ cursor: "pointer" }}             //   Toujours un curseur pointer
+              onClick={() => navigate(`/ip/${ip.id}`)}
+              style={{ cursor: "pointer" }}
             >
-
-
-              {/* File Preview */}
               <div className="ip-card-file-marketplace">
                 {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="file-preview-marketplace" />}
                 {ip.type === "video" && (
@@ -205,75 +188,62 @@ function Marketplace() {
                     <FaFilePdf size={50} />
                   </div>
                 )}
-
               </div>
 
-              {/* IP Info */}
               <div className="ip-card-info-marketplace">
                 <h3 className="ip-title-marketplace">
                   {ip.title}
                   {ip.is_for_sale && (
-                    <span className="badge-for-sale">En Vente</span>
+                    <span className="badge-for-sale">For Sale</span>
                   )}
                 </h3>
               </div>
 
-
-{/* Action Buttons */}
-<div className="ip-card-actions-marketplace">
-  {/* View Button (toujours visible) */}
- 
-
-  {/* Acheter / Mon IP / Pas en vente */}
-  {ip.is_for_sale ? (
-    ip.owner_address !== connectedWalletAddress ? (
-      <Button
-        variant="contained"
-        className="mint-button"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleBuyIP(ip.id);
-        }}
-      >
-        Acheter
-      </Button>
-    ) : (
-      <Button
-        variant="contained"
-        className="button-disabled"
-        disabled
-      >
-        Mon IP
-      </Button>
-    )
-  ) : (
-    <Button
-      variant="contained"
-      className="button-disabled"
-      disabled
-    >
-      Pas en vente
-    </Button>
-
-  )}
-    <IconButton
-    className="mint-button"
-    onClick={(e) => {
-      e.stopPropagation();
-      navigate(`/ip/${ip.id}`); // 🔥 Redirige vers la page de détail IP
-    }}
-  >
-    <VisibilityOutlinedIcon size={20} /> {/* 👁️ Icone 'Eye' pour "Voir" */}
-  </IconButton>
-
-</div>
-
-
+              <div className="ip-card-actions-marketplace">
+                {ip.is_for_sale ? (
+                  ip.owner_address !== connectedWalletAddress ? (
+                    <Button
+                      variant="contained"
+                      className="mint-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBuyIP(ip.id);
+                      }}
+                    >
+                      Buy
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      className="button-disabled"
+                      disabled
+                    >
+                      My IP
+                    </Button>
+                  )
+                ) : (
+                  <Button
+                    variant="contained"
+                    className="button-disabled"
+                    disabled
+                  >
+                    Not for sale
+                  </Button>
+                )}
+                <IconButton
+                  className="mint-button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/ip/${ip.id}`);
+                  }}
+                >
+                  <VisibilityOutlinedIcon size={20} />
+                </IconButton>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Pagination Buttons */}
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "20px", gap: "10px" }}>
           <Button
             className="pagination-button"
@@ -281,7 +251,7 @@ function Marketplace() {
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((prev) => prev - 1)}
           >
-            <ChevronLeft size={20} /> {/* 👈 Left arrow icon */}
+            <ChevronLeft size={20} />
           </Button>
 
           <Button
@@ -290,10 +260,9 @@ function Marketplace() {
             disabled={currentPage * itemsPerPage >= filteredIps.length}
             onClick={() => setCurrentPage((prev) => prev + 1)}
           >
-            <ChevronRight size={20} /> {/* 👉 Right arrow icon */}
+            <ChevronRight size={20} />
           </Button>
         </div>
-
 
         {alertMessage && (
           <Alert
@@ -310,7 +279,6 @@ function Marketplace() {
             {alertMessage}
           </Alert>
         )}
-
       </div>
     </CardContainer>
   );
