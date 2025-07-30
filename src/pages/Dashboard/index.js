@@ -1,8 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios"; // 🔥 Ajoute axios
+import axios from "axios";
 import { fetchUserProfile, logoutUser } from "../../api/userApi";
-
 import CardContainer from "../../components/CardContainer";
 import "./style.css";
 import { FaFilePdf } from "react-icons/fa";
@@ -15,28 +14,29 @@ function Dashboard() {
     const [ips, setIps] = useState([]);
     const navigate = useNavigate();
     const API_URL = "http://localhost:5000/api/ips";
-  const handleBuyIP = (ipId) => {
-    const confirmWallet = window.confirm("🔔 Connecter votre portefeuille pour acheter cette IP ?");
-    if (!confirmWallet) return;
 
-    const confirmBuy = window.confirm(
-      "✅ Confirmez-vous l'achat de cette IP numérique ?\n\n" +
-      "En validant, vous deviendrez officiellement le propriétaire de cet actif.\n" +
-      "Le transfert de propriété sera effectué automatiquement vers votre portefeuille connecté.\n\n"
-      
-    );
+    const handleBuyIP = (ipId) => {
+        const confirmWallet = window.confirm("🔔 Connect your wallet to purchase this IP?");
+        if (!confirmWallet) return;
+
+        const confirmBuy = window.confirm(
+            "✅ Confirm purchase of this digital IP?\n\n" +
+            "By validating, you will officially become the owner of this asset.\n" +
+            "Ownership transfer will be automatically processed to your connected wallet.\n\n"
+        );
         if (!confirmBuy) return;
 
-    toast.success(" Achat  avec succès !");
-    
-    setIps((prevIps) =>
-      prevIps.map((ip) =>
-        ip.id === ipId
-          ? { ...ip, is_for_sale: false, owner_address: connectedWalletAddress } // Adresse simulée
-          : ip
-      )
-    );
-  };
+        toast.success("Purchase successful!");
+        
+        setIps((prevIps) =>
+            prevIps.map((ip) =>
+                ip.id === ipId
+                    ? { ...ip, is_for_sale: false, owner_address: connectedWalletAddress }
+                    : ip
+            )
+        );
+    };
+
     const handleLogout = useCallback(async () => {
         await logoutUser();
         navigate("/");
@@ -54,14 +54,11 @@ function Dashboard() {
     const fetchIPs = useCallback(async () => {
         try {
             const res = await axios.get(`${API_URL}`);
-            if (Array.isArray(res.data)) {
-                const sorted = res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                setIps(sorted);
-            } else {
-                setIps([]);
-            }
+            setIps(Array.isArray(res.data) 
+                ? res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) 
+                : []);
         } catch (err) {
-            console.error("Erreur lors du chargement des IPs", err);
+            console.error("Error loading IPs", err);
         }
     }, []);
 
@@ -75,32 +72,27 @@ function Dashboard() {
             {user ? (
                 <CardContainer className="dashboard-card fade-in">
                     <div className="welcome-section">
-                        <h1 className="welcome-title fade-in-delay-1">Bienvenue, {user.name}</h1>
-
+                        <h1 className="welcome-title fade-in-delay-1">Welcome, {user.name}</h1>
                         <div className="slogan fade-in-delay-2">
                             <div className="slogan-background"></div>
-                            <h1 className="slogan-text">" Vos créations sont uniques, leur protection aussi. "</h1>
+                            <h1 className="slogan-text">"Your creations are unique, their protection too."</h1>
                         </div>
                     </div>
 
                     <div className="latest-ips">
                         {ips.length === 0 ? (
                             <div className="no-ip">
-                                <p>Aucune IP trouvée pour le moment.</p>
+                                <p>No IP found at the moment.</p>
                                 <Link to="/upload" className="upload-button">
-                                    Uploader votre première IP
+                                    Upload your first IP
                                 </Link>
                             </div>
                         ) : (
                             <div>
-<h2>Découvrez les dernières propriétés intellectuelles ajoutées à notre marketplace</h2>
-<div className="ip-grid">
+                                <h2>Discover the latest intellectual properties added to our marketplace</h2>
+                                <div className="ip-grid">
                                     {ips.slice(0, 3).map((ip, index) => (
                                         <div key={index} className="ip-item">
-
-                                            {/* Image à gauche */}
-
-                                            {/* File Preview */}
                                             <div className="ip-image">
                                                 {ip.type === "image" && <img src={ip.file_url} alt="IP" loading="lazy" className="ip-image" />}
                                                 {ip.type === "video" && (
@@ -118,44 +110,31 @@ function Dashboard() {
                                                         <FaFilePdf size={50} />
                                                     </div>
                                                 )}
-
                                             </div>
-                                            {/* Titre au centre */}
                                             <div className="ip-info">
                                                 <h3>{ip.title || `IP ${index + 1}`}</h3>
                                                 {ip.is_for_sale && (
-                                                    <span className="badge-for-sale">En Vente</span>
+                                                    <span className="badge-for-sale">For Sale</span>
                                                 )}
                                             </div>
-
-                                            {/* Boutons à droite */}
                                             <div className="ip-actions">
                                                 <button
                                                     className="ip-button view-button-dash"
-                                                    onClick={() => navigate(`/ip/${ip.id}`)} // 🔥 Voir détails IP
+                                                    onClick={() => navigate(`/ip/${ip.id}`)}
                                                 >
-                                                    Voir IP
+                                                    View IP
                                                 </button>
-
                                                 <button
                                                     className="ip-button buy-button"
-                                                    onClick={() => {
-                                                         handleBuyIP(ip.id);
-                                                      }}
-
-
+                                                    onClick={() => handleBuyIP(ip.id)}
                                                 >
-                                                    Acheter IP
+                                                    Buy IP
                                                 </button>
                                             </div>
-
                                         </div>
                                     ))}
                                 </div>
                             </div>
-
-
-
                         )}
                     </div>
                 </CardContainer>
