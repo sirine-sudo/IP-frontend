@@ -1,34 +1,21 @@
 import axios from "axios";
-
 const API_BASE = "http://localhost:5000/api";
 
-// ✅ Parser fichier TTL (.ttl)
 export const parseTTL = async (ttlFile) => {
-  const formData = new FormData();
-  formData.append("ttl", ttlFile); // doit correspondre à .single("ttl")
-
-  const res = await axios.post(`${API_BASE}/parse`, formData, {
+  const fd = new FormData();
+  fd.append("ttl", ttlFile);
+  const { data } = await axios.post(`${API_BASE}/parse`, fd, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-
-  return res.data; // ← { contracts: [...] }
+  return data;
 };
 
-// ✅ Envoyer le contrat parsé au backend pour déploiement
-export const generateSmartContract = async (parsedData, account) => {
-  const res = await fetch(`${API_BASE}/generate`, {
+export const deploySpec = async (spec, account) => {
+  const res = await fetch(`${API_BASE}/deploy`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contracts: [parsedData.contracts?.[0] || parsedData], // toujours array
-      account
-    }),
+    body: JSON.stringify({ spec, account }),
   });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(errorText || "Smart contract generation failed");
-  }
-
-  return await res.json();
+  if (!res.ok) throw new Error(await res.text());
+  return await res.json(); // -> { network, chainId, deployer, nfToken, contract }
 };
