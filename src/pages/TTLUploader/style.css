@@ -63,3 +63,54 @@
     font-family: monospace;
     white-space: pre-wrap;
   }
+
+  /* Pleine largeur pour la section Parsed Data */
+.parsed-data-wide {
+  width: 100%;
+  margin-top: 24px;
+  background: #fff;
+  border: 1px dashed #ddd;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.parsed-pre {
+  width: 100%;
+  margin: 0;
+  overflow: auto;
+  max-height: 50vh;           /* évite que la page devienne infinie */
+  line-height: 1.3;
+  font-size: 13px;
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.parsed-hint {
+  color: #666;
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.parsed-loading {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* Mise en page du haut (upload + actions) */
+.ttl-top {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-upload-box.full {
+  width: 100%;
+}
+
+.ttl-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}

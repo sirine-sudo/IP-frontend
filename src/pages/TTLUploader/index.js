@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { parseTTL, deploySpec } from "../../api/ttlApi";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, CircularProgress } from "@mui/material";
 import { toast } from "react-toastify";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
@@ -10,9 +10,13 @@ import "./style.css";
 
 const TTLUploader = () => {
   const [file, setFile] = useState(null);
-  const [parsedData, setParsedData] = useState(null);
   const [fileName, setFileName] = useState("");
   const [account, setAccount] = useState(null);
+
+  const [parsedData, setParsedData] = useState(null);
+  const [parsing, setParsing] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   const connectWallet = async () => {
     if (!window.ethereum) {
@@ -30,33 +34,50 @@ const TTLUploader = () => {
     }
   };
 
-  const handleParse = async () => {
-    if (!file) {
-      toast.warning("Please select a TTL file");
-      return;
-    }
+  // 👉 Parse AUTO dès qu’un fichier est choisi
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files?.[0];
+    if (!selectedFile) return;
+
+    setFile(selectedFile);
+    setFileName(selectedFile.name);
+    setParsedData(null);
+    setParsing(true);
+
     try {
-      const data = await parseTTL(file);
+      const data = await parseTTL(selectedFile);
       console.log("✅ TTL Parsed Result:", data);
       setParsedData(data);
       toast.success("TTL file parsed successfully!");
     } catch (err) {
+      console.error(err);
+      setParsedData(null);
       toast.error("Parsing error: " + err.message);
+    } finally {
+      setParsing(false);
     }
   };
-  const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
-    if (!account || !parsedData || loading) return;
+    if (!account) {
+      toast.warning("Connect wallet first");
+      return;
+    }
+    if (!parsedData) {
+      toast.warning("Please upload a TTL file (auto-parse will run)");
+      return;
+    }
+    if (loading) return;
+
     setLoading(true);
     try {
       const spec = parsedData.contracts?.[0] || parsedData;
       const out = await deploySpec(spec, account);
-  
-      // --- Console log complet ---
+
+      // Console log détaillé
       console.log("🚀 Deployment Result:", out);
-  
-      // --- Toast avec lien Etherscan ---
+
+      // Lien Etherscan Sepolia
       const explorer = "https://sepolia.etherscan.io/address";
       toast.success(
         <div>
@@ -74,7 +95,7 @@ const TTLUploader = () => {
             </a>
           </div>
         </div>,
-        { autoClose: false } // ne se ferme pas trop vite
+        { autoClose: false }
       );
     } catch (e) {
       toast.error("Smart contract deployment failed: " + e.message);
@@ -82,63 +103,75 @@ const TTLUploader = () => {
       setLoading(false);
     }
   };
-  
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setFileName(selectedFile.name);
-    }
-  };
 
   return (
     <CardContainer>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <TitleSection title="Upload a TTL contract" text="Turn your contracts into MPEG-21 smart contracts" />
+        <TitleSection
+          title="Upload a TTL contract"
+          text="Turn your contracts into MPEG-21 smart contracts"
+        />
       </div>
 
       <hr style={{ marginBottom: "20px" }} />
 
-      <div className="ip-card-list-marketplace">
-        <div className="ttl-upload-container">
-          {/* File Upload */}
-          <div className="file-upload-box">
-            <label htmlFor="ttl-upload" className="file-upload-label">
-              <FaFileAlt size={40} className="file-icon" />
-              <Typography variant="body1" className="file-upload-text">
-                {fileName || "Select a .ttl file"}
-              </Typography>
-              <input id="ttl-upload" type="file" accept=".ttl" onChange={handleFileChange} hidden />
-            </label>
-          </div>
-
-          {/* Actions */}
-          <div className="ttl-action-buttons">
-            <Button variant="outlined" onClick={connectWallet} className="connect-wallet">
-              {account ? `Connected: ${account}` : "Connect to MetaMask"}
-            </Button>
-
-            <Button variant="contained" color="primary" onClick={handleParse} disabled={!file} className="parse-button">
-              Parse Contract
-            </Button>
-
-            {parsedData && (
-              <Button disabled={loading}  variant="contained" color="success" onClick={handleGenerate} className="generate-button">
-                Deploy Smart Contract
-              </Button>
-            )}
-          </div>
+      <div className="ttl-top">
+        {/* Upload box */}
+        <div className="file-upload-box full">
+          <label htmlFor="ttl-upload" className="file-upload-label">
+            <FaFileAlt size={40} className="file-icon" />
+            <Typography variant="body1" className="file-upload-text">
+              {fileName || "Select a .ttl file"}
+            </Typography>
+            <input
+              id="ttl-upload"
+              type="file"
+              accept=".ttl"
+              onChange={handleFileChange}
+              hidden
+            />
+          </label>
         </div>
 
-        {/* Parsed Data Preview */}
-        {parsedData && (
-          <div className="parsed-data-container">
-            <Typography variant="h6" gutterBottom>Parsed Data:</Typography>
-            <pre className="parsed-data-preview">
-              {JSON.stringify(parsedData, null, 2)}
-            </pre>
+        {/* Actions */}
+        <div className="ttl-actions">
+          <Button variant="outlined" onClick={connectWallet} className="connect-wallet">
+            {account ? `Connected: ${account}` : "Connect to MetaMask"}
+          </Button>
+
+          <Button
+            variant="contained"
+            color="success"
+            onClick={handleGenerate}
+            disabled={!parsedData || !account || loading || parsing}
+            className="generate-button"
+          >
+            {loading ? "Deploying..." : "Deploy Smart Contract"}
+          </Button>
+        </div>
+      </div>
+
+      {/* Parsed Data pleine largeur en dessous */}
+      <div className="parsed-data-wide">
+        <Typography variant="h6" gutterBottom>Parsed Data</Typography>
+
+        {!file && (
+          <div className="parsed-hint">
+            Sélectionnez un fichier .ttl pour lancer l’analyse automatiquement.
           </div>
+        )}
+
+        {parsing && (
+          <div className="parsed-loading">
+            <CircularProgress size={22} />
+            <span style={{ marginLeft: 8 }}>Parsing in progress…</span>
+          </div>
+        )}
+
+        {parsedData && !parsing && (
+          <pre className="parsed-pre">
+            {JSON.stringify(parsedData, null, 2)}
+          </pre>
         )}
       </div>
     </CardContainer>
