@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { parseTTL, generateSmartContract } from "../../api/ttlApi";
-import { Button,   Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import { FaFileAlt } from "react-icons/fa";
+import Web3 from "web3";
 import "../Marketplace/style.css";
 import "./style.css";
 
@@ -12,27 +13,51 @@ const TTLUploader = () => {
   const [file, setFile] = useState(null);
   const [parsedData, setParsedData] = useState(null);
   const [fileName, setFileName] = useState("");
+  const [account, setAccount] = useState(null);
+  const [web3, setWeb3] = useState(null);
+
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        setAccount(accounts[0]);
+        const web3Instance = new Web3(window.ethereum);
+        setWeb3(web3Instance);
+        toast.success("Wallet connected: " + accounts[0]);
+      } catch (err) {
+        toast.error("Connection failed: " + err.message);
+      }
+    } else {
+      toast.error("Please install MetaMask");
+    }
+  };
 
   const handleParse = async () => {
     if (!file) {
-      toast.warning("Veuillez sélectionner un fichier TTL");
+      toast.warning("Please select a TTL file");
       return;
     }
     try {
       const data = await parseTTL(file);
+      console.log("✅ TTL Parsed Result:", data); 
       setParsedData(data);
-      toast.success("Fichier TTL parsé avec succès !");
+      toast.success("TTL file parsed successfully!");
     } catch (err) {
-      toast.error("Erreur lors du parsing : " + err.message);
+      toast.error("Parsing error: " + err.message);
     }
   };
 
   const handleGenerate = async () => {
+    if (!account || !parsedData) {
+      toast.warning("Connect wallet and parse TTL first");
+      return;
+    }
+
     try {
-      const res = await generateSmartContract(parsedData);
-      toast.success(`Smart contract déployé à l'adresse: ${res.contractAddress}`);
+      const res = await generateSmartContract(parsedData, account); // envoie l’adresse
+      toast.success(`Smart contract deployed at: ${res.contractAddress}`);
     } catch (err) {
-      toast.error("Erreur génération smart contract : " + err.message);
+      toast.error("Smart contract deployment failed: " + err.message);
     }
   };
 
@@ -62,7 +87,7 @@ const TTLUploader = () => {
             <label htmlFor="ttl-upload" className="file-upload-label">
               <FaFileAlt size={40} className="file-icon" />
               <Typography variant="body1" className="file-upload-text">
-                {fileName || "Sélectionnez un fichier .ttl"}
+                {fileName || "Select a .ttl file"}
               </Typography>
               <input
                 id="ttl-upload"
@@ -77,13 +102,21 @@ const TTLUploader = () => {
           {/* Action Buttons */}
           <div className="ttl-action-buttons">
             <Button
+              variant="outlined"
+              onClick={connectWallet}
+              className="connect-wallet"
+            >
+              {account ? `Connected: ${account}` : "Connect to MetaMask"}
+            </Button>
+
+            <Button
               variant="contained"
               color="primary"
               onClick={handleParse}
               disabled={!file}
               className="parse-button"
             >
-              Parse the contract
+              Parse Contract
             </Button>
 
             {parsedData && (
@@ -93,23 +126,23 @@ const TTLUploader = () => {
                 onClick={handleGenerate}
                 className="generate-button"
               >
-                Deploy the smart contract
+                Deploy Smart Contract
               </Button>
             )}
           </div>
+        </div>
+
+        {/* Parsed Data Preview */}
+        {parsedData && (
+          <div className="parsed-data-container">
+            <Typography variant="h6" gutterBottom>
+              Parsed Data:
+            </Typography>
+            <pre className="parsed-data-preview">
+              {JSON.stringify(parsedData, null, 2)}
+            </pre>
           </div>
-          {/* Parsed Data Preview */}
-          {parsedData && (
-            <div className="parsed-data-container">
-              <Typography variant="h6" gutterBottom>
-                Parsed data:
-              </Typography>
-              <pre className="parsed-data-preview">
-                {JSON.stringify(parsedData, null, 2)}
-              </pre>
-            </div>
-          )}
-        
+        )}
       </div>
     </CardContainer>
   );
