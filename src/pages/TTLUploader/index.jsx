@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import TitleSection from "../../components/TitleSection";
 import CardContainer from "../../components/CardContainer";
 import { toast } from "react-toastify";
@@ -11,10 +11,9 @@ import ParsedDataPanel from "./ParsedDataPanel";
 import "./style.css";
 
 const TTLUploader = () => {
-  const [mode, setMode] = useState("create"); // "create" | "upload"
+  const [mode, setMode] = useState("create");
   const [parsedData, setParsedData] = useState(null);
   const [parsing, setParsing] = useState(false);
-
   const [account, setAccount] = useState(null);
 
   const connectWallet = async () => {
@@ -54,12 +53,6 @@ const TTLUploader = () => {
         ) : (
           <UploadTab setParsedData={setParsedData} setParsing={setParsing} />
         )}
-
-        <div className="ttl-actions">
-          <Button variant="outlined" onClick={connectWallet}>
-            {account ? `Connected: ${account}` : "Connect to MetaMask"}
-          </Button>
-        </div>
       </div>
 
       <ParsedDataPanel
@@ -67,6 +60,7 @@ const TTLUploader = () => {
         parsing={parsing}
         parsedData={parsedData}
         account={account}
+        connectWallet={connectWallet} // <-- pass it here
       />
     </CardContainer>
   );
