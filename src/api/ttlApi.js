@@ -1,21 +1,19 @@
 import axios from "axios";
+
 const API_BASE = "http://localhost:5000/api";
 
+// POST /api/parse avec multipart form-data "ttl"
 export const parseTTL = async (ttlFile) => {
-  const fd = new FormData();
-  fd.append("ttl", ttlFile);
-  const { data } = await axios.post(`${API_BASE}/parse`, fd, {
+  const formData = new FormData();
+  formData.append("ttl", ttlFile);
+  const res = await axios.post(`${API_BASE}/parse`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
-  return data;
+  return res.data;
 };
 
+// POST /api/deploy (si ton backend expose bien cette route)
 export const deploySpec = async (spec, account) => {
-  const res = await fetch(`${API_BASE}/deploy`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ spec, account }),
-  });
-  if (!res.ok) throw new Error(await res.text());
-  return await res.json(); // -> { network, chainId, deployer, nfToken, contract }
+  const res = await axios.post(`${API_BASE}/deploy`, { spec, account });
+  return res.data;
 };
